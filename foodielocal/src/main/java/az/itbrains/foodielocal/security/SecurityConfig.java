@@ -26,17 +26,22 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/auth/login") // Giriş formu
-                        .defaultSuccessUrl("/", true) // Girişdən sonra yönləndirmə
+                        .loginPage("/auth/login")
+                        .defaultSuccessUrl("/", true)
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/auth/logout") // 🔥 Bu URL POST ilə çağırılır
-                        .logoutSuccessUrl("/auth/login?logout=true") // 🔁 Uğurlu çıxışdan sonra yönləndirmə
+                        .logoutUrl("/auth/logout")
+                        .logoutSuccessUrl("/auth/login?logout=true")
                         .permitAll()
                 )
+                .rememberMe(remember -> remember
+                        .key("uniqueAndSecret")
+                        .rememberMeParameter("remember-me")
+                        .tokenValiditySeconds(1209600)
+                )
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/auth/logout") // Çıxış URL-i üçün CSRF yoxlamasını söndür
+                        .ignoringRequestMatchers("/auth/logout")
                 );
         return http.build();
     }
