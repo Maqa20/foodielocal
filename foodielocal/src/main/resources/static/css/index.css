@@ -1,0 +1,184 @@
+/* Ümumi üslub parametrləri */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #0f121a;
+    color: #f5f5f7;
+}
+
+a {
+    text-decoration: none;
+}
+
+.lüks-navbar {
+    backdrop-filter: blur(18px);
+    background: rgba(15, 18, 26, 0.7);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transition: background 0.3s ease-in-out;
+}
+
+.lüks-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    transition: color 0.2s ease-in-out;
+}
+
+.lüks-navbar .nav-link:hover,
+.lüks-navbar .nav-link.active,
+.lüks-navbar .nav-link:focus {
+    color: #ffffff;
+}
+
+.lüks-dropdown {
+    background: rgba(15, 18, 26, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.lüks-dropdown .dropdown-item {
+    color: #f5f5f7;
+}
+
+.lüks-dropdown .dropdown-item:hover,
+.lüks-dropdown .dropdown-item:focus {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+.hero-bolmesi {
+    min-height: 100vh;
+    background: linear-gradient(135deg, rgba(15, 18, 26, 0.85), rgba(15, 18, 26, 0.35)),
+    url('https://images.unsplash.com/photo-1528605105345-5344ea20e269?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat fixed;
+    padding: 120px 0 80px;
+    position: relative;
+}
+
+.hero-badge {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 999px;
+    color: #f5f5f7;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    font-size: 0.75rem;
+}
+
+.hero-cta {
+    background: linear-gradient(135deg, #c08b5c, #d9aa76);
+    border: none;
+    color: #0f121a;
+}
+
+.hero-cta:hover,
+.hero-cta:focus {
+    background: linear-gradient(135deg, #d09b6c, #e3b787);
+    color: #0f121a;
+}
+
+.hero-secondary {
+    border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.hero-secondary:hover,
+.hero-secondary:focus {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.hero-kart {
+    background: rgba(15, 18, 26, 0.75);
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    overflow: hidden;
+}
+
+.hero-kart-icerik {
+    padding: 32px;
+}
+
+.restoranlar-bolmesi {
+    background: #161a24;
+}
+
+.restoranlar-bolmesi .card {
+    background: linear-gradient(155deg, rgba(255, 255, 255, 0.04), rgba(255, 255, 255, 0.12));
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 22px;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.25);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.restoranlar-bolmesi .card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 32px 70px rgba(0, 0, 0, 0.35);
+}
+
+.restoranlar-bolmesi .card-img-top {
+    height: 200px;
+    object-fit: cover;
+    border-top-left-radius: 22px;
+    border-top-right-radius: 22px;
+}
+
+.restoranlar-bolmesi .card-title {
+    color: #f5f5f7;
+}
+
+.restoranlar-bolmesi .card-text {
+    font-size: 0.95rem;
+}
+
+.restoranlar-bolmesi .btn-primary {
+    background: linear-gradient(135deg, #c08b5c, #d9aa76);
+    border: none;
+    color: #0f121a;
+    font-weight: 600;
+}
+
+.restoranlar-bolmesi .btn-primary:hover,
+.restoranlar-bolmesi .btn-primary:focus {
+    background: linear-gradient(135deg, #d09b6c, #e3b787);
+    color: #0f121a;
+}
+
+.footer-bolmesi {
+    background: #0d1017;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-bolmesi .btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #f5f5f7;
+}
+
+.footer-bolmesi .btn-outline-light:hover,
+.footer-bolmesi .btn-outline-light:focus {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.sosyal-baglantilar a {
+    font-size: 1.4rem;
+    transition: color 0.2s ease-in-out;
+}
+
+.sosyal-baglantilar a.hover-white:hover,
+.sosyal-baglantilar a.hover-white:focus {
+    color: #ffffff !important;
+}
+
+@media (max-width: 991.98px) {
+    /* Planşetlər üçün uyğunlaşan hero boşluqları */
+    .hero-bolmesi {
+        padding-top: 160px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    /* Mobil üçün adaptiv məzmun */
+    .hero-bolmesi {
+        padding-top: 140px;
+        padding-bottom: 60px;
+    }
+
+    .restoranlar-bolmesi .card-img-top {
+        height: 180px;
+    }
+}
+

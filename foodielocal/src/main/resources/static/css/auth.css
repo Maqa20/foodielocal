@@ -1,0 +1,326 @@
+/* Authentication Pages Styles / Giriş Səhifələri Üslubları */
+
+/* Global Styles / Ümumi Üslublar */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    margin: 0;
+}
+
+/* Auth Container / Giriş Konteyneri */
+.auth-container {
+    width: 100%;
+    max-width: 500px;
+    position: relative;
+}
+
+.auth-wrapper {
+    position: relative;
+}
+
+/* Language Switcher / Dil Dəyişdirici */
+.language-switcher {
+    position: absolute;
+    top: -60px;
+    right: 0;
+    display: flex;
+    gap: 10px;
+    z-index: 10;
+}
+
+.language-switcher .btn {
+    transition: all 0.3s ease;
+    border-color: rgba(255, 255, 255, 0.5);
+    color: white;
+}
+
+.language-switcher .btn:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.8);
+    transform: translateY(-2px);
+}
+
+/* Auth Card / Giriş Kartı */
+.auth-card {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 40px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Auth Card Header / Giriş Kartı Başlığı */
+.auth-card-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.auth-title {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #333;
+    margin-bottom: 10px;
+    transition: opacity 0.3s ease;
+}
+
+.auth-subtitle {
+    color: #666;
+    font-size: 0.95rem;
+    transition: opacity 0.3s ease;
+}
+
+/* Form Styles / Form Üslubları */
+.auth-form {
+    margin-top: 30px;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: 500;
+    color: #333;
+    margin-bottom: 8px;
+    display: block;
+    font-size: 0.9rem;
+    transition: opacity 0.3s ease;
+}
+
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.input-icon {
+    position: absolute;
+    left: 15px;
+    color: #667eea;
+    font-size: 1.1rem;
+    z-index: 1;
+}
+
+.form-control {
+    padding: 12px 15px 12px 45px;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background-color: #fff;
+    color: #333;
+}
+
+.form-control:focus {
+    border-color: #667eea;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.form-control::placeholder {
+    color: #999;
+    transition: opacity 0.3s ease;
+}
+
+/* Password Toggle / Şifrə Göstərmə Düyməsi */
+.password-toggle {
+    position: absolute;
+    right: 15px;
+    background: none;
+    border: none;
+    color: #667eea;
+    cursor: pointer;
+    padding: 5px;
+    z-index: 2;
+    transition: color 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: #764ba2;
+}
+
+.password-toggle:focus {
+    outline: none;
+}
+
+/* Form Options / Form Seçimləri */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+    font-size: 0.9rem;
+}
+
+.form-check {
+    display: flex;
+    align-items: center;
+}
+
+.form-check-input {
+    margin-right: 8px;
+    cursor: pointer;
+}
+
+.form-check-label {
+    color: #666;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+}
+
+.forgot-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.forgot-link:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Terms Link / Şərtlər Linki */
+.terms-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.terms-link:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Auth Button / Giriş Düyməsi */
+.btn-auth {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+    margin-top: 10px;
+}
+
+.btn-auth:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+    color: white;
+}
+
+.btn-auth:active {
+    transform: translateY(0);
+}
+
+/* Auth Footer / Giriş Altlığı */
+.auth-footer {
+    text-align: center;
+    margin-top: 25px;
+    padding-top: 25px;
+    border-top: 1px solid #e0e0e0;
+}
+
+.auth-footer-text {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    transition: opacity 0.3s ease;
+}
+
+.auth-link {
+    color: #667eea;
+    text-decoration: none;
+    font-weight: 600;
+    transition: color 0.3s ease;
+}
+
+.auth-link:hover {
+    color: #764ba2;
+    text-decoration: underline;
+}
+
+/* Language Switch Animation / Dil Dəyişmə Animasiyası */
+[data-i18n],
+[data-i18n-placeholder] {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.language-switching [data-i18n],
+.language-switching [data-i18n-placeholder] {
+    opacity: 0.5;
+    transform: translateY(-5px);
+}
+
+/* Responsive Design / Responsiv Dizayn */
+@media (max-width: 576px) {
+    .auth-card {
+        padding: 30px 20px;
+    }
+
+    .auth-title {
+        font-size: 1.75rem;
+    }
+
+    .language-switcher {
+        top: -50px;
+        right: 0;
+        left: 0;
+        justify-content: center;
+    }
+}
+
+/* Dark mode support (optional) / Tünd rejim dəstəyi (istəyə bağlı) */
+@media (prefers-color-scheme: dark) {
+    .auth-card {
+        background: rgba(30, 30, 30, 0.95);
+    }
+
+    .auth-title {
+        color: #fff;
+    }
+
+    .auth-subtitle {
+        color: #ccc;
+    }
+
+    .form-label {
+        color: #fff;
+    }
+
+    .form-control {
+        background-color: #2a2a2a;
+        border-color: #444;
+        color: #fff;
+    }
+
+    .form-check-label {
+        color: #ccc;
+    }
+
+    .auth-footer-text {
+        color: #ccc;
+    }
+}
+

@@ -1,0 +1,409 @@
+/* Admin Panel Styles / Admin Paneli Üslubları */
+
+/* Global Styles / Ümumi Üslublar */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #0f121a;
+    color: #f5f5f7;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Sidebar Navigation / Yan Paneldə Naviqasiya */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100vh;
+    background: linear-gradient(180deg, #1a1d29 0%, #0f121a 100%);
+    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 1000;
+    transition: transform 0.3s ease;
+    overflow-y: auto;
+}
+
+.sidebar-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.sidebar-brand {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #fff;
+    margin: 0;
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-toggle {
+    color: #fff;
+    padding: 5px;
+    display: none;
+}
+
+.sidebar-toggle:hover {
+    color: #667eea;
+}
+
+/* Sidebar Menu / Yan Paneldə Menyu */
+.sidebar-menu {
+    list-style: none;
+    padding: 20px 0;
+    margin: 0;
+}
+
+.sidebar-item {
+    margin: 5px 0;
+}
+
+.sidebar-link {
+    display: flex;
+    align-items: center;
+    padding: 12px 20px;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-link i {
+    font-size: 1.2rem;
+    margin-right: 12px;
+    width: 24px;
+    text-align: center;
+}
+
+.sidebar-link span {
+    transition: opacity 0.3s ease;
+}
+
+.sidebar-link:hover {
+    background: rgba(102, 126, 234, 0.1);
+    color: #fff;
+    border-left-color: #667eea;
+}
+
+.sidebar-link.active {
+    background: rgba(102, 126, 234, 0.2);
+    color: #667eea;
+    border-left-color: #667eea;
+    font-weight: 600;
+}
+
+/* Sidebar Footer / Yan Paneldə Altlıq */
+.sidebar-footer {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    padding: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.language-switcher-sidebar {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.language-switcher-sidebar .btn {
+    transition: all 0.3s ease;
+    border-color: rgba(255, 255, 255, 0.3);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.language-switcher-sidebar .btn:hover {
+    background-color: rgba(102, 126, 234, 0.2);
+    border-color: #667eea;
+    color: #fff;
+}
+
+/* Main Content Area / Əsas Məzmun Sahəsi */
+.main-content {
+    margin-left: 280px;
+    min-height: 100vh;
+    transition: margin-left 0.3s ease;
+}
+
+/* Top Navigation Bar / Üst Naviqasiya Paneli */
+.top-navbar {
+    background: rgba(26, 29, 41, 0.8);
+    backdrop-filter: blur(10px);
+    padding: 15px 30px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.sidebar-toggle-mobile {
+    display: none;
+    color: #fff;
+    padding: 5px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+}
+
+.sidebar-toggle-mobile:hover {
+    color: #667eea;
+}
+
+.page-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin: 0;
+    flex: 1;
+    transition: opacity 0.3s ease;
+}
+
+.navbar-actions {
+    display: flex;
+    gap: 10px;
+}
+
+/* Content Wrapper / Məzmun Konteyneri */
+.content-wrapper {
+    padding: 30px;
+}
+
+/* Content Sections / Məzmun Bölmələri */
+.content-section {
+    display: none;
+    animation: fadeIn 0.3s ease;
+}
+
+.content-section.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.section-title {
+    font-size: 1.75rem;
+    font-weight: 600;
+    margin: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Table Styles / Cədvəl Üslubları */
+.table-responsive {
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(26, 29, 41, 0.5);
+}
+
+.table-dark {
+    background-color: transparent;
+    color: #f5f5f7;
+}
+
+.table-dark thead th {
+    background: rgba(102, 126, 234, 0.2);
+    border-bottom: 2px solid rgba(102, 126, 234, 0.3);
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    letter-spacing: 0.5px;
+    padding: 15px;
+    transition: opacity 0.3s ease;
+}
+
+.table-dark tbody td {
+    padding: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    vertical-align: middle;
+}
+
+.table-dark tbody tr {
+    transition: background-color 0.3s ease;
+}
+
+.table-dark tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.1);
+}
+
+/* Badge Styles / Nişan Üslubları */
+.badge {
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-weight: 500;
+    font-size: 0.85rem;
+}
+
+/* Button Styles / Düymə Üslubları */
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-outline-primary,
+.btn-outline-danger {
+    border-radius: 6px;
+    padding: 5px 15px;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.btn-outline-primary:hover {
+    background-color: #667eea;
+    border-color: #667eea;
+}
+
+.btn-outline-danger:hover {
+    background-color: #dc3545;
+    border-color: #dc3545;
+}
+
+/* Modal Styles / Modal Üslubları */
+.modal-dark .modal-content {
+    background-color: #1a1d29;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+}
+
+.modal-dark .modal-header {
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.modal-dark .modal-title {
+    color: #fff;
+    font-weight: 600;
+    transition: opacity 0.3s ease;
+}
+
+.modal-dark .modal-body {
+    color: #f5f5f7;
+}
+
+.modal-dark .form-label {
+    color: #f5f5f7;
+    font-weight: 500;
+    margin-bottom: 8px;
+    transition: opacity 0.3s ease;
+}
+
+.modal-dark .form-control,
+.modal-dark .form-select {
+    background-color: rgba(15, 18, 26, 0.5);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #f5f5f7;
+    border-radius: 8px;
+    padding: 10px 15px;
+}
+
+.modal-dark .form-control:focus,
+.modal-dark .form-select:focus {
+    background-color: rgba(15, 18, 26, 0.7);
+    border-color: #667eea;
+    color: #f5f5f7;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
+
+.modal-dark .modal-footer {
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Language Switch Animation / Dil Dəyişmə Animasiyası */
+[data-i18n] {
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.language-switching [data-i18n] {
+    opacity: 0.5;
+    transform: translateY(-3px);
+}
+
+/* Responsive Design / Responsiv Dizayn */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .main-content {
+        margin-left: 0;
+    }
+
+    .sidebar-toggle-mobile {
+        display: block;
+    }
+
+    .sidebar-toggle {
+        display: block;
+    }
+
+    .content-wrapper {
+        padding: 20px 15px;
+    }
+
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .table-responsive {
+        font-size: 0.85rem;
+    }
+
+    .table-dark thead th,
+    .table-dark tbody td {
+        padding: 10px 8px;
+    }
+}
+
+/* Scrollbar Styles / Scrollbar Üslubları */
+.sidebar::-webkit-scrollbar {
+    width: 6px;
+}
+
+.sidebar::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+    background: rgba(102, 126, 234, 0.3);
+    border-radius: 3px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(102, 126, 234, 0.5);
+}
+
