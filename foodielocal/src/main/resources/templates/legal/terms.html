@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="az" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title data-i18n="termsTitle">Şərtlər və Qaydalar</title>
+    <link rel="stylesheet" th:href="@{/css/auth.css}">
+</head>
+<body>
+<div class="auth-container">
+    <div class="auth-card">
+        <h2 data-i18n="termsHeader">Şərtlər və Qaydalar</h2>
+        <p data-i18n="termsIntro">Bu platformadan istifadə etməklə aşağıdakı şərtlərlə razılaşırsınız:</p>
+        <ul>
+            <li data-i18n="termsItem1">Verilən şəxsi məlumatlar yalnız qeydiyyat və təhlükəsizlik məqsədilə istifadə olunur.</li>
+            <li data-i18n="termsItem2">İstifadəçi şifrəsinin təhlükəsizliyi istifadəçinin öz məsuliyyətindədir.</li>
+            <li data-i18n="termsItem3">Platforma üzərindəki bütün məzmun müəllif hüquqları ilə qorunur.</li>
+        </ul>
+        <a th:href="@{/auth/register}" class="btn btn-primary" data-i18n="backToRegister">Qeydiyyata qayıt</a>
+    </div>
+</div>
+</body>
+</html>

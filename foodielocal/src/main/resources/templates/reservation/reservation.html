@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="reservationPageTitle">Reservation – Book Your Table Now</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css"
+          integrity="sha512-jb8zW4N5U9BJ1R0SUD7JbDs0syy6WbMiWcRW+t9DOnAW9I1u8+s9YWD/KSGbFbFhWXGHk0JXrZYpQb9Ee7pPLA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/reservation.css}">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg lüks-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand" th:href="@{/}">FoodieLocal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                    aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                    <li class="nav-item px-lg-2">
+                        <a class="nav-link" data-i18n="navHome" th:href="@{/}">Home</a>
+                    </li>
+                    <li class="nav-item px-lg-2">
+                        <a class="nav-link" data-i18n="navRestaurants" th:href="@{'/#restaurants'}">Restaurants</a>
+                    </li>
+                    <li class="nav-item px-lg-2">
+                        <a class="nav-link active" aria-current="page" data-i18n="navReservation" th:href="@{/reservation}">Reservation</a>
+                    </li>
+                    <li class="nav-item px-lg-2">
+                        <a class="nav-link" data-i18n="navReviews" th:href="@{/reviews}">Reviews</a>
+                    </li>
+                    <li class="nav-item dropdown px-lg-2">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-translate me-2"></i><span data-i18n="navLanguage">Dil</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end lüks-dropdown">
+                            <li><button class="dropdown-item dil-secimi" data-dil="az">AZ</button></li>
+                            <li><button class="dropdown-item dil-secimi" data-dil="en">EN</button></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="reservation-main">
+    <section class="reservation-hero d-flex align-items-center">
+        <div class="container">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-5 reservation-hero-text">
+                    <span class="reservation-pill text-uppercase" data-i18n="reservationBadge">Private dining</span>
+                    <h1 class="display-4 fw-bold mt-3 mb-4" data-i18n="reservationTitle">
+                        Reserve Your Table
+                    </h1>
+                    <p class="lead mb-0" data-i18n="reservationSubtitle">
+                        Plan your perfect dining experience in seconds.
+                    </p>
+                </div>
+                <div class="col-lg-7">
+                    <div class="reservation-card p-5 shadow-lg">
+                        <form th:action="@{/reservation}"
+                              th:object="${reservation}"
+                              method="post"
+                              class="reservation-form row g-4"
+                              novalidate>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="firstName" data-i18n="reservationFirstNameLabel">Ad</label>
+                                <input type="text" class="form-control" th:field="*{firstName}" id="firstName"
+                                       data-i18n-placeholder="reservationFirstNamePlaceholder" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="lastName" data-i18n="reservationLastNameLabel">Soyad</label>
+                                <input type="text" class="form-control" th:field="*{lastName}" id="lastName"
+                                       data-i18n-placeholder="reservationLastNamePlaceholder" required>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label" for="emailAddress" data-i18n="reservationEmailLabel">Email</label>
+                                <input type="email" class="form-control" th:field="*{emailAddress}" id="emailAddress"
+                                       data-i18n-placeholder="reservationEmailPlaceholder" required>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label" for="phoneNumber" data-i18n="reservationPhoneLabel">Telefon</label>
+                                <div class="d-flex">
+                                    <select class="form-select" th:field="*{countryCode}">
+                                        <option value="+994">AZ (+994)</option>
+                                    </select>
+                                    <input type="tel" class="form-control" th:field="*{phoneNumber}" id="phoneNumber"
+                                           data-i18n-placeholder="reservationPhonePlaceholder"
+                                           placeholder="+994 50 123 45 67" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <label class="form-label" for="restaurantChoice" data-i18n="reservationRestaurantLabel">Restoran seçimi</label>
+                                <select class="form-select" th:field="*{restaurantChoice}" id="restaurantChoice" required>
+                                    <option value="" data-i18n="reservationRestaurantPlaceholder">-- Restoran seçin --</option>
+                                    <option th:each="r : ${restaurants}" th:value="${r.name}" th:text="${r.name}"></option>
+                                </select>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="guestCount" data-i18n="reservationGuestCountLabel">Qonaq sayı</label>
+                                <input type="number" class="form-control" th:field="*{guestCount}" id="guestCount"
+                                       data-i18n-placeholder="reservationGuestCountPlaceholder" min="1" max="12" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="reservationDate" data-i18n="reservationDateLabel">Tarix</label>
+                                <input type="date" class="form-control" th:field="*{reservationDate}" id="reservationDate" required>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label" for="reservationTime" data-i18n="reservationTimeLabel">Saat</label>
+                                <input type="time" class="form-control" th:field="*{reservationTime}" id="reservationTime" required>
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label" for="specialRequests" data-i18n="reservationSpecialRequestsLabel">Xüsusi istəklər</label>
+                                <textarea class="form-control" th:field="*{specialRequests}" id="specialRequests"
+                                          data-i18n-placeholder="reservationSpecialRequestsPlaceholder" rows="3"></textarea>
+                            </div>
+
+                            <div class="col-12">
+                                <div th:if="${success}" class="alert alert-success" data-i18n="reservationSuccess" th:text="${success}"></div>
+                                <div th:if="${error}" class="alert alert-danger" data-i18n="reservationError" th:text="${error}"></div>
+                            </div>
+
+                            <div class="col-12">
+                                <button type="submit" class="btn reservation-button w-100" data-i18n="reservationSubmitButton">Rezervasiya et</button>
+                            </div>
+                        </form>
+                        <p class="text-center text-white-50 mt-4 mb-0" data-i18n="reservationFooterNote">
+                            We’ll contact you to confirm your reservation within 24 hours.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<footer class="footer-bolmesi py-4">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="az">AZ</button>
+            <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="en">EN</button>
+        </div>
+        <div class="text-center text-md-start">
+            <span class="d-block text-white-50" data-i18n="footerMotto">
+                FoodieLocal – yerli dadları birlikdə kəşf edək.
+            </span>
+        </div>
+        <div class="d-flex align-items-center gap-3 sosyal-baglantilar">
+            <a class="text-white-50 hover-white" href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
+                <i class="bi bi-facebook"></i>
+            </a>
+            <a class="text-white-50 hover-white" href="https://www.instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+                <i class="bi bi-instagram"></i>
+            </a>
+            <a class="text-white-50 hover-white" href="https://www.tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
+                <i class="bi bi-tiktok"></i>
+            </a>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <p class="mb-0 text-center text-white-50" data-i18n="footerCopyright">
+            © <span th:text="${T(java.time.Year).now().value}">2025</span> FoodieLocal. Bütün hüquqlar qorunur.
+        </p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script th:src="@{/js/reservation.js}" defer></script>
+</body>
+</html>
+

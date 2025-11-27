@@ -1,392 +1,333 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="az" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Page metadata and resource links / Səhifə metadatası və resurs bağlantıları -->
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="pageTitle">Admin Panel - Coursora</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-          crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css"
-          integrity="sha512-jb8zW4N5U9BJ1R0SUD7JbDs0syy6WbMiWcRW+t9DOnAW9I1u8+s9YWD/KSGbFbFhWXGHk0JXrZYpQb9Ee7pPLA=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
-    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title data-i18n="pageTitle">Admin Panel - FoodieLocal</title>
+
+    <!-- Bootstrap 5 & icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet" crossorigin="anonymous"/>
+
+    <!-- Optional admin stylesheet -->
+    <link rel="stylesheet" th:href="@{/css/admin.css}" />
 </head>
-<body>
-    <!-- Sidebar Navigation / Yan Paneldə Naviqasiya -->
-    <nav class="sidebar" id="sidebar">
-        <div class="sidebar-header">
-            <h3 class="sidebar-brand" data-i18n="adminTitle">Coursora Admin</h3>
-            <button class="btn btn-link sidebar-toggle" id="sidebarToggle">
-                <i class="bi bi-x-lg"></i>
-            </button>
-        </div>
-        
-        <ul class="sidebar-menu">
-            <li class="sidebar-item">
-                <a href="#users" class="sidebar-link active" data-tab="users">
-                    <i class="bi bi-people"></i>
-                    <span data-i18n="menuUsers">Users</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="#movies" class="sidebar-link" data-tab="movies">
-                    <i class="bi bi-film"></i>
-                    <span data-i18n="menuMovies">Movies</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="#categories" class="sidebar-link" data-tab="categories">
-                    <i class="bi bi-tags"></i>
-                    <span data-i18n="menuCategories">Categories</span>
-                </a>
-            </li>
-            <li class="sidebar-item">
-                <a href="#reviews" class="sidebar-link" data-tab="reviews">
-                    <i class="bi bi-star"></i>
-                    <span data-i18n="menuReviews">Reviews</span>
-                </a>
-            </li>
-        </ul>
+<body class="bg-light">
+<!-- Top navbar (inline, no fragments) -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand fw-bold" href="#" data-i18n="brand">FoodieLocal Admin</a>
 
-        <!-- Language Switcher / Dil Dəyişdirici -->
-        <div class="sidebar-footer">
-            <div class="language-switcher-sidebar">
-                <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="en">
-                    <i class="bi bi-globe me-1"></i>EN
+        <div class="d-flex ms-auto">
+            <form th:action="@{/logout}" method="post" class="d-inline">
+                <button type="submit" class="btn btn-outline-light btn-sm" data-i18n="logoutBtn">
+                    <i class="bi bi-box-arrow-right"></i> Çıxış
                 </button>
-                <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="az">
-                    <i class="bi bi-globe me-1"></i>AZ
-                </button>
-            </div>
+            </form>
         </div>
-    </nav>
+    </div>
+</nav>
 
-    <!-- Main Content Area / Əsas Məzmun Sahəsi -->
-    <div class="main-content" id="mainContent">
-        <!-- Top Navigation Bar / Üst Naviqasiya Paneli -->
-        <header class="top-navbar">
-            <button class="btn btn-link sidebar-toggle-mobile" id="sidebarToggleMobile">
-                <i class="bi bi-list"></i>
-            </button>
-            <h2 class="page-title" data-i18n="dashboardTitle">Dashboard</h2>
-            <div class="navbar-actions">
-                <button class="btn btn-outline-light btn-sm" data-i18n="logoutButton">Logout</button>
+<div class="container-fluid">
+    <div class="row">
+
+        <!-- Sidebar -->
+        <nav id="adminSidebar" class="col-md-2 col-lg-2 d-md-block bg-white sidebar collapse border-end">
+            <div class="position-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#dashboardSection" data-tab="dashboard" data-bs-toggle="collapse" data-i18n="menuDashboard">
+                            <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#usersSection" data-tab="users" data-i18n="menuUsers"><i class="bi bi-people me-2"></i>Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#restaurantsSection" data-tab="restaurants" data-i18n="menuRestaurants"><i class="bi bi-shop me-2"></i>Restaurants</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#reservationsSection" data-tab="reservations" data-i18n="menuReservations"><i class="bi bi-calendar-check me-2"></i>Reservations</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#reviewsSection" data-tab="reviews" data-i18n="menuReviews"><i class="bi bi-chat-left-text me-2"></i>Reviews</a>
+                    </li>
+                </ul>
             </div>
-        </header>
+        </nav>
 
-        <!-- Content Sections / Məzmun Bölmələri -->
-        <div class="content-wrapper">
-            <!-- Users Section / İstifadəçilər Bölməsi -->
-            <section class="content-section active" id="usersSection" data-section="users">
-                <div class="section-header">
-                    <h3 class="section-title" data-i18n="usersTitle">User Management</h3>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal">
-                        <i class="bi bi-plus-circle me-2"></i>
-                        <span data-i18n="addUserButton">Add User</span>
-                    </button>
+        <!-- Main content -->
+        <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4 py-4">
+            <!-- Dashboard section -->
+            <section id="dashboardSection" class="mb-4" data-section="dashboard">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h3 data-i18n="dashboardTitle">Dashboard</h3>
+                    <div>
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal" data-i18n="addUserButton">Add User</button>
+                    </div>
                 </div>
-                
+
+                <div class="row g-3">
+                    <div class="col-sm-6 col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title" data-i18n="statUsers">Users</h5>
+                                <p class="card-text h3" id="statUsers" th:text="${stats != null ? stats.users : 0}">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title" data-i18n="statRestaurants">Restaurants</h5>
+                                <p class="card-text h3" id="statRestaurants" th:text="${stats != null ? stats.restaurants : 0}">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title" data-i18n="statReservations">Reservations</h5>
+                                <p class="card-text h3" id="statReservations" th:text="${stats != null ? stats.reservations : 0}">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-6 col-md-3">
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title" data-i18n="statReviews">Reviews</h5>
+                                <p class="card-text h3" id="statReviews" th:text="${stats != null ? stats.reviews : 0}">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Users section -->
+            <section id="usersSection" class="mb-4" data-section="users">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h4 data-i18n="usersTitle">Users</h4>
+                </div>
+
                 <div class="table-responsive">
-                    <table class="table table-dark table-hover">
-                        <thead>
-                            <tr>
-                                <th data-i18n="tableId">ID</th>
-                                <th data-i18n="tableName">Name</th>
-                                <th data-i18n="tableEmail">Email</th>
-                                <th data-i18n="tableRole">Role</th>
-                                <th data-i18n="tableStatus">Status</th>
-                                <th data-i18n="tableActions">Actions</th>
-                            </tr>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th data-i18n="tableId">ID</th>
+                            <th data-i18n="tableName">Name</th>
+                            <th data-i18n="tableEmail">Email</th>
+                            <th data-i18n="tableRole">Role</th>
+                            <th data-i18n="tableActions">Actions</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <!-- Sample data - will be replaced by Thymeleaf / Nümunə məlumat - Thymeleaf ilə əvəz olunacaq -->
-                            <tr>
-                                <td>1</td>
-                                <td>John Doe</td>
-                                <td>john@example.com</td>
-                                <td><span class="badge bg-primary">Admin</span></td>
-                                <td><span class="badge bg-success">Active</span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary" data-i18n="editButton">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger" data-i18n="deleteButton">Delete</button>
-                                </td>
-                            </tr>
+                        <tr th:each="user : ${users}">
+                            <td th:text="${user.id}">1</td>
+                            <td th:text="${user.name}">Name</td>
+                            <td th:text="${user.email}">email@example.com</td>
+                            <td>
+                                <select class="form-select form-select-sm" th:attr="data-user-id=${user.id}">
+                                    <option value="USER" th:selected="${user.role == 'USER'}" data-i18n="roleUser">USER</option>
+                                    <option value="MODERATOR" th:selected="${user.role == 'MODERATOR'}" data-i18n="roleModerator">MODERATOR</option>
+                                    <option value="ADMIN" th:selected="${user.role == 'ADMIN'}" data-i18n="roleAdmin">ADMIN</option>
+                                </select>
+                            </td>
+                            <td>
+                                <div class="btn-group btn-group-sm" role="group">
+                                    <a class="btn btn-outline-primary" th:href="@{|/admin/users/edit/${user.id}|}" data-i18n="editButton">Edit</a>
+                                    <form th:action="@{|/admin/users/delete/${user.id}|}" method="post" th:onsubmit="return confirm('Silmək istədiyinizə əminsiniz?');" style="display:inline">
+                                        <button type="submit" class="btn btn-danger" data-i18n="deleteButton">Delete</button>
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+
+                        <tr th:if="${users == null or #lists.isEmpty(users)}">
+                            <td colspan="5" class="text-muted">No users found.</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- Movies Section / Filmlər Bölməsi -->
-            <section class="content-section" id="moviesSection" data-section="movies">
-                <div class="section-header">
-                    <h3 class="section-title" data-i18n="moviesTitle">Movie Management</h3>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addMovieModal">
-                        <i class="bi bi-plus-circle me-2"></i>
-                        <span data-i18n="addMovieButton">Add Movie</span>
-                    </button>
+            <!-- Restaurants section -->
+            <section id="restaurantsSection" class="mb-4" data-section="restaurants">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h4 data-i18n="restaurantsTitle">Restaurants</h4>
+                    <a class="btn btn-primary btn-sm" th:href="@{/admin/restaurants/new}" data-i18n="addRestaurant">New Restaurant</a>
                 </div>
-                
+
                 <div class="table-responsive">
-                    <table class="table table-dark table-hover">
-                        <thead>
-                            <tr>
-                                <th data-i18n="tableId">ID</th>
-                                <th data-i18n="tableTitle">Title</th>
-                                <th data-i18n="tableCategory">Category</th>
-                                <th data-i18n="tableYear">Year</th>
-                                <th data-i18n="tableRating">Rating</th>
-                                <th data-i18n="tableActions">Actions</th>
-                            </tr>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Address</th>
+                            <th>Image</th>
+                            <th>Actions</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <!-- Sample data - will be replaced by Thymeleaf / Nümunə məlumat - Thymeleaf ilə əvəz olunacaq -->
-                            <tr>
-                                <td>1</td>
-                                <td>The Great Movie</td>
-                                <td>Action</td>
-                                <td>2024</td>
-                                <td><span class="badge bg-warning">4.5</span></td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary" data-i18n="editButton">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger" data-i18n="deleteButton">Delete</button>
-                                </td>
-                            </tr>
+                        <tr th:each="r : ${restaurants}">
+                            <td th:text="${r.id}">1</td>
+                            <td th:text="${r.name}">Restaurant</td>
+                            <td th:text="${r.address}">Address</td>
+                            <td>
+                                <img th:if="${r.imageUrl != null}" th:src="${r.imageUrl}" alt="img" class="img-thumbnail" style="width:80px;height:50px;object-fit:cover;">
+                                <span th:if="${r.imageUrl == null}" class="text-muted">—</span>
+                            </td>
+                            <td>
+                                <a class="btn btn-outline-primary btn-sm" th:href="@{|/admin/restaurants/edit/${r.id}|}">Edit</a>
+                                <form th:action="@{|/admin/restaurants/delete/${r.id}|}" method="post" th:onsubmit="return confirm('Silmək istədiyinizə əminsiniz?');" style="display:inline">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        <tr th:if="${restaurants == null or #lists.isEmpty(restaurants)}">
+                            <td colspan="5" class="text-muted">No restaurants found.</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- Categories Section / Kateqoriyalar Bölməsi -->
-            <section class="content-section" id="categoriesSection" data-section="categories">
-                <div class="section-header">
-                    <h3 class="section-title" data-i18n="categoriesTitle">Category Management</h3>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCategoryModal">
-                        <i class="bi bi-plus-circle me-2"></i>
-                        <span data-i18n="addCategoryButton">Add Category</span>
-                    </button>
+            <!-- Reservations section -->
+            <section id="reservationsSection" class="mb-4" data-section="reservations">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h4 data-i18n="reservationsTitle">Reservations</h4>
                 </div>
-                
+
                 <div class="table-responsive">
-                    <table class="table table-dark table-hover">
-                        <thead>
-                            <tr>
-                                <th data-i18n="tableId">ID</th>
-                                <th data-i18n="tableName">Name</th>
-                                <th data-i18n="tableDescription">Description</th>
-                                <th data-i18n="tableMovieCount">Movie Count</th>
-                                <th data-i18n="tableActions">Actions</th>
-                            </tr>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>Restaurant</th>
+                            <th>User</th>
+                            <th>Date / Time</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <!-- Sample data - will be replaced by Thymeleaf / Nümunə məlumat - Thymeleaf ilə əvəz olunacaq -->
-                            <tr>
-                                <td>1</td>
-                                <td>Action</td>
-                                <td>Action-packed movies</td>
-                                <td>25</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary" data-i18n="editButton">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger" data-i18n="deleteButton">Delete</button>
-                                </td>
-                            </tr>
+                        <tr th:each="res : ${reservations}">
+                            <td th:text="${res.id}">1</td>
+                            <td th:text="${res.restaurant != null ? res.restaurant.name : '—'}">Restaurant</td>
+                            <td th:text="${res.user != null ? res.user.name : '—'}">User</td>
+                            <td th:text="${#dates.format(res.dateTime, 'yyyy-MM-dd HH:mm')}">2025-01-01 19:00</td>
+                            <td><span th:text="${res.status}">CONFIRMED</span></td>
+                            <td>
+                                <a class="btn btn-outline-secondary btn-sm" th:href="@{|/admin/reservations/view/${res.id}|}">View</a>
+                                <form th:action="@{|/admin/reservations/delete/${res.id}|}" method="post" th:onsubmit="return confirm('Silmək istədiyinizə əminsiniz?');" style="display:inline">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        <tr th:if="${reservations == null or #lists.isEmpty(reservations)}">
+                            <td colspan="6" class="text-muted">No reservations found.</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
-            <!-- Reviews Section / Rəylər Bölməsi -->
-            <section class="content-section" id="reviewsSection" data-section="reviews">
-                <div class="section-header">
-                    <h3 class="section-title" data-i18n="reviewsTitle">Review Management</h3>
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addReviewModal">
-                        <i class="bi bi-plus-circle me-2"></i>
-                        <span data-i18n="addReviewButton">Add Review</span>
-                    </button>
+            <!-- Reviews section -->
+            <section id="reviewsSection" class="mb-4" data-section="reviews">
+                <div class="d-flex align-items-center justify-content-between mb-3">
+                    <h4 data-i18n="reviewsTitle">Reviews</h4>
                 </div>
-                
+
                 <div class="table-responsive">
-                    <table class="table table-dark table-hover">
-                        <thead>
-                            <tr>
-                                <th data-i18n="tableId">ID</th>
-                                <th data-i18n="tableUser">User</th>
-                                <th data-i18n="tableMovie">Movie</th>
-                                <th data-i18n="tableRating">Rating</th>
-                                <th data-i18n="tableComment">Comment</th>
-                                <th data-i18n="tableActions">Actions</th>
-                            </tr>
+                    <table class="table table-hover align-middle">
+                        <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th>User</th>
+                            <th>Restaurant</th>
+                            <th>Comment</th>
+                            <th>Rating</th>
+                            <th>Actions</th>
+                        </tr>
                         </thead>
                         <tbody>
-                            <!-- Sample data - will be replaced by Thymeleaf / Nümunə məlumat - Thymeleaf ilə əvəz olunacaq -->
-                            <tr>
-                                <td>1</td>
-                                <td>John Doe</td>
-                                <td>The Great Movie</td>
-                                <td><span class="badge bg-warning">4.5</span></td>
-                                <td>Great movie!</td>
-                                <td>
-                                    <button class="btn btn-sm btn-outline-primary" data-i18n="editButton">Edit</button>
-                                    <button class="btn btn-sm btn-outline-danger" data-i18n="deleteButton">Delete</button>
-                                </td>
-                            </tr>
+                        <tr th:each="rev : ${reviews}">
+                            <td th:text="${rev.id}">1</td>
+                            <td th:text="${rev.author}">User</td>
+                            <td th:text="${rev.restaurant != null ? rev.restaurant.name : '—'}">Restaurant</td>
+                            <td th:text="${rev.comment}">Great!</td>
+                            <td><span class="badge bg-warning text-dark" th:text="${rev.rating != null ? rev.rating : '5.0'}">5.0</span></td>
+                            <td>
+                                <form th:action="@{|/admin/reviews/approve/${rev.id}|}" method="post" style="display:inline">
+                                    <button type="submit" class="btn btn-success btn-sm" data-i18n="approveButton">Approve</button>
+                                </form>
+                                <form th:action="@{|/admin/reviews/delete/${rev.id}|}" method="post" th:onsubmit="return confirm('Silmək istədiyinizə əminsiniz?');" style="display:inline">
+                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+
+                        <tr th:if="${reviews == null or #lists.isEmpty(reviews)}">
+                            <td colspan="6" class="text-muted">No reviews found.</td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>
             </section>
-        </div>
+        </main>
     </div>
+</div>
 
-    <!-- Modals / Modal Pəncərələr -->
-    <!-- Add User Modal / İstifadəçi Əlavə Et Modal -->
-    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content modal-dark">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addUserModalLabel" data-i18n="addUserModalTitle">Add New User</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="userName" class="form-label" data-i18n="tableName">Name</label>
-                            <input type="text" class="form-control" id="userName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="userEmail" class="form-label" data-i18n="tableEmail">Email</label>
-                            <input type="email" class="form-control" id="userEmail" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="userRole" class="form-label" data-i18n="tableRole">Role</label>
-                            <select class="form-select" id="userRole">
-                                <option value="user" data-i18n="roleUser">User</option>
-                                <option value="admin" data-i18n="roleAdmin">Admin</option>
-                            </select>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="cancelButton">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-i18n="saveButton">Save</button>
+<!-- Add User Modal -->
+<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <form class="modal-content" th:action="@{/admin/users}" method="post">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addUserModalLabel" data-i18n="addUserButton">Add User</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row g-2">
+                    <div class="col-md-6">
+                        <label class="form-label">Name</label>
+                        <input name="name" class="form-control" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Email</label>
+                        <input name="email" type="email" class="form-control" required />
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Role</label>
+                        <select name="role" class="form-select">
+                            <option value="USER">USER</option>
+                            <option value="MODERATOR">MODERATOR</option>
+                            <option value="ADMIN">ADMIN</option>
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Status</label>
+                        <select name="status" class="form-select">
+                            <option value="ACTIVE">ACTIVE</option>
+                            <option value="INACTIVE">INACTIVE</option>
+                        </select>
+                    </div>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Add Movie Modal / Film Əlavə Et Modal -->
-    <div class="modal fade" id="addMovieModal" tabindex="-1" aria-labelledby="addMovieModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content modal-dark">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addMovieModalLabel" data-i18n="addMovieModalTitle">Add New Movie</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="movieTitle" class="form-label" data-i18n="tableTitle">Title</label>
-                            <input type="text" class="form-control" id="movieTitle" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="movieCategory" class="form-label" data-i18n="tableCategory">Category</label>
-                            <select class="form-select" id="movieCategory" required>
-                                <option value="">Select category</option>
-                                <option value="1">Action</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="movieYear" class="form-label" data-i18n="tableYear">Year</label>
-                            <input type="number" class="form-control" id="movieYear" required>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="cancelButton">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-i18n="saveButton">Save</button>
-                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="cancelButton">Cancel</button>
+                <button type="submit" class="btn btn-primary" data-i18n="saveButton">Save</button>
             </div>
-        </div>
+        </form>
     </div>
-
-    <!-- Add Category Modal / Kateqoriya Əlavə Et Modal -->
-    <div class="modal fade" id="addCategoryModal" tabindex="-1" aria-labelledby="addCategoryModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content modal-dark">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addCategoryModalLabel" data-i18n="addCategoryModalTitle">Add New Category</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="categoryName" class="form-label" data-i18n="tableName">Name</label>
-                            <input type="text" class="form-control" id="categoryName" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="categoryDescription" class="form-label" data-i18n="tableDescription">Description</label>
-                            <textarea class="form-control" id="categoryDescription" rows="3" required></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="cancelButton">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-i18n="saveButton">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Review Modal / Rəy Əlavə Et Modal -->
-    <div class="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content modal-dark">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="addReviewModalLabel" data-i18n="addReviewModalTitle">Add New Review</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="mb-3">
-                            <label for="reviewUser" class="form-label" data-i18n="tableUser">User</label>
-                            <select class="form-select" id="reviewUser" required>
-                                <option value="">Select user</option>
-                                <option value="1">John Doe</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="reviewMovie" class="form-label" data-i18n="tableMovie">Movie</label>
-                            <select class="form-select" id="reviewMovie" required>
-                                <option value="">Select movie</option>
-                                <option value="1">The Great Movie</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label for="reviewRating" class="form-label" data-i18n="tableRating">Rating</label>
-                            <input type="number" class="form-control" id="reviewRating" min="1" max="5" step="0.1" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="reviewComment" class="form-label" data-i18n="tableComment">Comment</label>
-                            <textarea class="form-control" id="reviewComment" rows="3" required></textarea>
-                        </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="cancelButton">Cancel</button>
-                    <button type="button" class="btn btn-primary" data-i18n="saveButton">Save</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-            crossorigin="anonymous"></script>
-    <script th:src="@{/js/admin.js}" defer></script>
+</div>
 </body>
-</html>
 
+<!-- Bootstrap JS and admin script -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script th:src="@{/js/admin.js}" defer></script>
+</html>

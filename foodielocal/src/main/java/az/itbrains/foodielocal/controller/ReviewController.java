@@ -20,20 +20,36 @@ public class ReviewController {
         this.restaurantService = restaurantService;
     }
 
-    @GetMapping("/create/{restaurantId}")
-    public String showReviewForm(@PathVariable Long restaurantId, Model model) {
-        Restaurant restaurant = restaurantService.findById(restaurantId);
-        model.addAttribute("restaurant", restaurant);
+    // ✅ Review formunu açmaq (GET /reviews)
+    @GetMapping
+    public String showReviewForm(Model model) {
+        model.addAttribute("restaurants", restaurantService.findAll());
         model.addAttribute("review", new Review());
-        return "reviews/create"; // templates/reviews/create.html
+        return "reviews/reviews"; // Thymeleaf template
     }
 
-    @PostMapping("/create/{restaurantId}")
-    public String submitReview(@PathVariable Long restaurantId,
-                               @ModelAttribute Review review) {
+    // ✅ Review göndərmək (POST /reviews)
+    @PostMapping
+    public String submitReview(@ModelAttribute Review review, Model model) {
+
+        if (review.getRestaurant() == null || review.getRestaurant().getId() == null) {
+            model.addAttribute("error", "Restaurant not selected");
+            model.addAttribute("restaurants", restaurantService.findAll());
+            return "reviews/reviews";
+        }
+
+        Long restaurantId = review.getRestaurant().getId();
         Restaurant restaurant = restaurantService.findById(restaurantId);
         review.setRestaurant(restaurant);
+
+        // Review-u DB-yə yazırıq
         reviewService.save(review);
-        return "redirect:/restaurants/" + restaurantId;
+
+        // uğur mesajı əlavə et və formu təmizlə
+        model.addAttribute("success", "Review submitted successfully!");
+        model.addAttribute("restaurants", restaurantService.findAll());
+        model.addAttribute("review", new Review());
+
+        return "reviews/reviews"; // redirect yoxdur, eyni səhifədə qalır
     }
 }

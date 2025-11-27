@@ -3,6 +3,7 @@ body {
     font-family: 'Poppins', sans-serif;
     background-color: #0f121a;
     color: #f5f5f7;
+    padding-top: 90px;
 }
 
 a {
@@ -10,10 +11,15 @@ a {
 }
 
 .lüks-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     backdrop-filter: blur(18px);
-    background: rgba(15, 18, 26, 0.7);
+    background: rgba(15, 18, 26, 0.85);
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
     transition: background 0.3s ease-in-out;
+    z-index: 1100;
 }
 
 .lüks-navbar .nav-link {
@@ -40,6 +46,28 @@ a {
 .lüks-dropdown .dropdown-item:hover,
 .lüks-dropdown .dropdown-item:focus {
     background: rgba(255, 255, 255, 0.08);
+}
+
+.dil-secimi {
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 999px;
+    transition: all 0.25s ease;
+}
+
+.dil-secimi:hover,
+.dil-secimi:focus {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.dil-secimi.active {
+    background: linear-gradient(135deg, #fbbf24, #f97316);
+    color: #0f121a;
+    box-shadow: 0 6px 14px rgba(249, 115, 22, 0.35);
 }
 
 .hero-bolmesi {
@@ -180,5 +208,5 @@ a {
     .restoranlar-bolmesi .card-img-top {
         height: 180px;
     }
-}
 
+}

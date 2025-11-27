@@ -1,99 +1,105 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <!-- Page metadata and resource links / Səhifə metadatası və resurs bağlantıları -->
+    <!-- Page metadata and resource links -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title data-i18n="pageTitle">Login - Coursora</title>
+
+    <!-- Fonts and Styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
-          crossorigin="anonymous">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css"
-          integrity="sha512-jb8zW4N5U9BJ1R0SUD7JbDs0syy6WbMiWcRW+t9DOnAW9I1u8+s9YWD/KSGbFbFhWXGHk0JXrZYpQb9Ee7pPLA=="
-          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
     <link rel="stylesheet" th:href="@{/css/auth.css}">
 </head>
 <body>
-    <div class="auth-container">
-        <div class="auth-wrapper">
-            <!-- Language Switcher / Dil Dəyişdirici -->
-            <div class="language-switcher">
-                <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="en">
-                    <i class="bi bi-globe me-1"></i>EN
-                </button>
-                <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="az">
-                    <i class="bi bi-globe me-1"></i>AZ
-                </button>
+<div class="auth-container">
+    <div class="auth-wrapper">
+
+        <!-- Language Switcher -->
+        <div class="language-switcher">
+            <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="en">
+                <i class="bi bi-globe me-1"></i>EN
+            </button>
+            <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="az">
+                <i class="bi bi-globe me-1"></i>AZ
+            </button>
+        </div>
+
+        <!-- Login Card -->
+        <div class="auth-card shadow-lg">
+            <div class="auth-card-header text-center">
+                <h1 class="auth-title fw-bold" data-i18n="loginTitle">Welcome Back</h1>
+                <p class="auth-subtitle "style="color:white;" data-i18n="loginSubtitle">Sign in to your Coursora account</p>
             </div>
 
-            <!-- Login Card / Giriş Kartı -->
-            <div class="auth-card">
-                <div class="auth-card-header">
-                    <h1 class="auth-title" data-i18n="loginTitle">Welcome Back</h1>
-                    <p class="auth-subtitle" data-i18n="loginSubtitle">Sign in to your Coursora account</p>
-                </div>
-
-                <form class="auth-form" th:action="@{/auth/login}" method="post">
-                    <div class="form-group">
-                        <label for="username" class="form-label" data-i18n="emailLabel">Email Address</label>
-                        <div class="input-wrapper">
-                            <i class="bi bi-envelope input-icon"></i>
-                            <input type="email"
-                                   class="form-control"
-                                   id="username"
-                                   name="username"
-                                   placeholder="Enter your email"
-                                   required>
+            <div th:if="${param.error}" class="alert alert-danger text-center mb-3">
+                <i class="bi bi-exclamation-circle me-1"></i>
+                E-poçt və ya şifrə yanlışdır.
+            </div>
+            <form class="auth-form" th:action="@{/auth/login}" method="post">
+                <!-- Email -->
+                <div class="form-group">
+                    <label for="username" class="form-label" data-i18n="emailLabel">Email Address</label>
+                    <div class="input-wrapper">
+                        <i class="bi bi-envelope input-icon"></i>
+                        <input type="email" class="form-control" id="username" name="username"
+                               placeholder="Enter your email" data-i18n-placeholder="emailPlaceholder" required>
+                        <div class="invalid-feedback" id="emailError">
+                            E-poçt ünvanı düzgün deyil. Zəhmət olmasa düz yazın.
                         </div>
                     </div>
-
-                    <!-- Password Input / Şifrə Girişi -->
-                    <div class="form-group">
-                        <label for="password" class="form-label" data-i18n="passwordLabel">Password</label>
-                        <div class="input-wrapper">
-                            <i class="bi bi-lock input-icon"></i>
-                            <input type="password"
-                                   class="form-control"
-                                   id="password"
-                                   name="password"
-                                   placeholder="Enter your password"
-                                   data-i18n-placeholder="passwordPlaceholder"
-                                   required>
-                            <button type="button" class="password-toggle" id="togglePassword">
-                                <i class="bi bi-eye" id="toggleIcon"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Remember Me & Forgot Password / Xatırla və Şifrəni Unutdum -->
-                    <div class="form-options">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" id="rememberMe" name="remember-me">
-                            <label class="form-check-label" for="rememberMe" data-i18n="rememberMe">Remember me</label>
-                        </div>
-                        <a th:href="@{/auth/forgot-password}" class="forgot-link" data-i18n="forgotPassword">Forgot password?</a>                    </div>
-
-                    <!-- Submit Button / Göndər Düyməsi -->
-                    <button type="submit" class="btn btn-primary btn-auth" data-i18n="loginButton">Sign In</button>
-                </form>
-
-                <!-- Register Link / Qeydiyyat Linki -->
-                <div class="auth-footer">
-                    <p class="auth-footer-text" data-i18n="noAccount">Don't have an account?</p>
-                    <a th:href="@{/auth/register}" class="auth-link">Create Account</a>
                 </div>
+
+                <!-- Password -->
+                <div class="form-group">
+                    <label for="password" class="form-label" data-i18n="passwordLabel">Password</label>
+                    <div class="input-wrapper">
+                        <i class="bi bi-lock input-icon"></i>
+                        <input type="password" class="form-control" id="password" name="password"
+                               placeholder="Enter your password" data-i18n-placeholder="passwordPlaceholder" required>
+                        <div class="invalid-feedback" id="passwordError">
+                            Zəhmət olmasa şifrənizi daxil edin.
+                        </div>
+                        <button type="button" class="password-toggle" id="togglePassword">
+                            <i class="bi bi-eye" id="toggleIcon"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Remember Me & Forgot Password -->
+                <div class="form-options d-flex justify-content-between align-items-center">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="rememberMe" name="remember-me">
+                        <label class="form-check-label" for="rememberMe" data-i18n="rememberMe">Remember me</label>
+                    </div>
+                    <a th:href="@{/auth/forgot-password}" class="forgot-link" data-i18n="forgotPassword">
+                        <i class="bi bi-question-circle me-1"></i>Forgot password?
+                    </a>
+                </div>
+
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-auth btn-primary" data-i18n="loginButton">
+                    <i class="bi bi-box-arrow-in-right me-1"></i>Sign In
+                </button>
+            </form>
+
+            <!-- Register Link -->
+            <div class="auth-footer text-center">
+                <p class="auth-footer-text" data-i18n="noAccount">Don't have an account?</p>
+                <a th:href="@{/auth/register}" class="auth-link" data-i18n="registerLink">
+                    <i class="bi bi-person-plus me-1"></i>Create Account
+                </a>
             </div>
         </div>
     </div>
+</div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
-            crossorigin="anonymous"></script>
-    <script th:src="@{/js/auth.js}" defer></script>
+<!-- Scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script th:src="@{/js/auth.js}" defer></script>
 </body>
 </html>
-

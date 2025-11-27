@@ -1,5 +1,6 @@
 package az.itbrains.foodielocal.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -7,10 +8,14 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
+    @Autowired
+    private AuthenticationSuccessHandler customSuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -21,13 +26,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/auth/**", "/css/**", "/js/**", "/images/**", "/terms").permitAll()
                         .requestMatchers("/admin/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
+
                 .formLogin(form -> form
                         .loginPage("/auth/login")
-                        .defaultSuccessUrl("/", true)
+                        .successHandler(customSuccessHandler)
                         .permitAll()
                 )
                 .logout(logout -> logout
@@ -38,6 +44,7 @@ public class SecurityConfig {
                 .rememberMe(remember -> remember
                         .key("uniqueAndSecret")
                         .rememberMeParameter("remember-me")
+                        .alwaysRemember(false)
                         .tokenValiditySeconds(1209600)
                 )
                 .csrf(csrf -> csrf

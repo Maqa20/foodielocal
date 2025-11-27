@@ -6,320 +6,204 @@
  * Tab dəyişdirmə, yan panel açma/bağlama, dil dəyişdirmə və UI animasiyalarını idarə edir
  */
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Translation dictionary / Tərcümə lüğəti
-    const translationDictionary = {
+document.addEventListener('DOMContentLoaded', () => {
+    // Sidebar toggle (desktop + mobile)
+    const sidebar = document.getElementById('sidebar');
+    const mainContent = document.getElementById('mainContent');
+    const sidebarToggle = document.getElementById('sidebarToggle');
+    const sidebarToggleMobile = document.getElementById('sidebarToggleMobile');
+
+    function toggleSidebar() {
+        sidebar.classList.toggle('collapsed');
+        mainContent.classList.toggle('expanded');
+    }
+    if (sidebarToggle) sidebarToggle.addEventListener('click', toggleSidebar);
+    if (sidebarToggleMobile) sidebarToggleMobile.addEventListener('click', toggleSidebar);
+
+    // Tab navigation (hash + sidebar links)
+    const links = document.querySelectorAll('.sidebar-link');
+    const sections = document.querySelectorAll('.content-section');
+
+    function setActiveTab(tab) {
+        sections.forEach(s => s.classList.toggle('active', s.dataset.section === tab));
+        links.forEach(l => l.classList.toggle('active', l.dataset.tab === tab));
+        const title = document.querySelector('.page-title');
+        if (title) {
+            const el = document.querySelector(`[data-section-title="${tab}"]`);
+            if (el) title.textContent = el.textContent;
+        }
+        // update hash without scroll
+        history.replaceState(null, '', '#' + tab);
+    }
+
+    links.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const tab = link.getAttribute('data-tab');
+            setActiveTab(tab);
+        });
+    });
+
+    // initial tab from hash or default
+    const startTab = (location.hash && location.hash.substring(1)) || 'dashboard';
+    setActiveTab(startTab);
+
+    // Confirm actions for delete/cancel buttons
+    document.body.addEventListener('click', (e) => {
+        const el = e.target.closest('[data-confirm]');
+        if (!el) return;
+        const msg = el.getAttribute('data-confirm') || 'Are you sure?';
+        if (!confirm(msg)) e.preventDefault();
+    });
+
+    // Simple stats updater (placeholder for API)
+    async function loadStats() {
+        try {
+            // TODO: replace with real fetch: /api/admin/stats
+            // const res = await fetch('/api/admin/stats');
+            // const data = await res.json();
+            const data = {
+                users: 1247,
+                reviews: 3892,
+                reservations: 456,
+                rating: 4.7
+            };
+            document.querySelectorAll('.stat-card .stat-value').forEach((el, i) => {
+                if (!el) return;
+                if (i === 0) el.textContent = data.users;
+                if (i === 1) el.textContent = data.reviews;
+                if (i === 2) el.textContent = data.reservations;
+                if (i === 3) el.textContent = data.rating;
+            });
+        } catch (err) {
+            console.warn('Failed to load stats', err);
+        }
+    }
+    loadStats();
+
+    // Basic i18n: wire .dil-secimi to change labels across admin
+    const DEFAULT_LANG = localStorage.getItem('fl_lang') || 'az';
+    const translations = {
         az: {
-            // Page title / Səhifə başlığı
-            pageTitle: 'Admin Paneli - Coursora',
-            adminTitle: 'Coursora Admin',
-            dashboardTitle: 'İdarə Paneli',
-            logoutButton: 'Çıxış',
-            
-            // Menu items / Menyu elementləri
+            pageTitle: 'Admin Panel - FoodieLocal',
+            adminTitle: 'FoodieLocal Admin',
+            menuDashboard: 'Panel',
             menuUsers: 'İstifadəçilər',
-            menuMovies: 'Filmlər',
-            menuCategories: 'Kateqoriyalar',
             menuReviews: 'Rəylər',
-            
-            // Section titles / Bölmə başlıqları
-            usersTitle: 'İstifadəçi İdarəetməsi',
-            moviesTitle: 'Film İdarəetməsi',
-            categoriesTitle: 'Kateqoriya İdarəetməsi',
-            reviewsTitle: 'Rəy İdarəetməsi',
-            
-            // Buttons / Düymələr
-            addUserButton: 'İstifadəçi Əlavə Et',
-            addMovieButton: 'Film Əlavə Et',
-            addCategoryButton: 'Kateqoriya Əlavə Et',
-            addReviewButton: 'Rəy Əlavə Et',
-            editButton: 'Redaktə Et',
-            deleteButton: 'Sil',
-            saveButton: 'Saxla',
-            cancelButton: 'Ləğv Et',
-            
-            // Table headers / Cədvəl başlıqları
+            menuReservations: 'Rezervasiyalar',
+            menuSettings: 'Parametrlər',
+            dashboardTitle: 'Panel',
+            welcomeTitle: 'FoodieLocal Admin-ə xoş gəlmisiniz',
+            welcomeMessage: 'İstifadəçiləri, rəyləri və rezervasiyaları idarə edin.',
+            statUsers: 'Ümumi istifadəçilər',
+            statReviews: 'Ümumi rəylər',
+            statReservations: 'Rezervasiyalar',
+            statRating: 'Orta qiymət',
+            recentActivity: 'Son fəaliyyət',
+            newReview: 'Yeni rəy',
+            newUser: 'Yeni istifadəçi',
+            newReservation: 'Yeni rezervasiya',
+            reviewUpdate: 'Rəy yeniləndi',
+            usersTitle: 'İstifadəçilərin idarəsi',
+            addUserButton: 'İstifadəçi əlavə et',
             tableId: 'ID',
             tableName: 'Ad',
-            tableEmail: 'E-poçt',
+            tableEmail: 'Email',
             tableRole: 'Rol',
             tableStatus: 'Status',
             tableActions: 'Əməliyyatlar',
-            tableTitle: 'Başlıq',
-            tableCategory: 'Kateqoriya',
-            tableYear: 'İl',
-            tableRating: 'Reytinq',
-            tableDescription: 'Təsvir',
-            tableMovieCount: 'Film Sayı',
-            tableUser: 'İstifadəçi',
-            tableMovie: 'Film',
-            tableComment: 'Şərh',
-            
-            // Modal titles / Modal başlıqları
-            addUserModalTitle: 'Yeni İstifadəçi Əlavə Et',
-            addMovieModalTitle: 'Yeni Film Əlavə Et',
-            addCategoryModalTitle: 'Yeni Kateqoriya Əlavə Et',
-            addReviewModalTitle: 'Yeni Rəy Əlavə Et',
-            
-            // Roles / Rollar
+            editButton: 'Redaktə et',
+            deleteButton: 'Sil',
+            reviewsTitle: 'Rəylərin idarəsi',
+            addReviewButton: 'Rəy əlavə et',
+            reservationsTitle: 'Rezervasiya idarəçiliyi',
+            addReservationButton: 'Rezervasiya əlavə et',
+            settingsTitle: 'Parametrlər',
+            saveSettings: 'Yadda saxla',
+            cancelButton: 'Ləğv et',
+            saveButton: 'Yadda saxla',
             roleUser: 'İstifadəçi',
             roleAdmin: 'Admin'
         },
         en: {
-            // Page title / Səhifə başlığı
-            pageTitle: 'Admin Panel - Coursora',
-            adminTitle: 'Coursora Admin',
-            dashboardTitle: 'Dashboard',
-            logoutButton: 'Logout',
-            
-            // Menu items / Menyu elementləri
+            pageTitle: 'Admin Panel - FoodieLocal',
+            adminTitle: 'FoodieLocal Admin',
+            menuDashboard: 'Dashboard',
             menuUsers: 'Users',
-            menuMovies: 'Movies',
-            menuCategories: 'Categories',
             menuReviews: 'Reviews',
-            
-            // Section titles / Bölmə başlıqları
+            menuReservations: 'Reservations',
+            menuSettings: 'Settings',
+            dashboardTitle: 'Dashboard',
+            welcomeTitle: 'Welcome to FoodieLocal Admin',
+            welcomeMessage: 'Manage users, reviews and reservations with ease.',
+            statUsers: 'Total Users',
+            statReviews: 'Total Reviews',
+            statReservations: 'Reservations',
+            statRating: 'Avg. Rating',
+            recentActivity: 'Recent Activity',
+            newReview: 'New Review',
+            newUser: 'New User',
+            newReservation: 'New Reservation',
+            reviewUpdate: 'Review Updated',
             usersTitle: 'User Management',
-            moviesTitle: 'Movie Management',
-            categoriesTitle: 'Category Management',
-            reviewsTitle: 'Review Management',
-            
-            // Buttons / Düymələr
             addUserButton: 'Add User',
-            addMovieButton: 'Add Movie',
-            addCategoryButton: 'Add Category',
-            addReviewButton: 'Add Review',
-            editButton: 'Edit',
-            deleteButton: 'Delete',
-            saveButton: 'Save',
-            cancelButton: 'Cancel',
-            
-            // Table headers / Cədvəl başlıqları
             tableId: 'ID',
             tableName: 'Name',
             tableEmail: 'Email',
             tableRole: 'Role',
             tableStatus: 'Status',
             tableActions: 'Actions',
-            tableTitle: 'Title',
-            tableCategory: 'Category',
-            tableYear: 'Year',
-            tableRating: 'Rating',
-            tableDescription: 'Description',
-            tableMovieCount: 'Movie Count',
-            tableUser: 'User',
-            tableMovie: 'Movie',
-            tableComment: 'Comment',
-            
-            // Modal titles / Modal başlıqları
-            addUserModalTitle: 'Add New User',
-            addMovieModalTitle: 'Add New Movie',
-            addCategoryModalTitle: 'Add New Category',
-            addReviewModalTitle: 'Add New Review',
-            
-            // Roles / Rollar
+            editButton: 'Edit',
+            deleteButton: 'Delete',
+            reviewsTitle: 'Review Management',
+            addReviewButton: 'Add Review',
+            reservationsTitle: 'Reservation Management',
+            addReservationButton: 'Add Reservation',
+            settingsTitle: 'Settings',
+            saveSettings: 'Save Settings',
+            cancelButton: 'Cancel',
+            saveButton: 'Save',
             roleUser: 'User',
             roleAdmin: 'Admin'
         }
     };
 
-    // Get language buttons and translatable elements / Dil düymələrini və tərcümə olunan elementləri əldə et
-    const languageButtons = document.querySelectorAll('.dil-secimi');
-    const translatableElements = document.querySelectorAll('[data-i18n]');
-
-    /**
-     * Apply language translations with smooth animation
-     * Yumşaq animasiya ilə dil tərcümələrini tətbiq et
-     */
-    function applyLanguage(languageCode) {
-        const translations = translationDictionary[languageCode];
-        if (!translations) {
-            return;
-        }
-
-        // Add switching class for animation / Animasiya üçün dəyişmə sinifini əlavə et
-        document.body.classList.add('language-switching');
-
-        // Update text content with animation / Məzmunu animasiya ilə yenilə
-        translatableElements.forEach(function (element) {
-            const key = element.getAttribute('data-i18n');
-            if (key && translations[key]) {
-                // Fade out / Solma
-                element.style.opacity = '0';
-                element.style.transform = 'translateY(-3px)';
-                
-                setTimeout(function () {
-                    element.textContent = translations[key];
-                    // Fade in / Görünmə
-                    element.style.opacity = '1';
-                    element.style.transform = 'translateY(0)';
-                }, 150);
-            }
+    function applyLanguage(lang) {
+        const dict = translations[lang] || translations.az;
+        document.querySelectorAll('[data-i18n]').forEach(el => {
+            const key = el.getAttribute('data-i18n');
+            if (!key) return;
+            const val = dict[key];
+            if (val === undefined) return;
+            if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = val;
+            else el.textContent = val;
         });
-
-        // Update page title / Səhifə başlığını yenilə
-        if (translations.pageTitle) {
-            document.title = translations.pageTitle;
-        }
-
-        // Update document language attribute / Sənəd dil atributunu yenilə
-        document.documentElement.setAttribute('lang', languageCode);
-        
-        // Save language preference / Dil seçimini saxla
-        localStorage.setItem('coursoraLanguage', languageCode);
-
-        // Remove switching class after animation / Animasiyadan sonra dəyişmə sinifini sil
-        setTimeout(function () {
-            document.body.classList.remove('language-switching');
-        }, 300);
+        // page title attribute if present
+        const titleEl = document.querySelector('[data-i18n="pageTitle"]');
+        if (titleEl) document.title = dict.pageTitle || document.title;
+        document.querySelectorAll('.dil-secimi').forEach(b => b.classList.toggle('active', b.getAttribute('data-dil') === lang));
+        localStorage.setItem('fl_lang', lang);
+        document.documentElement.lang = (lang === 'en') ? 'en' : 'az';
     }
 
-    // Add event listeners to language buttons / Dil düymələrinə hadisə dinləyiciləri əlavə et
-    languageButtons.forEach(function (button) {
-        button.addEventListener('click', function () {
-            const selectedLanguage = button.getAttribute('data-dil');
-            applyLanguage(selectedLanguage);
+    document.querySelectorAll('.dil-secimi').forEach(btn => {
+        btn.addEventListener('click', () => {
+            applyLanguage(btn.getAttribute('data-dil') || 'az');
         });
     });
+    applyLanguage(DEFAULT_LANG);
 
-    // Load saved language or default to English / Saxlanılmış dili yüklə və ya ingiliscəni standart olaraq təyin et
-    const savedLanguage = localStorage.getItem('coursoraLanguage') || 'en';
-    applyLanguage(savedLanguage);
-
-    /**
-     * Sidebar toggle functionality
-     * Yan panel açma/bağlama funksionallığı
-     */
-    const sidebar = document.getElementById('sidebar');
-    const sidebarToggle = document.getElementById('sidebarToggle');
-    const sidebarToggleMobile = document.getElementById('sidebarToggleMobile');
-    const mainContent = document.getElementById('mainContent');
-
-    // Desktop sidebar toggle / Desktop yan panel açma/bağlama
-    if (sidebarToggle) {
-        sidebarToggle.addEventListener('click', function () {
-            sidebar.classList.toggle('active');
-        });
-    }
-
-    // Mobile sidebar toggle / Mobil yan panel açma/bağlama
-    if (sidebarToggleMobile) {
-        sidebarToggleMobile.addEventListener('click', function () {
-            sidebar.classList.toggle('active');
-        });
-    }
-
-    // Close sidebar when clicking outside on mobile / Mobil cihazlarda xaricə kliklədikdə yan paneli bağla
-    if (mainContent) {
-        mainContent.addEventListener('click', function (event) {
-            if (window.innerWidth <= 768 && sidebar.classList.contains('active')) {
-                if (!event.target.closest('.sidebar')) {
-                    sidebar.classList.remove('active');
-                }
-            }
-        });
-    }
-
-    /**
-     * Tab switching functionality
-     * Tab dəyişdirmə funksionallığı
-     */
-    const sidebarLinks = document.querySelectorAll('.sidebar-link');
-    const contentSections = document.querySelectorAll('.content-section');
-
-    sidebarLinks.forEach(function (link) {
-        link.addEventListener('click', function (event) {
-            event.preventDefault();
-            
-            const targetTab = this.getAttribute('data-tab');
-            
-            // Remove active class from all links and sections / Bütün linklərdən və bölmələrdən aktiv sinifi sil
-            sidebarLinks.forEach(function (l) {
-                l.classList.remove('active');
-            });
-            contentSections.forEach(function (section) {
-                section.classList.remove('active');
-            });
-            
-            // Add active class to clicked link / Kliklənmiş linkə aktiv sinifi əlavə et
-            this.classList.add('active');
-            
-            // Show corresponding section with animation / Uyğun bölməni animasiya ilə göstər
-            const targetSection = document.getElementById(targetTab + 'Section');
-            if (targetSection) {
-                targetSection.classList.add('active');
-            }
-            
-            // Close sidebar on mobile after selection / Seçimdən sonra mobil cihazlarda yan paneli bağla
-            if (window.innerWidth <= 768) {
-                sidebar.classList.remove('active');
-            }
-        });
+    // Small helpers for modals / actions (placeholders)
+    document.body.addEventListener('click', (e) => {
+        const el = e.target.closest('.action-approve');
+        if (!el) return;
+        const id = el.getAttribute('data-id');
+        // TODO: call API to approve review
+        el.closest('tr')?.classList.add('approved');
+        alert('Approved id: ' + id);
     });
 
-    /**
-     * Smooth scroll for anchor links
-     * Anchor linklər üçün yumşaq scroll
-     */
-    document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
-        anchor.addEventListener('click', function (event) {
-            const href = this.getAttribute('href');
-            if (href && href !== '#') {
-                event.preventDefault();
-                const target = document.querySelector(href);
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            }
-        });
-    });
-
-    /**
-     * Modal animation enhancement
-     * Modal animasiya təkmilləşdirməsi
-     */
-    const modals = document.querySelectorAll('.modal');
-    modals.forEach(function (modal) {
-        modal.addEventListener('show.bs.modal', function () {
-            this.querySelector('.modal-content').style.opacity = '0';
-            this.querySelector('.modal-content').style.transform = 'translateY(-20px)';
-        });
-        
-        modal.addEventListener('shown.bs.modal', function () {
-            const content = this.querySelector('.modal-content');
-            setTimeout(function () {
-                content.style.transition = 'all 0.3s ease';
-                content.style.opacity = '1';
-                content.style.transform = 'translateY(0)';
-            }, 10);
-        });
-    });
-
-    /**
-     * Table row hover effects
-     * Cədvəl sətir hover effektləri
-     */
-    const tableRows = document.querySelectorAll('.table-dark tbody tr');
-    tableRows.forEach(function (row) {
-        row.addEventListener('mouseenter', function () {
-            this.style.transition = 'all 0.3s ease';
-        });
-    });
-
-    /**
-     * Responsive sidebar handling
-     * Responsiv yan panel idarəetməsi
-     */
-    function handleResize() {
-        if (window.innerWidth > 768) {
-            sidebar.classList.remove('active');
-        }
-    }
-
-    window.addEventListener('resize', handleResize);
-    handleResize(); // Initial check / İlkin yoxlama
+    // Accessibility: keyboard navigation for sidebar links
+    document.querySelectorAll('.sidebar-link').forEach(link => link.setAttribute('tabindex', '0'));
 });
 

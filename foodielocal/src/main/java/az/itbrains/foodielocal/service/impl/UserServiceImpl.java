@@ -31,42 +31,38 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    // ✅ Spring Security login üçün istifadəçini email ilə tapır
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email);
-        if (user == null) {
-            throw new UsernameNotFoundException("İstifadəçi tapılmadı: " + email);
-        }
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("İstifadəçi tapılmadı: " + email));
 
-        // Sadə halda yalnız bir rol götürülür (ilk rol)
-        Role role = user.getRoles().stream().findFirst()
-                .orElseThrow(() -> new RuntimeException("İstifadəçinin rolu yoxdur"));
+        Set<Role> roles = user.getRoles();
+        List<SimpleGrantedAuthority> authorities = roles.stream()
+                .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
+                .toList();
 
         return new org.springframework.security.core.userdetails.User(
                 user.getEmail(),
                 user.getPassword(),
-                Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role.getName()))
+                authorities
         );
     }
-
-    // ✅ Yeni istifadəçi qeydiyyatı
     @Override
     public User registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role defaultRole = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Rol tapılmadı: USER"));
+                .orElseThrow(() -> new RuntimeException("Rol tapılmadı: ROLE_USER"));
+
         user.setRoles(Set.of(defaultRole));
         return userRepository.save(user);
     }
 
-    // ✅ Bütün istifadəçiləri qaytarır
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
     }
 
-    // ✅ ID ilə istifadəçi tapır
     @Override
     public User findById(Long id) {
         return userRepository.findById(id)

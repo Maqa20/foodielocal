@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="az" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${restaurant != null and restaurant.name != null ? restaurant.name : 'Restoran detalları'}">Restoran detalları</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" th:href="@{/css/detail.css}">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent lüks-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" th:href="@{/}">FoodieLocal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                    aria-controls="mainNavbar" aria-expanded="false" aria-label="Navigasiyanı aç">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                    <li class="nav-item px-lg-2"><a class="nav-link" data-i18n="navHome" th:href="@{/}">Əsas</a></li>
+                    <li class="nav-item px-lg-2"><a class="nav-link" data-i18n="navRestaurants" th:href="@{/restaurants}">Restoranlar</a></li>
+                    <li class="nav-item px-lg-2"><a class="nav-link" data-i18n="navReservation" th:href="@{/reservation}">Rezervasiya</a></li>
+                    <li class="nav-item px-lg-2"><a class="nav-link" data-i18n="navReviews" th:href="@{/reviews}">Rəylər</a></li>
+                    <li class="nav-item dropdown px-lg-2">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-translate me-2"></i><span data-i18n="navLanguage">Dil</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end lüks-dropdown">
+                            <li><button class="dropdown-item dil-secimi" data-dil="az">AZ</button></li>
+                            <li><button class="dropdown-item dil-secimi" data-dil="en">EN</button></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<main class="detail-main">
+    <section class="detail-hero">
+        <div class="detail-hero-overlay"></div>
+        <div class="container position-relative py-5">
+            <div class="row align-items-center g-4">
+                <div class="col-lg-6">
+                  <span class="badge bg-light text-dark mb-3" data-i18n="detailCuisine"
+                        th:text="${restaurant != null and restaurant.cuisine != null ? restaurant.cuisine : 'Mətbəx'}">Mətbəx</span>
+
+                    <h1 class="display-5 fw-bold mb-3 text-white"
+                        th:text="${restaurant != null and restaurant.name != null ? restaurant.name : 'Restoran adı'}">Restoran adı</h1>
+
+                    <p class="mb-0 text-white" data-i18n="detailAboutLongEmpty"
+                       th:text="${restaurant != null and restaurant.longDescription != null ? restaurant.longDescription : 'Restoran haqqında geniş məlumat burada göstəriləcək.'}">
+                        Restoran haqqında geniş məlumat burada göstəriləcək.
+                    </p>
+
+                    <div class="detail-meta d-flex flex-wrap gap-2 mb-4">
+                        <span class="badge rounded-pill bg-light text-dark"
+                              th:text="${restaurant != null and restaurant.address != null ? restaurant.address : 'Ünvan məlum deyil'}">Ünvan</span>
+                        <span class="badge rounded-pill bg-light text-dark"
+                              th:text="${restaurant != null and restaurant.priceRange != null ? restaurant.priceRange : '$$'}">$$</span>
+                        <span class="badge rounded-pill bg-warning text-dark">
+                            <i class="bi bi-star-fill me-1"></i>
+                            <span th:text="${restaurant != null and restaurant.rating != null ? restaurant.rating : '4.5'}">4.5</span>
+                        </span>
+                    </div>
+
+                    <div class="d-flex flex-wrap gap-3">
+                        <a class="btn reservation-button" th:href="@{/reservation}" data-i18n="detailReserveButton">Rezervasiya et</a>
+                        <a class="btn btn-outline-light" th:href="@{/restaurants}" data-i18n="detailBackButton">Restoranlara dön</a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="detail-image-wrapper">
+                        <img th:if="${restaurant != null and restaurant.imageUrl != null}"
+                             th:src="${restaurant.imageUrl}"
+                             class="img-fluid rounded-4 shadow-lg" alt="Restoran şəkli">
+                        <img th:if="${restaurant == null or restaurant.imageUrl == null}"
+                             src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1200&q=80"
+                             class="img-fluid rounded-4 shadow-lg" alt="Restoran şəkli">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="detail-content py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-lg-8">
+                    <div class="detail-card p-4 mb-4">
+                        <h2 class="h4 mb-3 text-white" data-i18n="detailAboutTitle">Restoran haqqında</h2>
+                        <p class="mb-0 text-white" data-i18n="detailAboutLongEmpty"
+                           th:text="${restaurant != null and restaurant.longDescription != null ? restaurant.longDescription : ''}">
+                        </p>
+                    </div>
+
+                    <div class="detail-card p-4 mb-4">
+                        <h2 class="h4 mb-3 text-white" data-i18n="detailMenuTitle">Menyu</h2>
+                        <div th:if="${restaurant == null or #lists.isEmpty(restaurant.menuItems)}"
+                             class="text-white" data-i18n="detailMenuEmpty">
+                            Menyu məlumatı hələ əlavə olunmayıb.
+                        </div>
+                        <div class="detail-menu" th:if="${restaurant != null and !#lists.isEmpty(restaurant.menuItems)}">
+                            <div th:each="item : ${restaurant.menuItems}"
+                                 class="d-flex align-items-start gap-3 py-3 border-bottom border-secondary">
+                                <img th:if="${item.imageUrl != null}" th:src="${item.imageUrl}" alt=""
+                                     class="rounded" style="width:64px;height:64px;object-fit:cover;">
+                                <div class="flex-grow-1">
+                                    <div class="d-flex justify-content-between">
+                                        <strong class="text-white" th:text="${item.name}">Yemək adı</strong>
+                                        <span class="text-white" th:text="${item.price}">15 AZN</span>
+                                    </div>
+                                    <div class="text-white small"
+                                         th:text="${item.description != null ? item.description : ''}"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="detail-card p-4">
+                        <h2 class="h4 mb-3 text-white" data-i18n="detailSignatureTitle">Məşhur yeməklər</h2>
+                        <div th:if="${#lists.isEmpty(restaurant.signatureDishes)}"
+                             class="text-white" data-i18n="detailSignatureEmpty">
+                            Məşhur yeməklər tezliklə əlavə olunacaq.
+                        </div>
+                        <ul class="list-unstyled mb-0" th:if="${!#lists.isEmpty(restaurant.signatureDishes)}">
+                            <li th:each="dish : ${restaurant.signatureDishes}" class="d-flex gap-3 mb-3">
+                                <img th:if="${dish.imageUrl != null}" th:src="${dish.imageUrl}" alt=""
+                                     style="width:56px;height:56px;object-fit:cover;" class="rounded">
+                                <div>
+                                    <strong class="text-white" th:text="${dish.name}">Yemək</strong>
+                                    <div class="text-white small"
+                                         th:text="${dish.description != null ? dish.description : ''}"></div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="col-lg-4">
+                    <div class="detail-card p-4 mb-4">
+                        <h3 class="h5 mb-3 text-white" data-i18n="detailInfoTitle">Əlaqə məlumatı</h3>
+                        <ul class="list-unstyled detail-info-list mb-0 text-white">
+                            <li>
+                                <i class="bi bi-geo-alt-fill me-2"></i>
+                                <span th:text="${restaurant != null and restaurant.address != null ? restaurant.address : 'Bakı, Azərbaycan'}">Bakı, Azərbaycan</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-telephone-fill me-2"></i>
+                                <span th:text="${restaurant != null and restaurant.phone != null ? restaurant.phone : '+994 XX XXX XX XX'}">+994 XX XXX XX XX</span>
+                            </li>
+                            <li>
+                                <i class="bi bi-clock-fill me-2"></i>
+                                <span class="text-white" data-i18n="detailOpeningHours"
+                                      th:text="${restaurant != null and restaurant.openingHours != null ? restaurant.openingHours : 'Hər gün 10:00 - 23:00'}">Hər gün 10:00 - 23:00</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="detail-card p-4 mb-4">
+                        <h3 class="h5 mb-3 text-white" data-i18n="detailActionsTitle">Sürətli keçidlər</h3>
+                        <div class="d-grid gap-2">
+                            <a class="btn btn-outline-light" th:href="@{/reservation}" data-i18n="detailReserveButtonSecondary">Masa rezerv et</a>
+                            <a class="btn btn-outline-light" th:href="@{/restaurants}" data-i18n="detailBackButtonSecondary">Restoran siyahısına qayıt</a>
+                        </div>
+                    </div>
+
+                    <div class="detail-card p-4">
+                        <h3 class="h5 mb-3 text-white" data-i18n="detailReviewsTitle">Rəylər</h3>
+
+                        <!-- Əgər rəy yoxdursa -->
+                        <div th:if="${restaurant == null or restaurant.reviews == null or #lists.isEmpty(restaurant.reviews)}"
+                             class="text-white" data-i18n="detailReviewsEmpty">
+                            Hələ rəy yoxdur.
+                        </div>
+
+                        <!-- Rəylər siyahısı -->
+                        <<div th:each="review : ${restaurant.reviews}" class="detail-review mb-3 text-white">
+                        <div class="d-flex justify-content-between align-items-center mb-1">
+                            <p class="mb-0 fw-semibold"
+                               th:text="${review.reviewerFirstName + ' ' + review.reviewerLastName}">İstifadəçi</p>
+                            <!-- Əgər tarix sahəsi yoxdursa, sadəcə boş burax -->
+                            <small class="text-white">2025-01-01</small>
+                        </div>
+
+                        <p class="mb-1" th:text="${review.reviewComment}">Çox məmnun qaldıq!</p>
+
+                        <div>
+        <span class="badge bg-warning text-white">
+            <i class="bi bi-star-fill me-1"></i>
+            <span th:text="${review.reviewRating != null ? review.reviewRating : 5}">5</span>
+        </span>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/detail.js}"></script>
+</body>
+</html>

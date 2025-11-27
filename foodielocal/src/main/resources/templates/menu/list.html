@@ -1,0 +1,23 @@
+<div class="container mt-5" xmlns:th="http://www.w3.org/1999/xhtml">
+    <h2 th:text="${restaurant.name} + ' Menyusu'">Restoran Menyusu</h2>
+    <a th:href="@{'/menu/create/' + ${restaurant.id}}" class="btn btn-success mb-3">➕ Yeni Yemək Əlavə Et</a>
+
+    <table class="table table-bordered">
+        <thead>
+        <tr>
+            <th>Ad</th>
+            <th>Təsvir</th>
+            <th>Qiymət</th>
+            <th>Kateqoriya</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${menuItems}">
+            <td th:text="${item.name}">Ad</td>
+            <td th:text="${item.description}">Təsvir</td>
+            <td th:text="${item.price}">Qiymət</td>
+            <td th:text="${item.category}">Kateqoriya</td>
+        </tr>
+        </tbody>
+    </table>
+</div>

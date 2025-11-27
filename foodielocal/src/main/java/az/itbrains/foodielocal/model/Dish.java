@@ -1,29 +1,25 @@
 package az.itbrains.foodielocal.model;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
-@Table(name = "menu_items")
-public class MenuItem {
+@Table(name = "dishes")
+public class Dish {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String name;
-    private String description;
-    private Double price;
+    private String price;
+    @Column(name = "cuisine")
+    private String cuisine;
 
     @ManyToOne
     @JoinColumn(name = "restaurant_id")
     private Restaurant restaurant;
-
-
 }
