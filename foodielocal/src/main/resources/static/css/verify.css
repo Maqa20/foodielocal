@@ -25,6 +25,17 @@ a {
     z-index: 1100;
 }
 
+.lüks-navbar .navbar-brand {
+    color: #ffffff !important;
+    font-weight: 700;
+    transition: color 0.2s ease-in-out;
+}
+
+.lüks-navbar .navbar-brand:hover,
+.lüks-navbar .navbar-brand:focus {
+    color: #ffffff !important;
+}
+
 .lüks-navbar .nav-link {
     color: rgba(255, 255, 255, 0.7);
     font-weight: 500;
