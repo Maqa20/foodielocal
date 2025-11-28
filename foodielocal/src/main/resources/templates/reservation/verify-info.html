@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="az" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="verifyInfoPageTitle">Email Təsdiqləmə Məlumatı - FoodieLocal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css"
+          integrity="sha512-jb8zW4N5U9BJ1R0SUD7JbDs0syy6WbMiWcRW+t9DOnAW9I1u8+s9YWD/KSGbFbFhWXGHk0JXrZYpQb9Ee7pPLA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" th:href="@{/css/verify.css}">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg lüks-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" th:href="@{/}">FoodieLocal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                    aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                    <li class="nav-item px-lg-2">
+                        <a class="nav-link" data-i18n="navHome" th:href="@{/}">Əsas</a>
+                    </li>
+                    <li class="nav-item px-lg-2">
+                        <a class="nav-link" data-i18n="navRestaurants" th:href="@{'/#restaurants'}">Restoranlar</a>
+                    </li>
+                    <li class="nav-item px-lg-2">
+                        <a class="nav-link" data-i18n="navReservation" th:href="@{/reservation}">Rezervasiya</a>
+                    </li>
+                    <li class="nav-item px-lg-2">
+                        <a class="nav-link" data-i18n="navReviews" th:href="@{/reviews}">Rəylər</a>
+                    </li>
+                    <li class="nav-item px-lg-2">
+                        <div class="d-flex align-items-center gap-2">
+                            <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="az">AZ</button>
+                            <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="en">EN</button>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="reservation-main">
+    <section class="reservation-hero d-flex align-items-center">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 col-md-10">
+                    <div class="reservation-card p-5 shadow-lg">
+                        <div class="text-center mb-4">
+                            <span class="reservation-pill text-uppercase mb-3 d-inline-block" data-i18n="verifyInfoBadge">Email Təsdiqləmə</span>
+                            <h1 class="display-5 fw-bold mb-3" data-i18n="verifyInfoTitle">Təsdiq Emaili Göndərildi</h1>
+                            <p class="lead text-white-50" data-i18n="verifyInfoSubtitle">
+                                Rezervasiyanızı təsdiqləmək üçün email ünvanınıza təsdiq linki göndərildi.
+                            </p>
+                        </div>
+
+                        <div th:if="${message}" class="alert alert-info mb-4" role="alert">
+                            <i class="bi bi-info-circle me-2"></i>
+                            <span th:text="${message}">Mesaj</span>
+                        </div>
+
+                        <div id="messageArea" class="mb-4"></div>
+
+                        <div class="text-center">
+                            <div class="mb-4">
+                                <i class="bi bi-envelope-fill" style="font-size: 3rem; color: #c08b5c;"></i>
+                            </div>
+                            <p class="text-white-50 mb-4" data-i18n="verifyInfoInstruction">
+                                Email ünvanınızı yoxlayın və təsdiq linkinə klik edin.
+                            </p>
+
+                            <div class="row g-3 justify-content-center mb-4" th:if="${reservation?.emailAddress}">
+                                <div class="col-12 col-md-8">
+                                    <input type="hidden" id="hiddenEmail" th:value="${reservation?.emailAddress ?: ''}" />
+                                    <label class="form-label" for="emailAddress" data-i18n="verifyEmailLabel">Email</label>
+                                    <input type="email" class="form-control" id="emailAddress"
+                                           th:value="${reservation?.emailAddress ?: ''}"
+                                           data-i18n-placeholder="verifyEmailPlaceholder"
+                                           placeholder="email@example.com">
+                                </div>
+                                <div class="col-12 col-md-4 d-flex align-items-end">
+                                    <button type="button" class="btn reservation-button w-100" id="resendEmailBtn" data-i18n="verifyResendButton">
+                                        Email Yenidən Göndər
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
+                                <a th:href="@{/reservation}" class="btn reservation-button" data-i18n="verifyInfoButton">
+                                    Rezervasiyaya Qayıt
+                                </a>
+                                <a th:href="@{/}" class="btn btn-outline-light" data-i18n="verifyResultHomeButton">
+                                    Əsas Səhifə
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="footer-bolmesi py-4">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+        <div class="d-flex align-items-center gap-3">
+            <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="az">AZ</button>
+            <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="en">EN</button>
+        </div>
+        <div class="text-center text-md-start">
+            <span class="d-block text-white-50" data-i18n="footerMotto">
+                FoodieLocal – yerli dadları birlikdə kəşf edək.
+            </span>
+        </div>
+        <div class="d-flex align-items-center gap-3 sosyal-baglantilar">
+            <a class="text-white-50 hover-white" href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
+                <i class="bi bi-facebook"></i>
+            </a>
+            <a class="text-white-50 hover-white" href="https://www.instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+                <i class="bi bi-instagram"></i>
+            </a>
+            <a class="text-white-50 hover-white" href="https://www.tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
+                <i class="bi bi-tiktok"></i>
+            </a>
+        </div>
+    </div>
+    <div class="container mt-3">
+        <p class="mb-0 text-center text-white-50" data-i18n="footerCopyright">
+            © <span th:text="${T(java.time.Year).now().value}">2025</span> FoodieLocal. Bütün hüquqlar qorunur.
+        </p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script th:src="@{/js/verify.js}" defer></script>
+</body>
+</html>

@@ -48,24 +48,26 @@
             <div class="row align-items-center g-4">
                 <div class="col-lg-6">
                   <span class="badge bg-light text-dark mb-3" data-i18n="detailCuisine"
-                        th:text="${restaurant != null and restaurant.cuisine != null ? restaurant.cuisine : 'Mətbəx'}">Mətbəx</span>
+                        th:text="${restaurant != null and restaurant.cuisine != null ? restaurant.cuisine : ''}"></span>
 
                     <h1 class="display-5 fw-bold mb-3 text-white"
-                        th:text="${restaurant != null and restaurant.name != null ? restaurant.name : 'Restoran adı'}">Restoran adı</h1>
+                        th:text="${restaurant != null and restaurant.name != null ? restaurant.name : ''}"></h1>
 
                     <p class="mb-0 text-white" data-i18n="detailAboutLongEmpty"
-                       th:text="${restaurant != null and restaurant.longDescription != null ? restaurant.longDescription : 'Restoran haqqında geniş məlumat burada göstəriləcək.'}">
-                        Restoran haqqında geniş məlumat burada göstəriləcək.
+                       th:text="${restaurant != null and restaurant.longDescription != null ? restaurant.longDescription : ''}">
                     </p>
 
                     <div class="detail-meta d-flex flex-wrap gap-2 mb-4">
                         <span class="badge rounded-pill bg-light text-dark"
-                              th:text="${restaurant != null and restaurant.address != null ? restaurant.address : 'Ünvan məlum deyil'}">Ünvan</span>
+                              th:if="${restaurant != null and restaurant.address != null}"
+                              th:text="${restaurant.address}"></span>
                         <span class="badge rounded-pill bg-light text-dark"
-                              th:text="${restaurant != null and restaurant.priceRange != null ? restaurant.priceRange : '$$'}">$$</span>
-                        <span class="badge rounded-pill bg-warning text-dark">
+                              th:if="${restaurant != null and restaurant.priceRange != null}"
+                              th:text="${restaurant.priceRange}"></span>
+                        <span class="badge rounded-pill bg-warning text-dark"
+                              th:if="${restaurant != null and restaurant.rating != null}">
                             <i class="bi bi-star-fill me-1"></i>
-                            <span th:text="${restaurant != null and restaurant.rating != null ? restaurant.rating : '4.5'}">4.5</span>
+                            <span th:text="${restaurant.rating}"></span>
                         </span>
                     </div>
 
@@ -95,25 +97,24 @@
                     <div class="detail-card p-4 mb-4">
                         <h2 class="h4 mb-3 text-white" data-i18n="detailAboutTitle">Restoran haqqında</h2>
                         <p class="mb-0 text-white" data-i18n="detailAboutLongEmpty"
-                           th:text="${restaurant != null and restaurant.longDescription != null ? restaurant.longDescription : ''}">
-                        </p>
+                           th:text="${restaurant != null and restaurant.longDescription != null ? restaurant.longDescription : ''}"></p>
                     </div>
 
                     <div class="detail-card p-4 mb-4">
                         <h2 class="h4 mb-3 text-white" data-i18n="detailMenuTitle">Menyu</h2>
-                        <div th:if="${restaurant == null or #lists.isEmpty(restaurant.menuItems)}"
+                        <div th:if="${restaurant == null or restaurant.menuItems == null or #lists.isEmpty(restaurant.menuItems)}"
                              class="text-white" data-i18n="detailMenuEmpty">
                             Menyu məlumatı hələ əlavə olunmayıb.
                         </div>
-                        <div class="detail-menu" th:if="${restaurant != null and !#lists.isEmpty(restaurant.menuItems)}">
+                        <div class="detail-menu" th:if="${restaurant != null and restaurant.menuItems != null and !#lists.isEmpty(restaurant.menuItems)}">
                             <div th:each="item : ${restaurant.menuItems}"
                                  class="d-flex align-items-start gap-3 py-3 border-bottom border-secondary">
                                 <img th:if="${item.imageUrl != null}" th:src="${item.imageUrl}" alt=""
                                      class="rounded" style="width:64px;height:64px;object-fit:cover;">
                                 <div class="flex-grow-1">
                                     <div class="d-flex justify-content-between">
-                                        <strong class="text-white" th:text="${item.name}">Yemək adı</strong>
-                                        <span class="text-white" th:text="${item.price}">15 AZN</span>
+                                        <strong class="text-white" th:text="${item.name != null ? item.name : ''}"></strong>
+                                        <span class="text-white" th:text="${item.price != null ? item.price : ''}"></span>
                                     </div>
                                     <div class="text-white small"
                                          th:text="${item.description != null ? item.description : ''}"></div>
@@ -124,16 +125,16 @@
 
                     <div class="detail-card p-4">
                         <h2 class="h4 mb-3 text-white" data-i18n="detailSignatureTitle">Məşhur yeməklər</h2>
-                        <div th:if="${#lists.isEmpty(restaurant.signatureDishes)}"
+                        <div th:if="${restaurant == null or restaurant.signatureDishes == null or #lists.isEmpty(restaurant.signatureDishes)}"
                              class="text-white" data-i18n="detailSignatureEmpty">
                             Məşhur yeməklər tezliklə əlavə olunacaq.
                         </div>
-                        <ul class="list-unstyled mb-0" th:if="${!#lists.isEmpty(restaurant.signatureDishes)}">
+                        <ul class="list-unstyled mb-0" th:if="${restaurant != null and restaurant.signatureDishes != null and !#lists.isEmpty(restaurant.signatureDishes)}">
                             <li th:each="dish : ${restaurant.signatureDishes}" class="d-flex gap-3 mb-3">
                                 <img th:if="${dish.imageUrl != null}" th:src="${dish.imageUrl}" alt=""
                                      style="width:56px;height:56px;object-fit:cover;" class="rounded">
                                 <div>
-                                    <strong class="text-white" th:text="${dish.name}">Yemək</strong>
+                                    <strong class="text-white" th:text="${dish.name != null ? dish.name : ''}"></strong>
                                     <div class="text-white small"
                                          th:text="${dish.description != null ? dish.description : ''}"></div>
                                 </div>
@@ -146,18 +147,18 @@
                     <div class="detail-card p-4 mb-4">
                         <h3 class="h5 mb-3 text-white" data-i18n="detailInfoTitle">Əlaqə məlumatı</h3>
                         <ul class="list-unstyled detail-info-list mb-0 text-white">
-                            <li>
+                            <li th:if="${restaurant != null and restaurant.address != null}">
                                 <i class="bi bi-geo-alt-fill me-2"></i>
-                                <span th:text="${restaurant != null and restaurant.address != null ? restaurant.address : 'Bakı, Azərbaycan'}">Bakı, Azərbaycan</span>
+                                <span th:text="${restaurant.address}"></span>
                             </li>
-                            <li>
+                            <li th:if="${restaurant != null and restaurant.phone != null}">
                                 <i class="bi bi-telephone-fill me-2"></i>
-                                <span th:text="${restaurant != null and restaurant.phone != null ? restaurant.phone : '+994 XX XXX XX XX'}">+994 XX XXX XX XX</span>
+                                <span th:text="${restaurant.phone}"></span>
                             </li>
-                            <li>
+                            <li th:if="${restaurant != null and restaurant.openingHours != null}">
                                 <i class="bi bi-clock-fill me-2"></i>
                                 <span class="text-white" data-i18n="detailOpeningHours"
-                                      th:text="${restaurant != null and restaurant.openingHours != null ? restaurant.openingHours : 'Hər gün 10:00 - 23:00'}">Hər gün 10:00 - 23:00</span>
+                                      th:text="${restaurant.openingHours}"></span>
                             </li>
                         </ul>
                     </div>
@@ -180,23 +181,27 @@
                         </div>
 
                         <!-- Rəylər siyahısı -->
-                        <<div th:each="review : ${restaurant.reviews}" class="detail-review mb-3 text-white">
-                        <div class="d-flex justify-content-between align-items-center mb-1">
-                            <p class="mb-0 fw-semibold"
-                               th:text="${review.reviewerFirstName + ' ' + review.reviewerLastName}">İstifadəçi</p>
-                            <!-- Əgər tarix sahəsi yoxdursa, sadəcə boş burax -->
-                            <small class="text-white">2025-01-01</small>
-                        </div>
+                        <div th:if="${restaurant != null and restaurant.reviews != null and !#lists.isEmpty(restaurant.reviews)}">
+                            <div th:each="review : ${restaurant.reviews}"
+                                 class="detail-review mb-3 text-white">
+                                <div class="d-flex justify-content-between align-items-center mb-1">
+                                    <p class="mb-0 fw-semibold"
+                                       th:text="${review.reviewerFirstName != null and review.reviewerLastName != null ? review.reviewerFirstName + ' ' + review.reviewerLastName : ''}"></p>
+                                    <small class="text-white"
+                                           th:if="${review.reviewDate != null}"
+                                           th:text="${review.reviewDate}"></small>
+                                </div>
 
-                        <p class="mb-1" th:text="${review.reviewComment}">Çox məmnun qaldıq!</p>
+                                <p class="mb-1" th:text="${review.reviewComment != null ? review.reviewComment : ''}"></p>
 
-                        <div>
-        <span class="badge bg-warning text-white">
-            <i class="bi bi-star-fill me-1"></i>
-            <span th:text="${review.reviewRating != null ? review.reviewRating : 5}">5</span>
-        </span>
+                                <div th:if="${review.reviewRating != null}">
+                                    <span class="badge bg-warning text-white">
+                                        <i class="bi bi-star-fill me-1"></i>
+                                        <span th:text="${review.reviewRating}"></span>
+                                    </span>
+                                </div>
+                            </div>
                         </div>
-                    </div>
                     </div>
                 </div>
             </div>

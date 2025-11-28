@@ -79,7 +79,9 @@ public class AuthController {
         userRepository.save(user);
 
         String resetLink = "http://localhost:8181/auth/reset-password?token=" + token;
-        emailService.send(email, "Şifrəni sıfırlamaq üçün link: " + resetLink);
+
+        // ✅ EmailService-də xüsusi metoddan istifadə edirik
+        emailService.sendPasswordReset(email, resetLink);
 
         model.addAttribute("message", "Sıfırlama linki email ünvanınıza göndərildi.");
         return "auth/forgot-password";
@@ -92,7 +94,9 @@ public class AuthController {
     }
 
     @PostMapping("/reset-password")
-    public String processResetPassword(@RequestParam("token") String token, @RequestParam("password") String password, Model model) {
+    public String processResetPassword(@RequestParam("token") String token,
+                                       @RequestParam("password") String password,
+                                       Model model) {
         Optional<User> optionalUser = userRepository.findByResetToken(token);
         if (optionalUser.isEmpty()) {
             model.addAttribute("error", "Token etibarsızdır.");

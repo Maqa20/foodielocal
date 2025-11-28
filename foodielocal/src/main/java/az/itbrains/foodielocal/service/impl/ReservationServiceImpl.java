@@ -10,30 +10,29 @@ import java.util.List;
 @Service
 public class ReservationServiceImpl implements ReservationService {
 
-    private final ReservationRepository reservationRepository;
+    private final ReservationRepository repo;
 
-    public ReservationServiceImpl(ReservationRepository reservationRepository) {
-        this.reservationRepository = reservationRepository;
+    public ReservationServiceImpl(ReservationRepository repo) {
+        this.repo = repo;
     }
 
     @Override
     public Reservation save(Reservation reservation) {
-        return reservationRepository.save(reservation);
+        return repo.save(reservation);
     }
 
     @Override
     public List<Reservation> findAll() {
-        return reservationRepository.findAll();
+        return repo.findAll();
     }
 
     @Override
     public List<Reservation> findLatest5() {
-        return reservationRepository.findTop5ByOrderByCreatedAtDesc();
+        return repo.findTop5ByOrderByCreatedAtDesc();
     }
 
     @Override
     public long countAllReservations() {
-        // Repository-də yazdığın custom query metodunu çağır
-        return reservationRepository.countAllReservations();
+        return repo.countAllReservations();
     }
 }

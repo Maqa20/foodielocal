@@ -1,0 +1,275 @@
+/* Verify Page Styles - Müstəqil CSS */
+
+/* Ümumi üslub parametrləri */
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #0f121a;
+    color: #f5f5f7;
+    padding-top: 90px;
+}
+
+a {
+    text-decoration: none;
+}
+
+/* Navbar stilləri */
+.lüks-navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    backdrop-filter: blur(18px);
+    background: rgba(15, 18, 26, 0.85);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    transition: background 0.3s ease-in-out;
+    z-index: 1100;
+}
+
+.lüks-navbar .nav-link {
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    transition: color 0.2s ease-in-out;
+}
+
+.lüks-navbar .nav-link:hover,
+.lüks-navbar .nav-link.active,
+.lüks-navbar .nav-link:focus {
+    color: #ffffff;
+}
+
+.lüks-dropdown {
+    background: rgba(15, 18, 26, 0.95);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.lüks-dropdown .dropdown-item {
+    color: #f5f5f7;
+}
+
+.lüks-dropdown .dropdown-item:hover,
+.lüks-dropdown .dropdown-item:focus {
+    background: rgba(255, 255, 255, 0.08);
+}
+
+/* Dil seçimi düymələri */
+.dil-secimi {
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 999px;
+    transition: all 0.25s ease;
+}
+
+.dil-secimi:hover,
+.dil-secimi:focus {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.dil-secimi.active {
+    background: linear-gradient(135deg, #fbbf24, #f97316) !important;
+    color: #0f121a !important;
+    border-color: transparent !important;
+    box-shadow: 0 6px 14px rgba(249, 115, 22, 0.35);
+}
+
+.btn-outline-light.dil-secimi {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-outline-light.dil-secimi:hover,
+.btn-outline-light.dil-secimi:focus {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #ffffff;
+}
+
+.btn-outline-light.dil-secimi.active {
+    background: linear-gradient(135deg, #fbbf24, #f97316) !important;
+    color: #0f121a !important;
+    border-color: transparent !important;
+    box-shadow: 0 6px 14px rgba(249, 115, 22, 0.35);
+}
+
+/* Reservation/Verify səhifə stilləri */
+.reservation-main {
+    min-height: 100vh;
+    background: linear-gradient(135deg, rgba(15, 18, 26, 0.95), rgba(15, 18, 26, 0.85)),
+                url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat fixed;
+    padding: 120px 0 80px;
+    position: relative;
+}
+
+.reservation-hero {
+    min-height: calc(100vh - 200px);
+}
+
+.reservation-card {
+    background: rgba(15, 18, 26, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 24px;
+    backdrop-filter: blur(10px);
+}
+
+.reservation-pill {
+    background: rgba(192, 139, 92, 0.2);
+    color: #c08b5c;
+    padding: 8px 20px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    letter-spacing: 0.1em;
+}
+
+.reservation-button {
+    background: linear-gradient(135deg, #c08b5c, #d9aa76);
+    border: none;
+    color: #0f121a;
+    font-weight: 600;
+    padding: 12px 32px;
+    border-radius: 999px;
+    transition: all 0.3s ease;
+}
+
+.reservation-button:hover,
+.reservation-button:focus {
+    background: linear-gradient(135deg, #d09b6c, #e3b787);
+    color: #0f121a;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(192, 139, 92, 0.4);
+}
+
+/* Footer stilləri */
+.footer-bolmesi {
+    background: #0d1017;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.footer-bolmesi .btn-outline-light {
+    border-color: rgba(255, 255, 255, 0.4);
+    color: #f5f5f7;
+}
+
+.footer-bolmesi .btn-outline-light:hover,
+.footer-bolmesi .btn-outline-light:focus {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+.sosyal-baglantilar a {
+    font-size: 1.4rem;
+    transition: color 0.2s ease-in-out;
+}
+
+.sosyal-baglantilar a.hover-white:hover,
+.sosyal-baglantilar a.hover-white:focus {
+    color: #ffffff !important;
+}
+
+/* Verify form stilləri */
+.verify-form .form-label {
+    font-weight: 500;
+    color: #ffffff;
+}
+
+.verify-form .form-control,
+.verify-form .form-select {
+    background: rgba(6, 8, 15, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 20px;
+    color: #ffffff;
+    padding: 14px 18px;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    font-size: 1rem;
+}
+
+.verify-form .form-select {
+    border-radius: 20px;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23ffffff' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 18px center;
+    background-size: 16px 12px;
+    padding-right: 45px;
+    margin-right: 12px;
+}
+
+.verify-form .form-control::placeholder {
+    color: rgba(255, 255, 255, 0.65);
+}
+
+.verify-form .form-control:focus,
+.verify-form .form-select:focus {
+    background: rgba(6, 8, 15, 0.92);
+    border-color: rgba(224, 178, 126, 0.9);
+    box-shadow: 0 0 0 0.2rem rgba(201, 150, 100, 0.25);
+    color: #ffffff;
+}
+
+.verify-buttons {
+    display: flex;
+    gap: 12px;
+}
+
+.verify-btn-send,
+.verify-btn-verify {
+    flex: 1;
+    padding: 14px 0;
+    border-radius: 999px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.verify-btn-send {
+    background: linear-gradient(120deg, #f59e0b, #f97316);
+    color: #0f121a;
+}
+
+.verify-btn-send:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(249, 115, 22, 0.4);
+    color: #0f121a;
+}
+
+.verify-btn-verify {
+    background: linear-gradient(120deg, #10b981, #059669);
+    color: #ffffff;
+}
+
+.verify-btn-verify:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(16, 185, 129, 0.4);
+    color: #ffffff;
+}
+
+.verify-btn-send:disabled,
+.verify-btn-verify:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.message-area {
+    min-height: 48px;
+}
+
+.message-area .alert {
+    margin-bottom: 0;
+    border-radius: 12px;
+    padding: 12px 16px;
+}
+
+@media (max-width: 575.98px) {
+    .verify-buttons {
+        flex-direction: column;
+    }
+    
+    .verify-btn-send,
+    .verify-btn-verify {
+        width: 100%;
+    }
+}
+
