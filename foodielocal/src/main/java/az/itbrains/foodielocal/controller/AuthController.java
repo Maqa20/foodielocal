@@ -5,7 +5,6 @@ import az.itbrains.foodielocal.model.User;
 import az.itbrains.foodielocal.repository.RoleRepository;
 import az.itbrains.foodielocal.repository.UserRepository;
 import az.itbrains.foodielocal.service.EmailService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,17 +18,20 @@ import java.util.UUID;
 @RequestMapping("/auth")
 public class AuthController {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
+    private final RoleRepository roleRepository;
+    private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
-    private EmailService emailService;
-
-    @Autowired
-    private PasswordEncoder passwordEncoder;
+    public AuthController(UserRepository userRepository,
+                          RoleRepository roleRepository,
+                          EmailService emailService,
+                          PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.roleRepository = roleRepository;
+        this.emailService = emailService;
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @GetMapping("/login")
     public String showLoginForm() {
@@ -52,9 +54,10 @@ public class AuthController {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
 
         Role defaultRole = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Rol tapılmadı: USER"));
+                .orElseThrow(() -> new RuntimeException("Rol tapılmadı: ROLE_USER"));
 
         user.setRoles(Set.of(defaultRole));
+        user.setEnabled(true); // 🔑 yeni user aktiv olsun
         userRepository.save(user);
 
         return "redirect:/auth/login?registerSuccess=true";
@@ -80,7 +83,6 @@ public class AuthController {
 
         String resetLink = "http://localhost:8181/auth/reset-password?token=" + token;
 
-        // ✅ EmailService-də xüsusi metoddan istifadə edirik
         emailService.sendPasswordReset(email, resetLink);
 
         model.addAttribute("message", "Sıfırlama linki email ünvanınıza göndərildi.");

@@ -35,9 +35,6 @@ public class Restaurant {
     @Column(name = "description")
     private String description;
 
-    @Column(name = "long_description", columnDefinition = "TEXT")
-    private String longDescription;
-
     @Column(name = "cuisine")
     private String cuisine;
 
@@ -50,7 +47,6 @@ public class Restaurant {
     @Column(name = "opening_hours")
     private String openingHours;
 
-    // ✅ Burada əlavə et
     @Column(name = "phone")
     private String phone;
 

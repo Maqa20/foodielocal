@@ -1,333 +1,835 @@
 <!DOCTYPE html>
 <html lang="az" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <title data-i18n="pageTitle">Admin Panel - FoodieLocal</title>
-
-    <!-- Bootstrap 5 & icons -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous"/>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" rel="stylesheet" crossorigin="anonymous"/>
-
-    <!-- Optional admin stylesheet -->
-    <link rel="stylesheet" th:href="@{/css/admin.css}" />
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="adminTitle" th:text="#{page.title}">Admin Panel - FoodieLocal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css"
+          integrity="sha512-jb8zW4N5U9BJ1R0SUD7JbDs0syy6WbMiWcRW+t9DOnAW9I1u8+s9YWD/KSGbFbFhWXGHk0JXrZYpQb9Ee7pPLA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" th:href="@{/admin/admin.css}">
+    <!-- CSRF Token for Spring Security (if applicable) -->
+    <meta th:if="${_csrf}" th:name="_csrf" th:content="${_csrf.token}"/>
+    <meta th:if="${_csrf}" th:name="_csrf_header" th:content="${_csrf.headerName}"/>
 </head>
-<body class="bg-light">
-<!-- Top navbar (inline, no fragments) -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand fw-bold" href="#" data-i18n="brand">FoodieLocal Admin</a>
-
-        <div class="d-flex ms-auto">
-            <form th:action="@{/logout}" method="post" class="d-inline">
-                <button type="submit" class="btn btn-outline-light btn-sm" data-i18n="logoutBtn">
-                    <i class="bi bi-box-arrow-right"></i> Çıxış
-                </button>
-            </form>
-        </div>
-    </div>
-</nav>
-
-<div class="container-fluid">
-    <div class="row">
-
-        <!-- Sidebar -->
-        <nav id="adminSidebar" class="col-md-2 col-lg-2 d-md-block bg-white sidebar collapse border-end">
-            <div class="position-sticky pt-3">
-                <ul class="nav flex-column">
-                    <li class="nav-item">
-                        <a class="nav-link active" href="#dashboardSection" data-tab="dashboard" data-bs-toggle="collapse" data-i18n="menuDashboard">
-                            <i class="bi bi-speedometer2 me-2"></i>Dashboard
-                        </a>
+<body>
+<header>
+    <!-- Fixed Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent fixed-top admin-navbar">
+        <div class="container-fluid">
+            <a class="navbar-brand fw-bold" href="/" data-i18n="adminBrand">FoodieLocal Admin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNavbar"
+                    aria-controls="adminNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="adminNavbar">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                    <li class="nav-item px-lg-2">
+                        <a class="nav-link" href="/" data-i18n="navHome">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#usersSection" data-tab="users" data-i18n="menuUsers"><i class="bi bi-people me-2"></i>Users</a>
+                    <li class="nav-item px-lg-2 d-flex align-items-center gap-2">
+                        <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="az">
+                            <i class="bi bi-globe me-1"></i>AZ
+                        </button>
+                        <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="en">
+                            <i class="bi bi-globe me-1"></i>EN
+                        </button>
+                        <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="ru">
+                            <i class="bi bi-globe me-1"></i>RU
+                        </button>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#restaurantsSection" data-tab="restaurants" data-i18n="menuRestaurants"><i class="bi bi-shop me-2"></i>Restaurants</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#reservationsSection" data-tab="reservations" data-i18n="menuReservations"><i class="bi bi-calendar-check me-2"></i>Reservations</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#reviewsSection" data-tab="reviews" data-i18n="menuReviews"><i class="bi bi-chat-left-text me-2"></i>Reviews</a>
+                    <li class="nav-item px-lg-2">
+                        <form th:action="@{/auth/logout}" method="post">
+                            <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                            <button type="submit" class="nav-link btn btn-link" data-i18n="navLogout">Logout</button>
+                        </form>
                     </li>
                 </ul>
             </div>
-        </nav>
+        </div>
+    </nav>
+</header>
 
-        <!-- Main content -->
-        <main class="col-md-10 ms-sm-auto col-lg-10 px-md-4 py-4">
-            <!-- Dashboard section -->
-            <section id="dashboardSection" class="mb-4" data-section="dashboard">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h3 data-i18n="dashboardTitle">Dashboard</h3>
-                    <div>
-                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#addUserModal" data-i18n="addUserButton">Add User</button>
+<main>
+    <!-- Hero Section -->
+    <section id="admin-hero" class="admin-hero-section d-flex align-items-center">
+        <div class="container text-center">
+            <div class="hero-content">
+                <span class="badge hero-badge mb-3 d-inline-flex align-items-center">
+                    <i class="bi bi-shield-check me-2"></i>
+                    <span data-i18n="adminHeroBadge">Admin Panel</span>
+                </span>
+                <h1 class="display-4 fw-bold mb-3" data-i18n="adminHeroTitle">Administration Dashboard</h1>
+                <p class="lead mb-4" data-i18n="adminHeroSubtitle">
+                    Manage users, roles, restaurants, and reservations from one central location
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admin Content Sections -->
+    <section class="admin-content-section py-5">
+        <div class="container">
+            <!-- Navigation Tabs -->
+            <ul class="nav nav-pills mb-4 admin-tabs" id="adminTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users"
+                            type="button" role="tab" data-i18n="tabUsers">Users</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="roles-tab" data-bs-toggle="tab" data-bs-target="#roles"
+                            type="button" role="tab" data-i18n="tabRoles">Roles</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="restaurants-tab" data-bs-toggle="tab" data-bs-target="#restaurants"
+                            type="button" role="tab" data-i18n="tabRestaurants">Restaurants</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="reservations-tab" data-bs-toggle="tab" data-bs-target="#reservations"
+                            type="button" role="tab" data-i18n="tabReservations">Reservations</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="reviews-tab" data-bs-toggle="tab" data-bs-target="#reviews"
+                            type="button" role="tab" data-i18n="tabReviews">Reviews</button>
+                </li>
+            </ul>
+
+            <!-- Tab Content -->
+            <div class="tab-content" id="adminTabContent">
+                <!-- Users Section -->
+                <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="users-tab">
+                    <!-- Alert Messages -->
+                    <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong th:if="${param.action != null and param.action[0] == 'create'}">Uğurla əlavə olundu!</strong>
+                        <strong th:if="${param.action != null and param.action[0] == 'update'}">Uğurla redaktə olundu!</strong>
+                        <strong th:if="${param.action == null or param.action[0] == 'delete'}">Uğurla silindi!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                </div>
+                    <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Uğursuz oldu!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
 
-                <div class="row g-3">
-                    <div class="col-sm-6 col-md-3">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title" data-i18n="statUsers">Users</h5>
-                                <p class="card-text h3" id="statUsers" th:text="${stats != null ? stats.users : 0}">0</p>
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3 class="mb-0" data-i18n="usersTitle">Users Management</h3>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#userModal" onclick="openUserModal(null)">
+                                <i class="bi bi-plus-circle me-2"></i>
+                                <span data-i18n="btnAdd">Əlavə et</span>
+                            </button>
+                        </div>
+                        <div class="admin-card-body">
+                            <!-- Users Table -->
+                            <div class="table-responsive">
+                                <table class="table table-dark table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th data-i18n="tableId">ID</th>
+                                        <th data-i18n="tableName">Name</th>
+                                        <th data-i18n="tableEmail">Email</th>
+                                        <th data-i18n="tableRole">Role</th>
+                                        <th data-i18n="tableStatus">Status</th>
+                                        <th data-i18n="tableActions">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="usersTableBody">
+                                    <tr th:if="${users == null or users.isEmpty()}">
+                                        <td colspan="6" class="text-center text-white py-4">
+                                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                            <span data-i18n="noData">Məlumat yoxdur</span>
+                                        </td>
+                                    </tr>
+                                    <tr th:each="user : ${users}"
+                                        th:if="${users != null and !users.isEmpty()}"
+                                        th:attr="data-user-id=${user.id},
+                                                 data-user-fullname=${user.fullName ?: ''},
+                                                 data-user-email=${user.email ?: ''},
+                                                 data-user-role-name=${user.roles != null and !user.roles.isEmpty() ? user.roles[0].name : ''},
+                                                 data-user-enabled=${user.enabled}">
+                                        <td th:text="${user.id}">ID</td>
+                                        <td th:text="${user.fullName ?: ''}">Name</td>
+                                        <td th:text="${user.email ?: ''}">Email</td>
+                                        <td>
+                                            <span class="badge bg-info" th:each="role : ${user.roles}" th:text="${role.name ?: ''}"></span>
+                                            <span th:if="${user.roles == null or user.roles.isEmpty()}" class="text-white">-</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge"
+                                                  th:classappend="${user.enabled} ? 'bg-success' : 'bg-secondary'"
+                                                  th:text="${user.enabled} ? 'Aktiv' : 'Deaktiv'">Status</span>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-warning me-2"
+                                                    data-bs-toggle="modal" data-bs-target="#userModal"
+                                                    th:attr="onclick='openUserModal(' + ${user.id} + ')'"
+                                                    data-i18n="btnEdit">
+                                                <i class="bi bi-pencil me-1"></i>
+                                                <span data-i18n="btnEdit">Redaktə et</span>
+                                            </button>
+                                            <form th:action="@{'/admin/users/' + ${user.id} + '/delete'}" method="POST" style="display:inline;" onsubmit="return confirm('Silmək istədiyinizə əminsiniz?')">
+                                                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                                                <button type="submit" class="btn btn-sm btn-danger" data-i18n="btnDelete">
+                                                    <i class="bi bi-trash me-1"></i>
+                                                    <span data-i18n="btnDelete">Sil</span>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-sm-6 col-md-3">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title" data-i18n="statRestaurants">Restaurants</h5>
-                                <p class="card-text h3" id="statRestaurants" th:text="${stats != null ? stats.restaurants : 0}">0</p>
+                <!-- Roles Section -->
+                <div class="tab-pane fade" id="roles" role="tabpanel" aria-labelledby="roles-tab">
+                    <!-- Alert Messages -->
+                    <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong th:if="${param.action != null and param.action[0] == 'create'}">Uğurla əlavə olundu!</strong>
+                        <strong th:if="${param.action != null and param.action[0] == 'update'}">Uğurla redaktə olundu!</strong>
+                        <strong th:if="${param.action == null or param.action[0] == 'delete'}">Uğurla silindi!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Uğursuz oldu!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3 class="mb-0" data-i18n="rolesTitle">Roles Management</h3>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#roleModal" onclick="openRoleModal(null)">
+                                <i class="bi bi-plus-circle me-2"></i>
+                                <span data-i18n="btnAdd">Əlavə et</span>
+                            </button>
+                        </div>
+                        <div class="admin-card-body">
+                            <!-- Roles Table -->
+                            <div class="table-responsive">
+                                <table class="table table-dark table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th data-i18n="tableId">ID</th>
+                                        <th data-i18n="tableRoleName">Role Name</th>
+                                        <th data-i18n="tableDescription">Description</th>
+                                        <th data-i18n="tableActions">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="rolesTableBody">
+                                    <tr th:if="${roles == null or roles.isEmpty()}">
+                                        <td colspan="4" class="text-center text-white py-4">
+                                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                            <span data-i18n="noData">Məlumat yoxdur</span>
+                                        </td>
+                                    </tr>
+                                    <tr th:each="role : ${roles}"
+                                        th:if="${roles != null and !roles.isEmpty()}"
+                                        th:attr="data-role-id=${role.id},
+                                                 data-role-name=${role.name ?: ''},
+                                                 data-role-description=${role.description ?: ''}">
+                                        <td th:text="${role.id}">ID</td>
+                                        <td th:text="${role.name ?: ''}">Role Name</td>
+                                        <td th:text="${role.description ?: ''}">Description</td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-warning me-2"
+                                                    data-bs-toggle="modal" data-bs-target="#roleModal"
+                                                    th:attr="onclick='openRoleModal(' + ${role.id} + ')'"
+                                                    data-i18n="btnEdit">
+                                                <i class="bi bi-pencil me-1"></i>
+                                                <span data-i18n="btnEdit">Redaktə et</span>
+                                            </button>
+                                            <form th:action="@{'/admin/roles/' + ${role.id} + '/delete'}" method="POST" style="display:inline;" onsubmit="return confirm('Silmək istədiyinizə əminsiniz?')">
+                                                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                                                <button type="submit" class="btn btn-sm btn-danger" data-i18n="btnDelete">
+                                                    <i class="bi bi-trash me-1"></i>
+                                                    <span data-i18n="btnDelete">Sil</span>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-sm-6 col-md-3">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title" data-i18n="statReservations">Reservations</h5>
-                                <p class="card-text h3" id="statReservations" th:text="${stats != null ? stats.reservations : 0}">0</p>
+                <!-- Restaurants Section -->
+                <div class="tab-pane fade" id="restaurants" role="tabpanel" aria-labelledby="restaurants-tab">
+                    <!-- Alert Messages -->
+                    <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong th:if="${param.action != null and param.action[0] == 'create'}">Uğurla əlavə olundu!</strong>
+                        <strong th:if="${param.action != null and param.action[0] == 'update'}">Uğurla redaktə olundu!</strong>
+                        <strong th:if="${param.action == null or param.action[0] == 'delete'}">Uğurla silindi!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Uğursuz oldu!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3 class="mb-0" data-i18n="restaurantsTitle">Restaurants Management</h3>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#restaurantModal" onclick="openRestaurantModal(null)">
+                                <i class="bi bi-plus-circle me-2"></i>
+                                <span data-i18n="btnAdd">Əlavə et</span>
+                            </button>
+                        </div>
+                        <div class="admin-card-body">
+                            <!-- Restaurants Table -->
+                            <div class="table-responsive">
+                                <table class="table table-dark table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th data-i18n="tableId">ID</th>
+                                        <th data-i18n="tableName">Name</th>
+                                        <th data-i18n="tableDescription">Description</th>
+                                        <th data-i18n="tableLocation">Location</th>
+                                        <th data-i18n="tableRating">Rating</th>
+                                        <th data-i18n="tableActions">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="restaurantsTableBody">
+                                    <tr th:if="${restaurants == null or restaurants.isEmpty()}">
+                                        <td colspan="6" class="text-center text-white py-4">
+                                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                            <span data-i18n="noData">Məlumat yoxdur</span>
+                                        </td>
+                                    </tr>
+                                    <tr th:each="restaurant : ${restaurants}"
+                                        th:if="${restaurants != null and !restaurants.isEmpty()}"
+                                        th:attr="data-restaurant-id=${restaurant.id},
+                                                 data-restaurant-name=${restaurant.name ?: ''},
+                                                 data-restaurant-address=${restaurant.address ?: ''},
+                                                 data-restaurant-description=${restaurant.description ?: ''},
+                                                 data-restaurant-image-url=${restaurant.imageUrl ?: ''},
+                                                 data-restaurant-cuisine=${restaurant.cuisine ?: ''},
+                                                 data-restaurant-price-range=${restaurant.priceRange ?: ''},
+                                                 data-restaurant-rating=${restaurant.rating != null ? restaurant.rating : ''},
+                                                 data-restaurant-opening-hours=${restaurant.openingHours ?: ''},
+                                                 data-restaurant-phone=${restaurant.phone ?: ''}">
+                                        <td th:text="${restaurant.id}">ID</td>
+                                        <td th:text="${restaurant.name ?: ''}">Name</td>
+                                        <td th:text="${#strings.abbreviate(restaurant.description ?: '', 50)}">Description</td>
+                                        <td th:text="${restaurant.address ?: ''}">Address</td>
+                                        <td>
+                                            <span class="badge bg-warning text-white"
+                                                  th:text="${restaurant.rating ?: 'N/A'}">Rating</span>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-warning me-2"
+                                                    data-bs-toggle="modal" data-bs-target="#restaurantModal"
+                                                    th:attr="onclick='openRestaurantModal(' + ${restaurant.id} + ')'"
+                                                    data-i18n="btnEdit">
+                                                <i class="bi bi-pencil me-1"></i>
+                                                <span data-i18n="btnEdit">Redaktə et</span>
+                                            </button>
+                                            <form th:action="@{'/admin/restaurants/' + ${restaurant.id} + '/delete'}" method="POST" style="display:inline;" onsubmit="return confirm('Silmək istədiyinizə əminsiniz?')">
+                                                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                                                <button type="submit" class="btn btn-sm btn-danger" data-i18n="btnDelete">
+                                                    <i class="bi bi-trash me-1"></i>
+                                                    <span data-i18n="btnDelete">Sil</span>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
+                </div>
 
-                    <div class="col-sm-6 col-md-3">
-                        <div class="card shadow-sm">
-                            <div class="card-body">
-                                <h5 class="card-title" data-i18n="statReviews">Reviews</h5>
-                                <p class="card-text h3" id="statReviews" th:text="${stats != null ? stats.reviews : 0}">0</p>
+                <!-- Reservations Section -->
+                <div class="tab-pane fade" id="reservations" role="tabpanel" aria-labelledby="reservations-tab">
+                    <!-- Alert Messages -->
+                    <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong th:if="${param.action != null and param.action[0] == 'create'}">Uğurla əlavə olundu!</strong>
+                        <strong th:if="${param.action != null and param.action[0] == 'update'}">Uğurla redaktə olundu!</strong>
+                        <strong th:if="${param.action == null or param.action[0] == 'delete'}">Uğurla silindi!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Uğursuz oldu!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3 class="mb-0" data-i18n="reservationsTitle">Reservations Management</h3>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reservationModal" onclick="openReservationModal(null)">
+                                <i class="bi bi-plus-circle me-2"></i>
+                                <span data-i18n="btnAdd">Əlavə et</span>
+                            </button>
+                        </div>
+                        <div class="admin-card-body">
+                            <!-- Reservations Table -->
+                            <div class="table-responsive">
+                                <table class="table table-dark table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th data-i18n="tableId">ID</th>
+                                        <th data-i18n="tableCustomer">Customer</th>
+                                        <th data-i18n="tableRestaurant">Restaurant</th>
+                                        <th data-i18n="tableDate">Date</th>
+                                        <th data-i18n="tableTime">Time</th>
+                                        <th data-i18n="tableGuests">Guests</th>
+                                        <th data-i18n="tableStatus">Status</th>
+                                        <th data-i18n="tableActions">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="reservationsTableBody">
+                                    <tr th:if="${reservations == null or reservations.isEmpty()}">
+                                        <td colspan="8" class="text-center text-white py-4">
+                                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                            <span data-i18n="noData">Məlumat yoxdur</span>
+                                        </td>
+                                    </tr>
+                                    <tr th:each="reservation : ${reservations}"
+                                        th:if="${reservations != null and !reservations.isEmpty()}"
+                                        th:attr="data-reservation-id=${reservation.id},
+                                                 data-reservation-firstname=${reservation.firstName ?: ''},
+                                                 data-reservation-lastname=${reservation.lastName ?: ''},
+                                                 data-reservation-email=${reservation.emailAddress ?: ''},
+                                                 data-reservation-phone=${reservation.phoneNumber ?: ''},
+                                                 data-reservation-country-code=${reservation.countryCode ?: '+994'},
+                                                 data-reservation-restaurant-id=${reservation.restaurant != null ? reservation.restaurant.id : ''},
+                                                 data-reservation-restaurant-choice=${reservation.restaurant != null ? reservation.restaurant.name : ''},
+                                                 data-reservation-date=${reservation.reservationDate ?: reservation.date ?: ''},
+                                                 data-reservation-time=${reservation.reservationTime ?: ''},
+                                                 data-reservation-guests=${reservation.guestCount ?: ''},
+                                                 data-reservation-special-requests=${reservation.specialRequests ?: ''}">
+                                        <td th:text="${reservation.id}">ID</td>
+                                        <td th:text="${(reservation.firstName ?: '') + ' ' + (reservation.lastName ?: '')}">Customer</td>
+                                        <td th:text="${reservation.restaurant != null ? reservation.restaurant.name : ''}">Restaurant</td>
+                                        <td th:text="${reservation.reservationDate ?: reservation.date ?: ''}">Date</td>
+                                        <td th:text="${reservation.reservationTime ?: ''}">Time</td>
+                                        <td th:text="${reservation.guestCount ?: ''}">Guests</td>
+                                        <td>
+                                            <span th:if="${reservation.status != null and reservation.status.toString() == 'PENDING'}"
+                                                  class="badge bg-warning text-white"
+                                                  data-i18n="reservationStatusPending">Gözləyir</span>
+                                            <span th:if="${reservation.status != null and reservation.status.toString() == 'APPROVED'}"
+                                                  class="badge bg-success text-white"
+                                                  data-i18n="reservationStatusApproved">Təsdiqlənib</span>
+                                            <span th:if="${reservation.status != null and reservation.status.toString() == 'REJECTED'}"
+                                                  class="badge bg-danger text-white"
+                                                  data-i18n="reservationStatusRejected">Rədd edilib</span>
+                                            <span th:if="${reservation.status == null}"
+                                                  class="badge bg-secondary text-white"
+                                                  data-i18n="reservationStatusPending">Gözləyir</span>
+                                        </td>
+                                        <td>
+                                            <div class="d-flex gap-1 flex-wrap">
+                                                <form th:action="@{'/admin/reservations/' + ${reservation.id} + '/approve'}"
+                                                      method="POST"
+                                                      style="display:inline;"
+                                                      th:if="${reservation.status == null or reservation.status.toString() != 'APPROVED'}">
+                                                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                                                    <button type="submit" class="btn btn-sm btn-success" data-i18n="btnApprove">
+                                                        <i class="bi bi-check-circle me-1"></i>
+                                                        <span data-i18n="btnApprove">Təsdiqlə</span>
+                                                    </button>
+                                                </form>
+                                                <form th:action="@{'/admin/reservations/' + ${reservation.id} + '/reject'}"
+                                                      method="POST"
+                                                      style="display:inline;"
+                                                      th:if="${reservation.status == null or reservation.status.toString() != 'REJECTED'}">
+                                                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                                                    <button type="submit" class="btn btn-sm btn-danger" data-i18n="btnReject">
+                                                        <i class="bi bi-x-circle me-1"></i>
+                                                        <span data-i18n="btnReject">Rədd et</span>
+                                                    </button>
+                                                </form>
+                                                <button type="button" class="btn btn-sm btn-warning"
+                                                        data-bs-toggle="modal" data-bs-target="#reservationModal"
+                                                        th:attr="onclick='openReservationModal(' + ${reservation.id} + ')'"
+                                                        data-i18n="btnEdit">
+                                                    <i class="bi bi-pencil me-1"></i>
+                                                    <span data-i18n="btnEdit">Redaktə</span>
+                                                </button>
+                                                <form th:action="@{'/admin/reservations/' + ${reservation.id} + '/delete'}"
+                                                      method="POST"
+                                                      style="display:inline;"
+                                                      onsubmit="return confirm('Silmək istədiyinizə əminsiniz?')">
+                                                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                                                    <button type="submit" class="btn btn-sm btn-outline-danger" data-i18n="btnDelete">
+                                                        <i class="bi bi-trash me-1"></i>
+                                                        <span data-i18n="btnDelete">Sil</span>
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
                 </div>
-            </section>
 
-            <!-- Users section -->
-            <section id="usersSection" class="mb-4" data-section="users">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h4 data-i18n="usersTitle">Users</h4>
+                <!-- Reviews Section -->
+                <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
+                    <!-- Alert Messages -->
+                    <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong th:if="${param.action != null and param.action[0] == 'create'}">Uğurla əlavə olundu!</strong>
+                        <strong th:if="${param.action != null and param.action[0] == 'update'}">Uğurla redaktə olundu!</strong>
+                        <strong th:if="${param.action == null or param.action[0] == 'delete'}">Uğurla silindi!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Uğursuz oldu!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3 class="mb-0" data-i18n="reviewsTitle">Reviews Management</h3>
+                        </div>
+                        <div class="admin-card-body">
+                            <!-- Reviews Table -->
+                            <div class="table-responsive">
+                                <table class="table table-dark table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th data-i18n="tableId">ID</th>
+                                        <th data-i18n="tableReviewer">Reviewer</th>
+                                        <th data-i18n="tableRestaurant">Restaurant</th>
+                                        <th data-i18n="tableRating">Rating</th>
+                                        <th data-i18n="tableComment">Comment</th>
+                                        <th data-i18n="tableDate">Date</th>
+                                        <th data-i18n="tableActions">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="reviewsTableBody">
+                                    <tr th:if="${reviews == null or reviews.isEmpty()}">
+                                        <td colspan="7" class="text-center text-white py-4">
+                                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                            <span data-i18n="noData">Məlumat yoxdur</span>
+                                        </td>
+                                    </tr>
+                                    <tr th:each="review : ${reviews}"
+                                        th:if="${reviews != null and !reviews.isEmpty()}">
+                                        <td th:text="${review.id}">ID</td>
+                                        <td th:text="${(review.reviewerFirstName ?: '') + ' ' + (review.reviewerLastName ?: '')}">Reviewer</td>
+                                        <td th:text="${review.restaurant?.name ?: review.restaurantName ?: ''}">Restaurant</td>
+                                        <td>
+                                            <span class="badge bg-warning text-white" th:text="${review.reviewRating ?: ''}">Rating</span>
+                                        </td>
+                                        <td th:text="${#strings.abbreviate(review.reviewComment ?: '', 50)}">Comment</td>
+                                        <td th:text="${review.reviewDate ?: ''}">Date</td>
+                                        <td>
+                                            <form th:action="@{'/admin/reviews/' + ${review.id} + '/delete'}" method="POST" style="display:inline;" onsubmit="return confirm('Silmək istədiyinizə əminsiniz?')">
+                                                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                                                <button type="submit" class="btn btn-sm btn-danger" data-i18n="btnDelete">
+                                                    <i class="bi bi-trash me-1"></i>
+                                                    <span data-i18n="btnDelete">Sil</span>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+    </section>
+</main>
 
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                        <tr>
-                            <th data-i18n="tableId">ID</th>
-                            <th data-i18n="tableName">Name</th>
-                            <th data-i18n="tableEmail">Email</th>
-                            <th data-i18n="tableRole">Role</th>
-                            <th data-i18n="tableActions">Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="user : ${users}">
-                            <td th:text="${user.id}">1</td>
-                            <td th:text="${user.name}">Name</td>
-                            <td th:text="${user.email}">email@example.com</td>
-                            <td>
-                                <select class="form-select form-select-sm" th:attr="data-user-id=${user.id}">
-                                    <option value="USER" th:selected="${user.role == 'USER'}" data-i18n="roleUser">USER</option>
-                                    <option value="MODERATOR" th:selected="${user.role == 'MODERATOR'}" data-i18n="roleModerator">MODERATOR</option>
-                                    <option value="ADMIN" th:selected="${user.role == 'ADMIN'}" data-i18n="roleAdmin">ADMIN</option>
-                                </select>
-                            </td>
-                            <td>
-                                <div class="btn-group btn-group-sm" role="group">
-                                    <a class="btn btn-outline-primary" th:href="@{|/admin/users/edit/${user.id}|}" data-i18n="editButton">Edit</a>
-                                    <form th:action="@{|/admin/users/delete/${user.id}|}" method="post" th:onsubmit="return confirm('Silmək istədiyinizə əminsiniz?');" style="display:inline">
-                                        <button type="submit" class="btn btn-danger" data-i18n="deleteButton">Delete</button>
-                                    </form>
-                                </div>
-                            </td>
-                        </tr>
-
-                        <tr th:if="${users == null or #lists.isEmpty(users)}">
-                            <td colspan="5" class="text-muted">No users found.</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Restaurants section -->
-            <section id="restaurantsSection" class="mb-4" data-section="restaurants">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h4 data-i18n="restaurantsTitle">Restaurants</h4>
-                    <a class="btn btn-primary btn-sm" th:href="@{/admin/restaurants/new}" data-i18n="addRestaurant">New Restaurant</a>
-                </div>
-
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Address</th>
-                            <th>Image</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="r : ${restaurants}">
-                            <td th:text="${r.id}">1</td>
-                            <td th:text="${r.name}">Restaurant</td>
-                            <td th:text="${r.address}">Address</td>
-                            <td>
-                                <img th:if="${r.imageUrl != null}" th:src="${r.imageUrl}" alt="img" class="img-thumbnail" style="width:80px;height:50px;object-fit:cover;">
-                                <span th:if="${r.imageUrl == null}" class="text-muted">—</span>
-                            </td>
-                            <td>
-                                <a class="btn btn-outline-primary btn-sm" th:href="@{|/admin/restaurants/edit/${r.id}|}">Edit</a>
-                                <form th:action="@{|/admin/restaurants/delete/${r.id}|}" method="post" th:onsubmit="return confirm('Silmək istədiyinizə əminsiniz?');" style="display:inline">
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-
-                        <tr th:if="${restaurants == null or #lists.isEmpty(restaurants)}">
-                            <td colspan="5" class="text-muted">No restaurants found.</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Reservations section -->
-            <section id="reservationsSection" class="mb-4" data-section="reservations">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h4 data-i18n="reservationsTitle">Reservations</h4>
-                </div>
-
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>Restaurant</th>
-                            <th>User</th>
-                            <th>Date / Time</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="res : ${reservations}">
-                            <td th:text="${res.id}">1</td>
-                            <td th:text="${res.restaurant != null ? res.restaurant.name : '—'}">Restaurant</td>
-                            <td th:text="${res.user != null ? res.user.name : '—'}">User</td>
-                            <td th:text="${#dates.format(res.dateTime, 'yyyy-MM-dd HH:mm')}">2025-01-01 19:00</td>
-                            <td><span th:text="${res.status}">CONFIRMED</span></td>
-                            <td>
-                                <a class="btn btn-outline-secondary btn-sm" th:href="@{|/admin/reservations/view/${res.id}|}">View</a>
-                                <form th:action="@{|/admin/reservations/delete/${res.id}|}" method="post" th:onsubmit="return confirm('Silmək istədiyinizə əminsiniz?');" style="display:inline">
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-
-                        <tr th:if="${reservations == null or #lists.isEmpty(reservations)}">
-                            <td colspan="6" class="text-muted">No reservations found.</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- Reviews section -->
-            <section id="reviewsSection" class="mb-4" data-section="reviews">
-                <div class="d-flex align-items-center justify-content-between mb-3">
-                    <h4 data-i18n="reviewsTitle">Reviews</h4>
-                </div>
-
-                <div class="table-responsive">
-                    <table class="table table-hover align-middle">
-                        <thead class="table-light">
-                        <tr>
-                            <th>ID</th>
-                            <th>User</th>
-                            <th>Restaurant</th>
-                            <th>Comment</th>
-                            <th>Rating</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr th:each="rev : ${reviews}">
-                            <td th:text="${rev.id}">1</td>
-                            <td th:text="${rev.author}">User</td>
-                            <td th:text="${rev.restaurant != null ? rev.restaurant.name : '—'}">Restaurant</td>
-                            <td th:text="${rev.comment}">Great!</td>
-                            <td><span class="badge bg-warning text-dark" th:text="${rev.rating != null ? rev.rating : '5.0'}">5.0</span></td>
-                            <td>
-                                <form th:action="@{|/admin/reviews/approve/${rev.id}|}" method="post" style="display:inline">
-                                    <button type="submit" class="btn btn-success btn-sm" data-i18n="approveButton">Approve</button>
-                                </form>
-                                <form th:action="@{|/admin/reviews/delete/${rev.id}|}" method="post" th:onsubmit="return confirm('Silmək istədiyinizə əminsiniz?');" style="display:inline">
-                                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
-                                </form>
-                            </td>
-                        </tr>
-
-                        <tr th:if="${reviews == null or #lists.isEmpty(reviews)}">
-                            <td colspan="6" class="text-muted">No reviews found.</td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-        </main>
-    </div>
-</div>
-
-<!-- Add User Modal -->
-<div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <form class="modal-content" th:action="@{/admin/users}" method="post">
+<!-- Bootstrap Modals for CRUD Operations -->
+<!-- User Modal -->
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content admin-modal">
             <div class="modal-header">
-                <h5 class="modal-title" id="addUserModalLabel" data-i18n="addUserButton">Add User</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h5 class="modal-title" id="userModalLabel" data-i18n="modalAddUser">İstifadəçi Əlavə Et / Redaktə Et</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <div class="row g-2">
-                    <div class="col-md-6">
-                        <label class="form-label">Name</label>
-                        <input name="name" class="form-control" required />
+                <form id="userForm" method="POST" th:action="@{/admin/users/create}">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    <input type="hidden" name="id" id="userId" />
+                    <div class="mb-3">
+                        <label class="form-label" for="userFullName" data-i18n="formName">Full Name</label>
+                        <input type="text" class="form-control" id="userFullName" name="fullName" required>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Email</label>
-                        <input name="email" type="email" class="form-control" required />
+                    <div class="mb-3">
+                        <label class="form-label" for="userEmail" data-i18n="formEmail">Email</label>
+                        <input type="email" class="form-control" id="userEmail" name="email" required>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Role</label>
-                        <select name="role" class="form-select">
-                            <option value="USER">USER</option>
-                            <option value="MODERATOR">MODERATOR</option>
-                            <option value="ADMIN">ADMIN</option>
+                    <div class="mb-3">
+                        <label class="form-label" for="userPassword" data-i18n="formPassword">Password <span id="passwordRequired">*</span><span id="passwordOptional" style="display:none;" data-i18n="passwordOptional">(leave blank to keep current)</span></label>
+                        <input type="password" class="form-control" id="userPassword" name="password">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="userRole" data-i18n="formRole">Role</label>
+                        <select class="form-select" id="userRole" name="role" required>
+                            <option value="" data-i18n="selectRole">Select Role</option>
+                            <option th:each="role : ${roles}" th:value="${role.name}" th:text="${role.name}">Role</option>
                         </select>
                     </div>
-                    <div class="col-md-6">
-                        <label class="form-label">Status</label>
-                        <select name="status" class="form-select">
-                            <option value="ACTIVE">ACTIVE</option>
-                            <option value="INACTIVE">INACTIVE</option>
-                        </select>
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="userEnabled" name="enabled" checked>
+                            <label class="form-check-label" for="userEnabled" data-i18n="formEnabled">Enabled</label>
+                        </div>
                     </div>
-                </div>
+                </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="cancelButton">Cancel</button>
-                <button type="submit" class="btn btn-primary" data-i18n="saveButton">Save</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="btnCancel">Ləğv et</button>
+                <button type="button" class="btn btn-primary" onclick="submitUserForm()" data-i18n="btnSave">Yadda Saxla</button>
             </div>
-        </form>
+        </div>
     </div>
 </div>
-</body>
 
-<!-- Bootstrap JS and admin script -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-<script th:src="@{/js/admin.js}" defer></script>
+<!-- Role Modal -->
+<div class="modal fade" id="roleModal" tabindex="-1" aria-labelledby="roleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content admin-modal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="roleModalLabel" data-i18n="modalAddRole">Rol Əlavə Et / Redaktə Et</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="roleForm" method="POST">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    <input type="hidden" name="id" id="roleId" />
+                    <div class="mb-3">
+                        <label class="form-label" for="roleName" data-i18n="formRoleName">Role Name</label>
+                        <input type="text" class="form-control" id="roleName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="roleDescription" data-i18n="formDescription">Description</label>
+                        <textarea class="form-control" id="roleDescription" name="description" rows="3"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="btnCancel">Ləğv et</button>
+                <button type="button" class="btn btn-primary" onclick="submitRoleForm()" data-i18n="btnSave">Yadda Saxla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Restaurant Modal -->
+<div class="modal fade" id="restaurantModal" tabindex="-1" aria-labelledby="restaurantModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content admin-modal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="restaurantModalLabel" data-i18n="modalAddRestaurant">Restoran Əlavə Et / Redaktə Et</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="restaurantForm" method="POST" th:action="@{/admin/restaurants/create}">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    <input type="hidden" name="id" id="restaurantId" />
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="restaurantName" data-i18n="formName">Name</label>
+                            <input type="text" class="form-control" id="restaurantName" name="name" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="restaurantAddress" data-i18n="formLocation">Address</label>
+                            <input type="text" class="form-control" id="restaurantAddress" name="address" required>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label" for="restaurantDescription" data-i18n="formDescription">Description</label>
+                            <textarea class="form-control" id="restaurantDescription" name="description" rows="3"></textarea>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="restaurantImageUrl" data-i18n="formImageUrl">Image URL</label>
+                            <input type="url" class="form-control" id="restaurantImageUrl" name="imageUrl">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="restaurantCuisine" data-i18n="formCuisine">Cuisine</label>
+                            <input type="text" class="form-control" id="restaurantCuisine" name="cuisine" placeholder="e.g., Italian, Asian, Mexican">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="restaurantPriceRange" data-i18n="formPriceRange">Price Range</label>
+                            <select class="form-select" id="restaurantPriceRange" name="priceRange">
+                                <option value="" data-i18n="selectPriceRange">Select Price Range</option>
+                                <option value="10-30 AZN" data-i18n="priceRange10-30">10-30 AZN</option>
+                                <option value="30-50 AZN" data-i18n="priceRange30-50">30-50 AZN</option>
+                                <option value="50-80 AZN" data-i18n="priceRange50-80">50-80 AZN</option>
+                                <option value="80-120 AZN" data-i18n="priceRange80-120">80-120 AZN</option>
+                                <option value="120-200 AZN" data-i18n="priceRange120-200">120-200 AZN</option>
+                                <option value="200+ AZN" data-i18n="priceRange200+">200+ AZN</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="restaurantRating" data-i18n="formRating">Rating</label>
+                            <input type="number" class="form-control" id="restaurantRating" name="rating" min="0" max="5" step="0.1" placeholder="0.0 - 5.0">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="restaurantOpeningHours" data-i18n="formOpeningHours">Opening Hours</label>
+                            <input type="text" class="form-control" id="restaurantOpeningHours" name="openingHours" placeholder="e.g., Mon-Fri: 10:00-22:00, Sat-Sun: 11:00-23:00">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="restaurantPhone" data-i18n="formPhone">Phone</label>
+                            <input type="tel" class="form-control" id="restaurantPhone" name="phone" placeholder="+994 50 123 45 67">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="btnCancel">Ləğv et</button>
+                <button type="button" class="btn btn-primary" onclick="submitRestaurantForm()" data-i18n="btnSave">Yadda Saxla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Reservation Modal -->
+<div class="modal fade" id="reservationModal" tabindex="-1" aria-labelledby="reservationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content admin-modal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reservationModalLabel" data-i18n="modalAddReservation">Rezervasiya Əlavə Et / Redaktə Et</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="reservationForm" method="POST" th:action="@{/admin/reservations/create}">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    <input type="hidden" name="id" id="reservationId" />
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="reservationFirstName" data-i18n="formReviewerFirstName">First Name</label>
+                            <input type="text" class="form-control" id="reservationFirstName" name="firstName" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="reservationLastName" data-i18n="formReviewerLastName">Last Name</label>
+                            <input type="text" class="form-control" id="reservationLastName" name="lastName" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="reservationEmail" data-i18n="formEmail">Email</label>
+                            <input type="email" class="form-control" id="reservationEmail" name="emailAddress" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="reservationPhone" data-i18n="formPhone">Mobil Nömrə</label>
+                            <div class="d-flex">
+                                <select class="form-select" id="reservationCountryCode" name="countryCode" style="max-width: 120px;">
+                                    <option value="+994">AZ (+994)</option>
+                                </select>
+                                <input type="tel" class="form-control" id="reservationPhone" name="phoneNumber" placeholder="50 123 45 67" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="reservationRestaurant" data-i18n="formRestaurant">Restaurant</label>
+                            <select class="form-select" id="reservationRestaurant" name="restaurantId" required>
+                                <option value="" data-i18n="selectRestaurant">Select Restaurant</option>
+                                <option th:each="restaurant : ${restaurants}"
+                                        th:value="${restaurant.id}"
+                                        th:data-restaurant-name="${restaurant.name}"
+                                        th:text="${restaurant.name}">Restaurant</option>
+                            </select>
+                            <input type="hidden" id="reservationRestaurantChoice" name="restaurantChoice" />
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="reservationDate" data-i18n="formDate">Date</label>
+                            <input type="date" class="form-control" id="reservationDate" name="reservationDate" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="reservationTime" data-i18n="formTime">Time</label>
+                            <input type="time" class="form-control" id="reservationTime" name="reservationTime" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="reservationGuests" data-i18n="formGuests">Number of Guests</label>
+                            <input type="number" class="form-control" id="reservationGuests" name="guestCount" min="1" required>
+                        </div>
+                        <div class="col-12 mb-3">
+                            <label class="form-label" for="reservationSpecialRequests" data-i18n="formSpecialRequests">Xüsusi İstəklər</label>
+                            <textarea class="form-control" id="reservationSpecialRequests" name="specialRequests" rows="3" placeholder="Xüsusi istəklərinizi, allergiyalarınızı və ya digər qeydlərinizi buraya yazın"></textarea>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="btnCancel">Ləğv et</button>
+                <button type="button" class="btn btn-primary" onclick="submitReservationForm()" data-i18n="btnSave">Yadda Saxla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Review Modal -->
+<div class="modal fade" id="reviewModal" tabindex="-1" aria-labelledby="reviewModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+        <div class="modal-content admin-modal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="reviewModalLabel" data-i18n="modalAddReview">Rəy Əlavə Et / Redaktə Et</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="reviewForm" method="POST" th:action="@{/admin/reviews/create}">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    <input type="hidden" name="id" id="reviewId" />
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="reviewFirstName" data-i18n="formReviewerFirstName">First Name</label>
+                            <input type="text" class="form-control" id="reviewFirstName" name="reviewerFirstName" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="reviewLastName" data-i18n="formReviewerLastName">Last Name</label>
+                            <input type="text" class="form-control" id="reviewLastName" name="reviewerLastName" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="reviewRestaurant" data-i18n="formRestaurant">Restaurant</label>
+                            <select class="form-select" id="reviewRestaurant" name="restaurantId" required>
+                                <option value="" data-i18n="selectRestaurant">Select Restaurant</option>
+                                <option th:each="restaurant : ${restaurants}" th:value="${restaurant.id}" th:text="${restaurant.name}">Restaurant</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label" for="reviewRating" data-i18n="formRating">Rating</label>
+                            <select class="form-select" id="reviewRating" name="reviewRating" required>
+                                <option value="" data-i18n="selectRating">Select Rating</option>
+                                <option value="5">5 ⭐⭐⭐⭐⭐</option>
+                                <option value="4">4 ⭐⭐⭐⭐</option>
+                                <option value="3">3 ⭐⭐⭐</option>
+                                <option value="2">2 ⭐⭐</option>
+                                <option value="1">1 ⭐</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <label class="form-label" for="reviewComment" data-i18n="formComment">Comment</label>
+                            <textarea class="form-control" id="reviewComment" name="reviewComment" rows="4" required></textarea>
+                        </div>
+                        <div class="col-md-12 mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="reviewActive" name="active" checked>
+                                <label class="form-check-label" for="reviewActive" data-i18n="formActive">Status (Aktiv/Deaktiv)</label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="btnCancel">Ləğv et</button>
+                <button type="button" class="btn btn-primary" onclick="submitReviewForm()" data-i18n="btnSave">Yadda Saxla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+<script th:src="@{/admin/admin.js}" defer></script>
+</body>
 </html>

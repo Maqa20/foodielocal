@@ -48,6 +48,7 @@
                         <ul class="dropdown-menu dropdown-menu-end lüks-dropdown">
                             <li><button class="dropdown-item dil-secimi" data-dil="az">AZ</button></li>
                             <li><button class="dropdown-item dil-secimi" data-dil="en">EN</button></li>
+                            <li><button class="dropdown-item dil-secimi" data-dil="ru">RU</button></li>
                         </ul>
                     </li>
                 </ul>
@@ -86,11 +87,11 @@
                 <div class="col-lg-7">
                     <div class="reviews-card p-5 shadow-lg">
                         <form th:action="@{/reviews}" method="post" class="reviews-form row g-4" novalidate>                            <div class="col-md-6">
-                                <label for="reviewerFirstName" class="form-label" data-i18n="reviewsFirstNameLabel">First Name</label>
-                                <input type="text" class="form-control" id="reviewerFirstName" name="reviewerFirstName" required
-                                       data-i18n-placeholder="reviewsFirstNamePlaceholder"
-                                       placeholder="Enter your first name">
-                            </div>
+                            <label for="reviewerFirstName" class="form-label" data-i18n="reviewsFirstNameLabel">First Name</label>
+                            <input type="text" class="form-control" id="reviewerFirstName" name="reviewerFirstName" required
+                                   data-i18n-placeholder="reviewsFirstNamePlaceholder"
+                                   placeholder="Enter your first name">
+                        </div>
                             <div class="col-md-6">
                                 <label for="reviewerLastName" class="form-label" data-i18n="reviewsLastNameLabel">Last Name</label>
                                 <input type="text" class="form-control" id="reviewerLastName" name="reviewerLastName" required
@@ -156,14 +157,23 @@
             </div>
         </div>
     </section>
+    <section class="reviews-list py-5">
+        <div class="container">
+            <div th:each="review : ${reviews}" class="review-item mb-4 p-3 bg-dark rounded">
+                <h5 class="text-primary" th:text="${review.reviewerFirstName + ' ' + review.reviewerLastName}"></h5>
+                <p class="text-white" th:text="${review.reviewComment}"></p>
+                <p class="text-warning">⭐ <span th:text="${review.reviewRating}"></span></p>
+                <div class="d-flex align-items-center gap-2 text-muted">
+                    <i class="bi bi-clock"></i>
+                    <small th:text="${review.reviewDate}"></small>
+                </div>
+            </div>
+        </div>
+    </section>
 </main>
 
 <footer class="footer-bolmesi py-4">
     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
-        <div class="d-flex align-items-center gap-3">
-            <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="az">AZ</button>
-            <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="en">EN</button>
-        </div>
         <div class="text-center text-md-start">
             <span class="d-block text-white-50" data-i18n="footerMotto">
                 FoodieLocal – yerli dadları birlikdə kəşf edək.
@@ -194,5 +204,4 @@
 <script th:src="@{/js/reviews.js}" defer></script>
 </body>
 </html>
-
 

@@ -11,9 +11,12 @@ public interface RestaurantService {
 
     List<Restaurant> getSeededRandomRestaurants(int count, long seed);
 
+    List<Restaurant> findAllSortedById();
+
     Restaurant findById(Long id);
 
     Restaurant save(Restaurant restaurant);
 
     void deleteById(Long id);
+
 }

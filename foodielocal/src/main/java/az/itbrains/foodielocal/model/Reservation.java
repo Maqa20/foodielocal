@@ -32,8 +32,15 @@ public class Reservation {
     @Column(name="reservation_date")
     private String reservationDate;
 
+    @ManyToOne
+    @JoinColumn(name = "restaurant_id")
+    private Restaurant restaurant;
+
     @Column(name="reservation_time")
     private String reservationTime;
+
+    @Column(name="status")
+    private String status;
 
     @Column(name="guest_count")
     private int guestCount;
@@ -43,9 +50,6 @@ public class Reservation {
 
     @Column(name="phone_number")
     private String phoneNumber;
-
-    @Column(name="restaurant_choice")
-    private String restaurantChoice;  // ✅ string saxlanır
 
     @Column(name="special_requests", length=1000)
     private String specialRequests;

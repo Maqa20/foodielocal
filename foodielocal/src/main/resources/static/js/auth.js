@@ -11,11 +11,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const translationDictionary = {
         az: {
             // Page title / Səhifə başlığı
-            pageTitle: 'Giriş - Coursora',
-            
+            pageTitle: 'Giriş - FoodieLocal',
+            registerPageTitle: 'Qeydiyyat - FoodieLocal',
+
             // Login page / Giriş səhifəsi
             loginTitle: 'Xoş Gəlmisiniz',
-            loginSubtitle: 'Coursora hesabınıza daxil olun',
+            loginSubtitle: 'FoodieLocal hesabınıza daxil olun',
             emailLabel: 'E-poçt Ünvanı',
             emailPlaceholder: 'E-poçtunuzu daxil edin',
             passwordLabel: 'Şifrə',
@@ -25,10 +26,10 @@ document.addEventListener('DOMContentLoaded', function () {
             loginButton: 'Daxil Ol',
             noAccount: 'Hesabınız yoxdur?',
             registerLink: 'Hesab Yarat',
-            
+
             // Register page / Qeydiyyat səhifəsi
             registerTitle: 'Hesab Yarat',
-            registerSubtitle: 'Coursora-ya qoşulun və öyrənmə səyahətinizə başlayın',
+            registerSubtitle: 'FoodieLocal-ə qoşulun və dadlı səyahətinizə başlayın',
             fullNameLabel: 'Tam Ad',
             fullNamePlaceholder: 'Tam adınızı daxil edin',
             confirmPasswordLabel: 'Şifrəni Təsdiqlə',
@@ -41,11 +42,12 @@ document.addEventListener('DOMContentLoaded', function () {
         },
         en: {
             // Page title / Səhifə başlığı
-            pageTitle: 'Login - Coursora',
-            
+            pageTitle: 'Login - FoodieLocal',
+            registerPageTitle: 'Register - FoodieLocal',
+
             // Login page / Giriş səhifəsi
             loginTitle: 'Welcome Back',
-            loginSubtitle: 'Sign in to your Coursora account',
+            loginSubtitle: 'Sign in to your FoodieLocal account',
             emailLabel: 'Email Address',
             emailPlaceholder: 'Enter your email',
             passwordLabel: 'Password',
@@ -55,10 +57,10 @@ document.addEventListener('DOMContentLoaded', function () {
             loginButton: 'Sign In',
             noAccount: 'Don\'t have an account?',
             registerLink: 'Create Account',
-            
+
             // Register page / Qeydiyyat səhifəsi
             registerTitle: 'Create Account',
-            registerSubtitle: 'Join Coursora and start your learning journey',
+            registerSubtitle: 'Join FoodieLocal and start your culinary journey',
             fullNameLabel: 'Full Name',
             fullNamePlaceholder: 'Enter your full name',
             confirmPasswordLabel: 'Confirm Password',
@@ -68,6 +70,37 @@ document.addEventListener('DOMContentLoaded', function () {
             registerButton: 'Create Account',
             haveAccount: 'Already have an account?',
             loginLink: 'Sign In'
+        },
+        ru: {
+            // Page title / Заголовок страницы
+            pageTitle: 'Вход - FoodieLocal',
+            registerPageTitle: 'Регистрация - FoodieLocal',
+
+            // Login page / Страница входа
+            loginTitle: 'Добро пожаловать',
+            loginSubtitle: 'Войдите в свой аккаунт FoodieLocal',
+            emailLabel: 'Адрес электронной почты',
+            emailPlaceholder: 'Введите ваш email',
+            passwordLabel: 'Пароль',
+            passwordPlaceholder: 'Введите ваш пароль',
+            rememberMe: 'Запомнить меня',
+            forgotPassword: 'Забыли пароль?',
+            loginButton: 'Войти',
+            noAccount: 'Нет аккаунта?',
+            registerLink: 'Создать аккаунт',
+
+            // Register page / Страница регистрации
+            registerTitle: 'Создать аккаунт',
+            registerSubtitle: 'Присоединяйтесь к FoodieLocal и начните свое кулинарное путешествие',
+            fullNameLabel: 'Полное имя',
+            fullNamePlaceholder: 'Введите ваше полное имя',
+            confirmPasswordLabel: 'Подтвердите пароль',
+            confirmPasswordPlaceholder: 'Подтвердите ваш пароль',
+            agreeTerms: 'Я согласен с',
+            termsLink: 'Условиями и положениями',
+            registerButton: 'Создать аккаунт',
+            haveAccount: 'Уже есть аккаунт?',
+            loginLink: 'Войти'
         }
     };
 
@@ -93,12 +126,46 @@ document.addEventListener('DOMContentLoaded', function () {
         translatableElements.forEach(function (element) {
             const key = element.getAttribute('data-i18n');
             if (key && translations[key]) {
+                // Skip title element - it's handled separately / Title elementini atla - o ayrıca idarə olunur
+                if (element.tagName === 'TITLE') {
+                    return;
+                }
+
                 // Fade out / Solma
                 element.style.opacity = '0';
                 element.style.transform = 'translateY(-5px)';
-                
+
                 setTimeout(function () {
-                    element.textContent = translations[key];
+                    // Save all child elements (icons, spans, etc.) / Bütün uşaq elementləri saxla
+                    const childElements = Array.from(element.children);
+
+                    // Remove all text nodes to avoid duplication / Təkrarlanmanın qarşısını almaq üçün bütün mətn node-larını sil
+                    const allNodes = Array.from(element.childNodes);
+                    allNodes.forEach(function(node) {
+                        if (node.nodeType === Node.TEXT_NODE) {
+                            node.remove();
+                        }
+                    });
+
+                    if (childElements.length > 0) {
+                        // Has child elements - preserve them and add text / Uşaq elementlər var - onları qoru və mətn əlavə et
+                        // Find the last element to add text after it / Mətni ondan sonra əlavə etmək üçün son elementi tap
+                        const lastElement = childElements[childElements.length - 1];
+
+                        // Add text after last element / Son elementdən sonra mətn əlavə et
+                        if (lastElement.nextSibling) {
+                            lastElement.parentNode.insertBefore(
+                                document.createTextNode(' ' + translations[key]),
+                                lastElement.nextSibling
+                            );
+                        } else {
+                            element.appendChild(document.createTextNode(' ' + translations[key]));
+                        }
+                    } else {
+                        // No child elements, simple text replacement / Uşaq element yoxdur, sadə mətn əvəzləməsi
+                        element.textContent = translations[key];
+                    }
+
                     // Fade in / Görünmə
                     element.style.opacity = '1';
                     element.style.transform = 'translateY(0)';
@@ -112,7 +179,7 @@ document.addEventListener('DOMContentLoaded', function () {
             if (key && translations[key]) {
                 // Fade out / Solma
                 element.style.opacity = '0';
-                
+
                 setTimeout(function () {
                     element.placeholder = translations[key];
                     // Fade in / Görünmə
@@ -122,15 +189,26 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // Update page title / Səhifə başlığını yenilə
-        if (translations.pageTitle) {
+        const currentPath = window.location.pathname;
+        if (currentPath.includes('/register')) {
+            document.title = translations.registerPageTitle || translations.pageTitle;
+        } else {
             document.title = translations.pageTitle;
         }
 
         // Update document language attribute / Sənəd dil atributunu yenilə
         document.documentElement.setAttribute('lang', languageCode);
-        
+
         // Save language preference / Dil seçimini saxla
-        localStorage.setItem('coursoraLanguage', languageCode);
+        localStorage.setItem('foodielocalDil', languageCode);
+
+        // Update active button state / Aktiv düymə vəziyyətini yenilə
+        languageButtons.forEach(function (btn) {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-dil') === languageCode) {
+                btn.classList.add('active');
+            }
+        });
 
         // Remove switching class after animation / Animasiyadan sonra dəyişmə sinifini sil
         setTimeout(function () {
@@ -147,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Load saved language or default to English / Saxlanılmış dili yüklə və ya ingiliscəni standart olaraq təyin et
-    const savedLanguage = localStorage.getItem('coursoraLanguage') || 'en';
+    const savedLanguage = localStorage.getItem('foodielocalDil') || 'en';
     applyLanguage(savedLanguage);
 
     /**
@@ -163,7 +241,7 @@ document.addEventListener('DOMContentLoaded', function () {
         togglePassword.addEventListener('click', function () {
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
-            
+
             const icon = document.getElementById('toggleIcon');
             if (icon) {
                 icon.classList.toggle('bi-eye');
@@ -176,7 +254,7 @@ document.addEventListener('DOMContentLoaded', function () {
         toggleConfirmPassword.addEventListener('click', function () {
             const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             confirmPasswordInput.setAttribute('type', type);
-            
+
             const icon = document.getElementById('toggleConfirmIcon');
             if (icon) {
                 icon.classList.toggle('bi-eye');
@@ -200,7 +278,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     isValid = false;
                     input.style.borderColor = '#dc3545';
                     input.style.animation = 'shake 0.5s';
-                    
+
                     setTimeout(function () {
                         input.style.animation = '';
                     }, 500);

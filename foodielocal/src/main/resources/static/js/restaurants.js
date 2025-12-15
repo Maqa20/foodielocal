@@ -118,6 +118,64 @@ document.addEventListener('DOMContentLoaded', () => {
             card25Description: 'Traditional restaurant specializing in Shirvan region\'s unique culinary traditions.',
             card26Name: 'Azərbaycan Evi',
             card26Description: 'Home-style Azerbaijani cooking with family recipes and warm hospitality.'
+        },
+        ru: {
+            pageTitle: 'Исследуйте все рестораны',
+            restaurantsHeaderTitle: 'Исследуйте все рестораны',
+            restaurantsHeaderSubtitle: 'Откройте лучшие рестораны города, подобранные специально для вас.',
+            detailsButton: 'Подробнее',
+            card1Name: 'City Bistro',
+            card1Description: 'Современный ресторан с сезонными меню и авторскими коктейлями.',
+            card2Name: 'Blue Wave Seafood',
+            card2Description: 'Свежие блюда в морском стиле, подаваемые в просторном помещении с морским дизайном.',
+            card3Name: 'Ember Grill',
+            card3Description: 'Стейки на огне и тщательно подобранная винная карта в интимной атмосфере.',
+            card4Name: 'Garden Terrace',
+            card4Description: 'Кухня от фермы до стола в окружении пышной зелени и естественного света.',
+            card5Name: 'Sweet Hours Pâtisserie',
+            card5Description: 'Десерты во французском стиле, кофе ручной работы и уютная атмосфера лаунжа.',
+            card6Name: 'North Avenue Sushi',
+            card6Description: 'Минималистичный суши-бар, известный опытом омакасэ и свежими морепродуктами.',
+            card7Name: 'Şirvansah',
+            card7Description: 'Традиционная азербайджанская кухня в элегантной обстановке с аутентичными местными вкусами.',
+            card8Name: 'Sumakh',
+            card8Description: 'Современный азербайджанский ресторан, предлагающий инновационные интерпретации классических блюд.',
+            card9Name: 'Chinar',
+            card9Description: 'Уютный ресторан, предлагающий традиционный плов, кебабы и азербайджанские деликатесы.',
+            card10Name: 'Nargiz',
+            card10Description: 'Семейный ресторан, известный своими вкусными долмой и кутабом.',
+            card11Name: 'Mangal Steak House',
+            card11Description: 'Премиальный стейк-хаус с мясом на гриле и азербайджанскими барбекю-деликатесами.',
+            card12Name: 'Dolma House',
+            card12Description: 'Специализируется на традиционной долме, кебабах и аутентичной азербайджанской домашней кухне.',
+            card13Name: 'Karvansaray',
+            card13Description: 'Историческая атмосфера с традиционной азербайджанской кухней и живой музыкой.',
+            card14Name: 'Firuze',
+            card14Description: 'Элегантный ужин с изысканной азербайджанской и международной кухней.',
+            card15Name: 'Sahil',
+            card15Description: 'Приморский ресторан, предлагающий свежие морепродукты и традиционные каспийские блюда.',
+            card16Name: 'Qala',
+            card16Description: 'Традиционный азербайджанский ресторан в сердце Старого города с аутентичными рецептами.',
+            card17Name: 'Mugham Club',
+            card17Description: 'Изысканная кухня с живыми выступлениями мугама и изысканной азербайджанской кухней.',
+            card18Name: 'Nakhchivan Restaurant',
+            card18Description: 'Региональные деликатесы из Нахчывана с уникальными вкусами и традиционными методами приготовления.',
+            card19Name: 'Baku Palace',
+            card19Description: 'Роскошный ресторан, предлагающий королевскую азербайджанскую кухню в роскошной обстановке.',
+            card20Name: 'Old Baku',
+            card20Description: 'Очаровательный ресторан в исторической обстановке с классической азербайджанской комфортной едой.',
+            card21Name: 'Qafqaz',
+            card21Description: 'Ресторан кавказской кухни с традиционными азербайджанскими и региональными деликатесами.',
+            card22Name: 'Şah',
+            card22Description: 'Премиальный азербайджанский ресторан с королевскими блюдами и элегантной подачей.',
+            card23Name: 'Art Club',
+            card23Description: 'Современный ресторан, сочетающий азербайджанскую кухню с современным искусством и дизайном.',
+            card24Name: 'Şirvanşah',
+            card24Description: 'Исторический ресторан, названный в честь Ширваншахов, предлагающий аутентичную азербайджанскую кухню наследия.',
+            card25Name: 'Şirvan',
+            card25Description: 'Традиционный ресторан, специализирующийся на уникальных кулинарных традициях региона Ширван.',
+            card26Name: 'Azərbaycan Evi',
+            card26Description: 'Домашняя азербайджанская кухня с семейными рецептами и теплым гостеприимством.'
         }
     };
 
@@ -145,8 +203,9 @@ document.addEventListener('DOMContentLoaded', () => {
             element.textContent = dictionary[key];
         });
 
-        document.querySelectorAll('.lang-button').forEach(button => {
-            const isActive = button.dataset.lang === lang;
+        document.querySelectorAll('.lang-button, .dil-secimi').forEach(button => {
+            const buttonLang = button.dataset.lang || button.dataset.dil;
+            const isActive = buttonLang === lang;
             button.classList.toggle('active', isActive);
         });
     };

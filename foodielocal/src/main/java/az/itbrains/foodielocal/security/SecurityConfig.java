@@ -26,13 +26,18 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/auth/**", "/css/**", "/js/**", "/images/**", "/terms").permitAll()
+                        // açıq səhifələr
+                        .requestMatchers("/", "/restaurants/**", "/auth/**", "/css/**", "/js/**", "/images/**", "/terms").permitAll()
+                        // rezervasiya və rəy yalnız login
+                        .requestMatchers("/reservation/**", "/reviews/**").authenticated()
+                        // admin panel yalnız ADMIN
                         .requestMatchers("/admin/**").hasRole("ADMIN")
+                        // qalan bütün sorğular login tələb edir
                         .anyRequest().authenticated()
                 )
-
                 .formLogin(form -> form
                         .loginPage("/auth/login")
+                        .loginProcessingUrl("/auth/login") // bunu əlavə et
                         .successHandler(customSuccessHandler)
                         .permitAll()
                 )

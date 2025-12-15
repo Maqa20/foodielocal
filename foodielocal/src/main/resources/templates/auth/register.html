@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title data-i18n="pageTitle">Register - Coursora</title>
+    <title data-i18n="registerPageTitle">Register - FoodieLocal</title>
 
     <!-- Fonts and Styles -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -15,19 +15,21 @@
     <link rel="stylesheet" th:href="@{/css/auth.css}">
 </head>
 <body>
+<!-- Language Switcher - Sağ yuxarı künc -->
+<div class="language-switcher-top-right">
+    <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="az">
+        <i class="bi bi-globe me-1"></i>AZ
+    </button>
+    <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="en">
+        <i class="bi bi-globe me-1"></i>EN
+    </button>
+    <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="ru">
+        <i class="bi bi-globe me-1"></i>RU
+    </button>
+</div>
+
 <div class="auth-container">
     <div class="auth-wrapper">
-
-        <!-- Language Switcher -->
-        <div class="language-switcher">
-            <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="en">
-                <i class="bi bi-globe me-1"></i>EN
-            </button>
-            <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="az">
-                <i class="bi bi-globe me-1"></i>AZ
-            </button>
-        </div>
-
         <!-- Register Card -->
         <div class="auth-card">
             <div class="auth-card-header">

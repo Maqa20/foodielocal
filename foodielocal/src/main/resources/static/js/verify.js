@@ -38,13 +38,14 @@
             verifyErrorSend: 'Email göndərilmədi. Zəhmət olmasa yenidən cəhd edin.',
             verifyErrorConfirm: 'Email təsdiqlənmədi. Zəhmət olmasa yenidən cəhd edin.',
             verifyErrorGeneral: 'Xəta baş verdi',
+            verifyErrorReservationNotFound: 'Təsdiqlənəcək rezervasiya tapılmadı.',
             navHome: 'Əsas',
             navRestaurants: 'Restoranlar',
             navReservation: 'Rezervasiya',
             navReviews: 'Rəylər',
             navLanguage: 'Dil',
             footerMotto: 'FoodieLocal – yerli dadları birlikdə kəşf edək.',
-            footerCopyright: '© 2025 FoodieLocal. Bütün hüquqlar qorunur.'
+            footerCopyright: function() { return '© ' + new Date().getFullYear() + ' FoodieLocal. Bütün hüquqlar qorunur.'; }
         },
         en: {
             verifyInfoPageTitle: 'Email Verification Info - FoodieLocal',
@@ -71,13 +72,48 @@
             verifyErrorSend: 'Failed to send email. Please try again.',
             verifyErrorConfirm: 'Email verification failed. Please try again.',
             verifyErrorGeneral: 'An error occurred',
+            verifyErrorReservationNotFound: 'Reservation to be verified not found.',
             navHome: 'Home',
             navRestaurants: 'Restaurants',
             navReservation: 'Reservation',
             navReviews: 'Reviews',
             navLanguage: 'Language',
             footerMotto: 'FoodieLocal – let\'s discover local flavors together.',
-            footerCopyright: '© 2025 FoodieLocal. All rights reserved.'
+            footerCopyright: function() { return '© ' + new Date().getFullYear() + ' FoodieLocal. All rights reserved.'; }
+        },
+        ru: {
+            verifyInfoPageTitle: 'Информация о подтверждении Email - FoodieLocal',
+            verifyResultPageTitle: 'Результат подтверждения Email - FoodieLocal',
+            verifyInfoBadge: 'Подтверждение Email',
+            verifyInfoTitle: 'Письмо подтверждения отправлено',
+            verifyInfoSubtitle: 'Ссылка для подтверждения была отправлена на ваш адрес электронной почты для подтверждения бронирования.',
+            verifyInfoInstruction: 'Пожалуйста, проверьте свою электронную почту и нажмите на ссылку подтверждения.',
+            verifyInfoButton: 'Вернуться к бронированию',
+            verifyResultBadge: 'Результат подтверждения',
+            verifyResultTitle: 'Результат подтверждения Email',
+            verifyResultMessage: 'Процесс подтверждения завершен.',
+            verifyResultBackButton: 'Новое бронирование',
+            verifyResultHomeButton: 'Главная страница',
+            verifyEmailLabel: 'Email',
+            verifyEmailPlaceholder: 'email@example.com',
+            verifyResendButton: 'Отправить Email повторно',
+            verifyTitle: 'Подтверждение Email',
+            verifyLoading: 'Пожалуйста, подождите...',
+            verifySuccessSend: 'Письмо подтверждения успешно отправлено.',
+            verifySuccessConfirm: 'Email успешно подтвержден!',
+            verifyErrorEmail: 'Пожалуйста, введите ваш адрес электронной почты.',
+            verifyErrorEmailInvalid: 'Пожалуйста, введите действительный адрес электронной почты.',
+            verifyErrorSend: 'Не удалось отправить email. Пожалуйста, попробуйте снова.',
+            verifyErrorConfirm: 'Подтверждение email не удалось. Пожалуйста, попробуйте снова.',
+            verifyErrorGeneral: 'Произошла ошибка',
+            verifyErrorReservationNotFound: 'Бронирование для подтверждения не найдено.',
+            navHome: 'Главная',
+            navRestaurants: 'Рестораны',
+            navReservation: 'Бронирование',
+            navReviews: 'Отзывы',
+            navLanguage: 'Язык',
+            footerMotto: 'FoodieLocal – давайте вместе открывать местные вкусы.',
+            footerCopyright: function() { return '© ' + new Date().getFullYear() + ' FoodieLocal. Все права защищены.'; }
         }
     };
 
@@ -289,16 +325,47 @@
         document.querySelectorAll('[data-i18n]').forEach(function(element) {
             const key = element.getAttribute('data-i18n');
             if (key && dict[key]) {
-                element.textContent = dict[key];
+                // Handle function values (like footerCopyright with dynamic year)
+                let value = dict[key];
+                if (typeof value === 'function') {
+                    value = value();
+                }
+
+                // For nav links with icons, find the span and update it
+                const span = element.querySelector('span[data-i18n="' + key + '"]') || element.querySelector('span');
+                if (span && element.children.length > 0) {
+                    span.textContent = value;
+                } else if (element.children.length > 0) {
+                    // Clear text nodes and keep children
+                    Array.from(element.childNodes).forEach(node => {
+                        if (node.nodeType === Node.TEXT_NODE) {
+                            node.remove();
+                        }
+                    });
+                    // Add text after last child
+                    if (element.lastChild) {
+                        element.insertAdjacentText('beforeend', value);
+                    } else {
+                        element.textContent = value;
+                    }
+                } else {
+                    // Simple text update for elements without children
+                    element.textContent = value;
+                }
             }
         });
 
-        // Update page title
-        const pageTitleEl = document.querySelector('title[data-i18n]');
+        // Update page title - check which page we're on
+        const pageTitleEl = document.querySelector('title');
         if (pageTitleEl) {
-            const titleKey = pageTitleEl.getAttribute('data-i18n');
-            if (titleKey && dict[titleKey]) {
-                pageTitleEl.textContent = dict[titleKey];
+            // Check if we're on verify-info or verify-result page
+            const isInfoPage = document.querySelector('[data-i18n="verifyInfoTitle"]');
+            const isResultPage = document.querySelector('[data-i18n="verifyResultTitle"]');
+
+            if (isInfoPage && dict.verifyInfoPageTitle) {
+                pageTitleEl.textContent = dict.verifyInfoPageTitle;
+            } else if (isResultPage && dict.verifyResultPageTitle) {
+                pageTitleEl.textContent = dict.verifyResultPageTitle;
             }
         }
 
@@ -319,6 +386,25 @@
 
         // Update document language
         document.documentElement.setAttribute('lang', lang);
+
+        // Translate backend messages in alert divs
+        const alertMessages = document.querySelectorAll('.alert span, .alert');
+        alertMessages.forEach(function(alert) {
+            const text = alert.textContent.trim();
+            // Check for messages in all languages and translate
+            if (text === 'Təsdiqlənəcək rezervasiya tapılmadı.' ||
+                text === 'Reservation to be verified not found.' ||
+                text === 'Бронирование для подтверждения не найдено.') {
+                // Preserve icon if exists
+                const icon = alert.querySelector('i');
+                const translatedText = dict.verifyErrorReservationNotFound || text;
+                if (icon) {
+                    alert.innerHTML = icon.outerHTML + ' ' + translatedText;
+                } else {
+                    alert.textContent = translatedText;
+                }
+            }
+        });
     }
 
     /**
@@ -363,11 +449,12 @@
         }
 
         // Handle language switching - listen to dil-secimi button clicks
-        document.querySelectorAll('.dil-secimi').forEach(function(btn) {
+        const languageButtons = document.querySelectorAll('.dil-secimi');
+        languageButtons.forEach(function(btn) {
             btn.addEventListener('click', function(e) {
                 e.preventDefault();
                 const selectedLang = btn.getAttribute('data-dil');
-                if (selectedLang && (selectedLang === 'az' || selectedLang === 'en')) {
+                if (selectedLang && (selectedLang === 'az' || selectedLang === 'en' || selectedLang === 'ru')) {
                     localStorage.setItem('foodielocalDil', selectedLang);
                     applyVerifyTranslations();
 

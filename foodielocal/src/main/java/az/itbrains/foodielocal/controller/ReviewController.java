@@ -8,6 +8,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
+
 @Controller
 @RequestMapping("/reviews")
 public class ReviewController {
@@ -41,6 +43,9 @@ public class ReviewController {
         Long restaurantId = review.getRestaurant().getId();
         Restaurant restaurant = restaurantService.findById(restaurantId);
         review.setRestaurant(restaurant);
+
+        // ✅ Tarixi avtomatik əlavə et
+        review.setReviewDate(LocalDateTime.now());
 
         // Review-u DB-yə yazırıq
         reviewService.save(review);

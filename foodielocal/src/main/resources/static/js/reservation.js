@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
             navLanguage: 'Dil',
             reservationPageTitle: 'Rezervasiya – Masanızı indi sifariş edin',
             reservationBadge: 'Özəl masalar',
-            reservationTitle: 'Masanızı reserv edin',
+            reservationTitle: 'Masanızı rezerv edin',
             reservationSubtitle: 'Mükəmməl qastronomik təcrübənizi saniyələr içində planlayın.',
             reservationPerk1: 'Şef tərəfindən hazırlanmış mövsümi menyular',
             reservationPerk2: 'Fərdiləşdirilmiş bayram paketləri',
@@ -69,8 +69,44 @@ document.addEventListener('DOMContentLoaded', function () {
             reservationSuccess: 'Your reservation has been successfully submitted!',
             reservationError: 'Please fill in all required fields before submitting.',
             reservationFooterNote: 'We’ll contact you to confirm your reservation within 24 hours.',
-            footerMotto: 'FoodieLocal – let’s discover local flavors together.',
+            footerMotto: 'FoodieLocal – let\'s discover local flavors together.',
             footerCopyright: '© 2025 FoodieLocal. All rights reserved.'
+        },
+        ru: {
+            navHome: 'Главная',
+            navRestaurants: 'Рестораны',
+            navReservation: 'Бронирование',
+            navReviews: 'Отзывы',
+            navLanguage: 'Язык',
+            reservationPageTitle: 'Бронирование – Забронируйте стол сейчас',
+            reservationBadge: 'Частный ужин',
+            reservationTitle: 'Забронируйте свой стол',
+            reservationSubtitle: 'Спланируйте идеальный ужин за секунды.',
+            reservationPerk1: 'Сезонные меню от шеф-повара',
+            reservationPerk2: 'Индивидуальные пакеты для праздников',
+            reservationPerk3: 'Приоритетная поддержка консьержа',
+            reservationFirstNameLabel: 'Имя',
+            reservationFirstNamePlaceholder: 'Введите ваше имя',
+            reservationLastNameLabel: 'Фамилия',
+            reservationLastNamePlaceholder: 'Введите вашу фамилию',
+            reservationEmailLabel: 'Email',
+            reservationEmailPlaceholder: 'email@example.com',
+            reservationPhoneLabel: 'Телефон',
+            reservationPhonePlaceholder: '+7 999 123 45 67',
+            reservationRestaurantLabel: 'Выбор ресторана',
+            reservationRestaurantPlaceholder: 'Выберите ресторан',
+            reservationGuestCountLabel: 'Количество гостей',
+            reservationGuestCountPlaceholder: '1-12',
+            reservationDateLabel: 'Дата',
+            reservationTimeLabel: 'Время',
+            reservationSpecialRequestsLabel: 'Особые пожелания',
+            reservationSpecialRequestsPlaceholder: 'Введите особые пожелания (необязательно)',
+            reservationSubmitButton: 'Забронировать',
+            reservationSuccess: 'Ваше бронирование успешно отправлено!',
+            reservationError: 'Пожалуйста, заполните все обязательные поля перед отправкой.',
+            reservationFooterNote: 'Мы свяжемся с вами для подтверждения бронирования в течение 24 часов.',
+            footerMotto: 'FoodieLocal – давайте вместе открывать местные вкусы.',
+            footerCopyright: '© 2025 FoodieLocal. Все права защищены.'
         }
     };
 
@@ -87,6 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
         translatableElements.forEach(function (element) {
             const key = element.getAttribute('data-i18n');
             if (key && locale[key]) {
+                // Simple text update - replace all content
                 element.textContent = locale[key];
             }
         });
@@ -117,6 +154,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
         document.documentElement.setAttribute('lang', code);
         localStorage.setItem('foodielocalDil', code);
+
+        // Update active button state
+        languageButtons.forEach(function (btn) {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-dil') === code) {
+                btn.classList.add('active');
+            }
+        });
     };
 
     languageButtons.forEach(function (button) {

@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="az" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title th:text="${restaurant != null and restaurant.name != null ? restaurant.name + ' - Menyu' : 'Menyu'}">Menyu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css" crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <link rel="stylesheet" th:href="@{/css/menu.css}">
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent lüks-navbar fixed-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" th:href="@{/}">FoodieLocal</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                    aria-controls="mainNavbar" aria-expanded="false" aria-label="Navigasiyanı aç">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse justify-content-end" id="mainNavbar">
+                <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
+                    <li class="nav-item px-lg-2"><a class="nav-link" data-i18n="navHome" th:href="@{/}">Əsas</a></li>
+                    <li class="nav-item px-lg-2"><a class="nav-link" data-i18n="navRestaurants" th:href="@{/restaurants}">Restoranlar</a></li>
+                    <li class="nav-item px-lg-2"><a class="nav-link" data-i18n="navReservation" th:href="@{/reservation}">Rezervasiya</a></li>
+                    <li class="nav-item px-lg-2"><a class="nav-link" data-i18n="navReviews" th:href="@{/reviews}">Rəylər</a></li>
+                    <li class="nav-item dropdown px-lg-2">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-translate me-2"></i><span data-i18n="navLanguage">Dil</span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end lüks-dropdown">
+                            <li><button class="dropdown-item dil-secimi" data-dil="az">AZ</button></li>
+                            <li><button class="dropdown-item dil-secimi" data-dil="en">EN</button></li>
+                            <li><button class="dropdown-item dil-secimi" data-dil="ru">RU</button></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<main class="menu-main">
+    <section class="menu-hero">
+        <div class="menu-hero-overlay"></div>
+        <div class="container position-relative py-5">
+            <div class="row align-items-center">
+                <div class="col-12 text-center">
+                    <span class="badge bg-light text-dark mb-3" data-i18n="menuBadge"
+                          th:text="${restaurant != null and restaurant.cuisine != null ? restaurant.cuisine : ''}"></span>
+                    <h1 class="display-4 fw-bold mb-3 text-white" data-i18n="menuTitle"
+                        th:text="${restaurant != null and restaurant.name != null ? restaurant.name + ' - Menyu' : 'Menyu'}"></h1>
+                    <p class="lead text-white mb-4" data-i18n="menuSubtitle">Dadlı yeməklərimizi kəşf edin</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="menu-content py-5">
+        <div class="container">
+            <!-- Boş menyu mesajı -->
+            <div th:if="${restaurant == null or restaurant.menuItems == null or #lists.isEmpty(restaurant.menuItems)}"
+                 class="menu-empty text-center py-5">
+                <i class="bi bi-inbox fs-1 d-block mb-3 text-white-50"></i>
+                <h3 class="text-white mb-3" data-i18n="menuEmptyTitle">Menyu məlumatı yoxdur</h3>
+                <p class="text-white-50 mb-4" data-i18n="menuEmptyDescription">Menyu məlumatı hələ əlavə olunmayıb.</p>
+                <a class="btn btn-outline-light" th:href="@{'/restaurants/' + ${restaurant.id}}">
+                    <i class="bi bi-arrow-left me-2"></i><span data-i18n="menuBackButton">Restorana qayıt</span>
+                </a>
+            </div>
+
+            <!-- Menyu məzmunu -->
+            <div th:if="${restaurant != null and restaurant.menuItems != null and !#lists.isEmpty(restaurant.menuItems)}">
+                <!-- Category Filter Buttons -->
+                <div class="menu-category-filter mb-4 d-flex flex-wrap gap-2 justify-content-center">
+                    <button class="btn btn-outline-light category-filter-btn active"
+                            data-category="all"
+                            data-i18n="menuCategoryAll">
+                        Hamısı
+                    </button>
+                    <button class="btn btn-outline-warning category-filter-btn"
+                            data-category="popular"
+                            data-i18n="menuCategoryPopular">
+                        <i class="bi bi-star-fill me-1"></i>Məşhur
+                    </button>
+                    <button class="btn btn-outline-light category-filter-btn"
+                            data-category="Main Dishes"
+                            data-i18n="menuCategoryMainDishes">
+                        İsti Yeməklər
+                    </button>
+                    <button class="btn btn-outline-light category-filter-btn"
+                            data-category="Starters"
+                            data-i18n="menuCategoryStarters">
+                        Qəlyanaltılar
+                    </button>
+                    <button class="btn btn-outline-light category-filter-btn"
+                            data-category="Drinks"
+                            data-i18n="menuCategoryDrinks">
+                        İçkilər
+                    </button>
+                    <button class="btn btn-outline-light category-filter-btn"
+                            data-category="Desserts"
+                            data-i18n="menuCategoryDesserts">
+                        Şirniyyatlar
+                    </button>
+                    <button class="btn btn-outline-light category-filter-btn"
+                            data-category="Snacks"
+                            data-i18n="menuCategorySnacks">
+                        Qəlyanaltılar (Snacks)
+                    </button>
+                </div>
+
+                <!-- Main Dishes Section -->
+                <section class="menu-category-section mb-5" data-category-section="Main Dishes">
+                    <h2 class="menu-category-title mb-4 text-white" data-i18n="menuCategoryMainDishes">İsti Yeməklər</h2>
+                    <div class="row g-4">
+                        <div th:each="item : ${restaurant.menuItems}"
+                             th:if="${item.category == 'Main Dishes'}"
+                             class="col-md-6 col-lg-4 menu-item-wrapper"
+                             th:attr="data-category=${item.category ?: 'Uncategorized'},
+                                      data-is-popular=${item.isPopular}">
+                            <div class="menu-item-card">
+                                <!-- Popular Badge -->
+                                <div th:if="${item.isPopular == true}" class="position-absolute top-0 end-0 m-2">
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="bi bi-star-fill me-1"></i><span data-i18n="menuPopular">Məşhur</span>
+                                    </span>
+                                </div>
+
+                                <div class="menu-item-image-wrapper" th:if="${item.imageUrl != null and !item.imageUrl.isEmpty()}">
+                                    <img th:src="${item.imageUrl}"
+                                         class="menu-item-image"
+                                         alt="Yemək şəkli"
+                                         onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80'">
+                                </div>
+                                <div class="menu-item-image-wrapper" th:if="${item.imageUrl == null or item.imageUrl.isEmpty()}">
+                                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"
+                                         class="menu-item-image"
+                                         alt="Yemək şəkli">
+                                </div>
+                                <div class="menu-item-content">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h4 class="menu-item-name mb-0">
+                                            <span class="menu-item-name-text" th:text="${item.name}" th:attr="data-original-name=${item.name}"></span>
+                                        </h4>
+                                        <span class="menu-item-price" th:text="${item.price != null ? (item.price + ' AZN') : '0 AZN'}">0 AZN</span>
+                                    </div>
+                                    <p class="menu-item-description mb-0 menu-item-description-text" th:text="${item.description}" th:attr="data-original-description=${item.description}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Starters Section -->
+                <section class="menu-category-section mb-5" data-category-section="Starters">
+                    <h2 class="menu-category-title mb-4 text-white" data-i18n="menuCategoryStarters">Qəlyanaltılar</h2>
+                    <div class="row g-4">
+                        <div th:each="item : ${restaurant.menuItems}"
+                             th:if="${item.category == 'Starters'}"
+                             class="col-md-6 col-lg-4 menu-item-wrapper"
+                             th:attr="data-category=${item.category ?: 'Uncategorized'},
+                                      data-is-popular=${item.isPopular}">
+                            <div class="menu-item-card">
+                                <!-- Popular Badge -->
+                                <div th:if="${item.isPopular == true}" class="position-absolute top-0 end-0 m-2">
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="bi bi-star-fill me-1"></i><span data-i18n="menuPopular">Məşhur</span>
+                                    </span>
+                                </div>
+
+                                <div class="menu-item-image-wrapper" th:if="${item.imageUrl != null and !item.imageUrl.isEmpty()}">
+                                    <img th:src="${item.imageUrl}"
+                                         class="menu-item-image"
+                                         alt="Yemək şəkli"
+                                         onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80'">
+                                </div>
+                                <div class="menu-item-image-wrapper" th:if="${item.imageUrl == null or item.imageUrl.isEmpty()}">
+                                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"
+                                         class="menu-item-image"
+                                         alt="Yemək şəkli">
+                                </div>
+                                <div class="menu-item-content">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h4 class="menu-item-name mb-0">
+                                            <span class="menu-item-name-text" th:text="${item.name}" th:attr="data-original-name=${item.name}"></span>
+                                        </h4>
+                                        <span class="menu-item-price" th:text="${item.price != null ? (item.price + ' AZN') : '0 AZN'}">0 AZN</span>
+                                    </div>
+                                    <p class="menu-item-description mb-0 menu-item-description-text" th:text="${item.description}" th:attr="data-original-description=${item.description}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Drinks Section -->
+                <section class="menu-category-section mb-5" data-category-section="Drinks">
+                    <h2 class="menu-category-title mb-4 text-white" data-i18n="menuCategoryDrinks">İçkilər</h2>
+                    <div class="row g-4">
+                        <div th:each="item : ${restaurant.menuItems}"
+                             th:if="${item.category == 'Drinks'}"
+                             class="col-md-6 col-lg-4 menu-item-wrapper"
+                             th:attr="data-category=${item.category ?: 'Uncategorized'},
+                                      data-is-popular=${item.isPopular}">
+                            <div class="menu-item-card">
+                                <!-- Popular Badge -->
+                                <div th:if="${item.isPopular == true}" class="position-absolute top-0 end-0 m-2">
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="bi bi-star-fill me-1"></i><span data-i18n="menuPopular">Məşhur</span>
+                                    </span>
+                                </div>
+
+                                <div class="menu-item-image-wrapper" th:if="${item.imageUrl != null and !item.imageUrl.isEmpty()}">
+                                    <img th:src="${item.imageUrl}"
+                                         class="menu-item-image"
+                                         alt="Yemək şəkli"
+                                         onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80'">
+                                </div>
+                                <div class="menu-item-image-wrapper" th:if="${item.imageUrl == null or item.imageUrl.isEmpty()}">
+                                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"
+                                         class="menu-item-image"
+                                         alt="Yemək şəkli">
+                                </div>
+                                <div class="menu-item-content">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h4 class="menu-item-name mb-0">
+                                            <span class="menu-item-name-text" th:text="${item.name}" th:attr="data-original-name=${item.name}"></span>
+                                        </h4>
+                                        <span class="menu-item-price" th:text="${item.price != null ? (item.price + ' AZN') : '0 AZN'}">0 AZN</span>
+                                    </div>
+                                    <p class="menu-item-description mb-0 menu-item-description-text" th:text="${item.description}" th:attr="data-original-description=${item.description}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Desserts Section -->
+                <section class="menu-category-section mb-5" data-category-section="Desserts">
+                    <h2 class="menu-category-title mb-4 text-white" data-i18n="menuCategoryDesserts">Şirniyyatlar</h2>
+                    <div class="row g-4">
+                        <div th:each="item : ${restaurant.menuItems}"
+                             th:if="${item.category == 'Desserts'}"
+                             class="col-md-6 col-lg-4 menu-item-wrapper"
+                             th:attr="data-category=${item.category ?: 'Uncategorized'},
+                                      data-is-popular=${item.isPopular}">
+                            <div class="menu-item-card">
+                                <!-- Popular Badge -->
+                                <div th:if="${item.isPopular == true}" class="position-absolute top-0 end-0 m-2">
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="bi bi-star-fill me-1"></i><span data-i18n="menuPopular">Məşhur</span>
+                                    </span>
+                                </div>
+
+                                <div class="menu-item-image-wrapper" th:if="${item.imageUrl != null and !item.imageUrl.isEmpty()}">
+                                    <img th:src="${item.imageUrl}"
+                                         class="menu-item-image"
+                                         alt="Yemək şəkli"
+                                         onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80'">
+                                </div>
+                                <div class="menu-item-image-wrapper" th:if="${item.imageUrl == null or item.imageUrl.isEmpty()}">
+                                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"
+                                         class="menu-item-image"
+                                         alt="Yemək şəkli">
+                                </div>
+                                <div class="menu-item-content">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h4 class="menu-item-name mb-0">
+                                            <span class="menu-item-name-text" th:text="${item.name}" th:attr="data-original-name=${item.name}"></span>
+                                        </h4>
+                                        <span class="menu-item-price" th:text="${item.price != null ? (item.price + ' AZN') : '0 AZN'}">0 AZN</span>
+                                    </div>
+                                    <p class="menu-item-description mb-0 menu-item-description-text" th:text="${item.description}" th:attr="data-original-description=${item.description}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Snacks Section -->
+                <section class="menu-category-section mb-5" data-category-section="Snacks">
+                    <h2 class="menu-category-title mb-4 text-white" data-i18n="menuCategorySnacks">Qəlyanaltılar (Snacks)</h2>
+                    <div class="row g-4">
+                        <div th:each="item : ${restaurant.menuItems}"
+                             th:if="${item.category == 'Snacks'}"
+                             class="col-md-6 col-lg-4 menu-item-wrapper"
+                             th:attr="data-category=${item.category ?: 'Uncategorized'},
+                                      data-is-popular=${item.isPopular}">
+                            <div class="menu-item-card">
+                                <!-- Popular Badge -->
+                                <div th:if="${item.isPopular == true}" class="position-absolute top-0 end-0 m-2">
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="bi bi-star-fill me-1"></i><span data-i18n="menuPopular">Məşhur</span>
+                                    </span>
+                                </div>
+
+                                <div class="menu-item-image-wrapper" th:if="${item.imageUrl != null and !item.imageUrl.isEmpty()}">
+                                    <img th:src="${item.imageUrl}"
+                                         class="menu-item-image"
+                                         alt="Yemək şəkli"
+                                         onerror="this.src='https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80'">
+                                </div>
+                                <div class="menu-item-image-wrapper" th:if="${item.imageUrl == null or item.imageUrl.isEmpty()}">
+                                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80"
+                                         class="menu-item-image"
+                                         alt="Yemək şəkli">
+                                </div>
+                                <div class="menu-item-content">
+                                    <div class="d-flex justify-content-between align-items-start mb-2">
+                                        <h4 class="menu-item-name mb-0">
+                                            <span class="menu-item-name-text" th:text="${item.name}" th:attr="data-original-name=${item.name}"></span>
+                                        </h4>
+                                        <span class="menu-item-price" th:text="${item.price != null ? (item.price + ' AZN') : '0 AZN'}">0 AZN</span>
+                                    </div>
+                                    <p class="menu-item-description mb-0 menu-item-description-text" th:text="${item.description}" th:attr="data-original-description=${item.description}"></p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- No items message for filtered category -->
+                <div id="noItemsMessage" class="text-center py-5" style="display: none;">
+                    <i class="bi bi-inbox fs-1 d-block mb-3 text-white-50"></i>
+                    <h3 class="text-white mb-3" data-i18n="menuNoItemsTitle">Bu kateqoriyada yemək yoxdur</h3>
+                    <p class="text-white-50" data-i18n="menuNoItemsDescription">Başqa kateqoriya seçin.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer class="menu-footer py-4">
+    <div class="container text-center">
+        <p class="mb-0 text-white-50" data-i18n="menuFooter">
+            © <span th:text="${T(java.time.Year).now().value}">2025</span> FoodieLocal. Bütün hüquqlar qorunur.
+        </p>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/js/menu.js}"></script>
+</body>
+</html>
+

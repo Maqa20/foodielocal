@@ -10,9 +10,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class MenuDto {
+    private Long id;
     private String name;
     private String description;
-    private double price;
+    private Double price;
+    private String category;
+    private boolean isPopular;
     private Long restaurantId;
-
 }
+

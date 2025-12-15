@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -31,7 +31,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.passwordEncoder = passwordEncoder;
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         User user = userRepository.findByEmail(email)
@@ -42,19 +41,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
                 .toList();
 
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                authorities
-        );
+        return org.springframework.security.core.userdetails.User
+                .withUsername(user.getEmail())
+                .password(user.getPassword())
+                .authorities(authorities)
+                .accountExpired(false)
+                .accountLocked(false)
+                .credentialsExpired(false)
+                .disabled(!user.isEnabled()) // ✅ aktiv/deaktiv yoxlanır
+                .build();
     }
+
     @Override
     public User registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         Role defaultRole = roleRepository.findByName("ROLE_USER")
                 .orElseThrow(() -> new RuntimeException("Rol tapılmadı: ROLE_USER"));
 
-        user.setRoles(Set.of(defaultRole));
+        user.setRoles(new HashSet<>(List.of(defaultRole)));
         return userRepository.save(user);
     }
 

@@ -3,6 +3,7 @@ package az.itbrains.foodielocal.service.impl;
 import az.itbrains.foodielocal.model.Reservation;
 import az.itbrains.foodielocal.repository.ReservationRepository;
 import az.itbrains.foodielocal.service.ReservationService;
+import az.itbrains.foodielocal.service.EmailService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,9 +12,11 @@ import java.util.List;
 public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository repo;
+    private final EmailService emailService; // ✅ EmailService injection
 
-    public ReservationServiceImpl(ReservationRepository repo) {
+    public ReservationServiceImpl(ReservationRepository repo, EmailService emailService) {
         this.repo = repo;
+        this.emailService = emailService;
     }
 
     @Override
@@ -33,6 +36,43 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public long countAllReservations() {
-        return repo.countAllReservations();
+        return repo.count();
+    }
+
+    @Override
+    public Reservation findById(Long id) {
+        return repo.findById(id)
+                .orElseThrow(() -> new RuntimeException("Rezervasiya tapılmadı: " + id));
+    }
+
+    @Override
+    public void deleteById(Long id) {
+        repo.deleteById(id);
+    }
+
+    // ✅ Rezervasiyanı təsdiqlə
+    @Override
+    public void approveReservation(Long id) {
+        Reservation reservation = findById(id);
+        reservation.setStatus("APPROVED");
+        repo.save(reservation);
+
+        String details = "Tarix: " + reservation.getReservationDate() +
+                "\nSaat: " + reservation.getReservationTime() +
+                "\nRestoran: " + reservation.getRestaurant().getName();
+        emailService.sendReservationConfirmation(reservation.getEmailAddress(), details);
+    }
+
+    // ✅ Rezervasiyanı rədd et
+    @Override
+    public void rejectReservation(Long id) {
+        Reservation reservation = findById(id);
+        reservation.setStatus("REJECTED");
+        repo.save(reservation);
+
+        String details = "Tarix: " + reservation.getReservationDate() +
+                "\nSaat: " + reservation.getReservationTime() +
+                "\nRestoran: " + reservation.getRestaurant().getName();
+        emailService.sendReservationCancellation(reservation.getEmailAddress(), details);
     }
 }

@@ -5,6 +5,7 @@ import az.itbrains.foodielocal.repository.RoleRepository;
 import az.itbrains.foodielocal.service.RoleService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -18,12 +19,11 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public Optional<Role> findByName(String name) {
-        Optional<Role> optionalRole = roleRepository.findByName(name);
+        return roleRepository.findByName(name);
+    }
 
-        if (optionalRole.isPresent()) {
-            return optionalRole;
-        } else {
-            throw new RuntimeException("Rol tapılmadı: " + name);
-        }
+    @Override
+    public List<Role> findAll() {
+        return roleRepository.findAll();
     }
 }

@@ -23,9 +23,12 @@ a {
 
 .lüks-navbar {
     backdrop-filter: blur(18px);
-    background: rgba(15, 18, 26, 0.7);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-    transition: background 0.3s ease-in-out;
+    background: rgba(59, 130, 246, 0.15);
+    border-bottom: 1px solid rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 30px rgba(59, 130, 246, 0.2),
+                0 0 60px rgba(59, 130, 246, 0.1),
+                inset 0 1px 0 rgba(59, 130, 246, 0.1);
+    transition: background 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
 }
 
 .lüks-navbar .nav-link {
@@ -42,6 +45,30 @@ a {
 
 .lüks-navbar .navbar-brand {
     color: #ffffff;
+    font-weight: 600;
+}
+
+/* Header-dakı dil düymələri üçün xüsusi üslub */
+.lüks-navbar .dil-secimi {
+    font-size: 0.85rem;
+    padding: 6px 12px;
+    border-color: rgba(255, 255, 255, 0.4);
+    color: rgba(255, 255, 255, 0.7);
+    transition: all 0.3s ease;
+}
+
+.lüks-navbar .dil-secimi:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.6);
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.lüks-navbar .dil-secimi.active {
+    background: linear-gradient(135deg, #fbbf24, #f97316) !important;
+    color: #0f121a !important;
+    border-color: transparent !important;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
     font-weight: 600;
 }
 
@@ -117,6 +144,55 @@ a {
     background: rgba(6, 8, 15, 0.92);
     border-color: rgba(224, 178, 126, 0.9);
     box-shadow: 0 0 0 0.2rem rgba(201, 150, 100, 0.25);
+    color: #ffffff;
+}
+
+/* Tarix və Saat üçün custom ağ icon-lar */
+.reservation-input-icon-wrapper {
+    position: relative;
+}
+
+.reservation-input-icon-wrapper .form-control {
+    padding-right: 2.5rem; /* Sağda icon üçün yer */
+}
+
+.reservation-input-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #ffffff;
+    font-size: 1.1rem;
+    pointer-events: none; /* Klik input-a getsin */
+    z-index: 2;
+}
+
+/* Wrapper daxilində browser-in default icon-un gizlədilməsi */
+.reservation-input-icon-wrapper input[type="date"]::-webkit-calendar-picker-indicator,
+.reservation-input-icon-wrapper input[type="time"]::-webkit-calendar-picker-indicator {
+    opacity: 0;
+}
+
+/* Firefox üçün */
+.reservation-form input[type="date"],
+.reservation-form input[type="time"] {
+    color-scheme: dark;
+}
+
+/* Date və Time input-ları üçün text rəngi */
+.reservation-form input[type="date"],
+.reservation-form input[type="time"] {
+    color: #ffffff !important;
+}
+
+.reservation-form input[type="date"]::-webkit-datetime-edit-text,
+.reservation-form input[type="date"]::-webkit-datetime-edit-month-field,
+.reservation-form input[type="date"]::-webkit-datetime-edit-day-field,
+.reservation-form input[type="date"]::-webkit-datetime-edit-year-field,
+.reservation-form input[type="time"]::-webkit-datetime-edit-text,
+.reservation-form input[type="time"]::-webkit-datetime-edit-hour-field,
+.reservation-form input[type="time"]::-webkit-datetime-edit-minute-field,
+.reservation-form input[type="time"]::-webkit-datetime-edit-ampm-field {
     color: #ffffff;
 }
 

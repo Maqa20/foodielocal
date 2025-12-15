@@ -22,9 +22,11 @@ public class UserForm {
     @NotBlank(message = "Email boş ola bilməz")
     private String email;
 
-    @NotBlank(message = "Şifrə boş ola bilməz")
+    // ✅ Create zamanı boş olmamalıdır, update zamanı boş qala bilər
     private String password;
 
     @NotBlank(message = "Rol seçilməlidir")
     private String role;
+
+    private boolean enabled = true; // default olaraq aktiv
 }

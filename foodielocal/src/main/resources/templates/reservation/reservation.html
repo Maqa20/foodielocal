@@ -49,6 +49,7 @@
                         <ul class="dropdown-menu dropdown-menu-end lüks-dropdown">
                             <li><button class="dropdown-item dil-secimi" data-dil="az">AZ</button></li>
                             <li><button class="dropdown-item dil-secimi" data-dil="en">EN</button></li>
+                            <li><button class="dropdown-item dil-secimi" data-dil="ru">RU</button></li>
                         </ul>
                     </li>
                 </ul>
@@ -109,9 +110,9 @@
                             </div>
                             <div class="col-md-6">
                                 <label class="form-label" for="restaurantChoice" data-i18n="reservationRestaurantLabel">Restoran seçimi</label>
-                                <select class="form-select" th:field="*{restaurantChoice}" id="restaurantChoice" required>
+                                <select class="form-select" name="restaurantId" id="restaurantChoice" required>
                                     <option value="" data-i18n="reservationRestaurantPlaceholder">-- Restoran seçin --</option>
-                                    <option th:each="r : ${restaurants}" th:value="${r.name}" th:text="${r.name}"></option>
+                                    <option th:each="r : ${restaurants}" th:value="${r.id}" th:text="${r.name}"></option>
                                 </select>
                             </div>
 
@@ -141,21 +142,18 @@
                                 <div th:if="${success}" class="alert alert-success" data-i18n="reservationSuccess" th:text="${success}"></div>
                                 <div th:if="${error}" class="alert alert-danger" data-i18n="reservationError" th:text="${error}"></div>
                             </div>
-
+                            <input type="hidden" name="status" value="Pending"/>
                             <div class="col-12">
                                 <button type="submit" class="btn reservation-button w-100" data-i18n="reservationSubmitButton">Rezervasiya et</button>
                             </div>
                         </form>
-                            <div class="col-12">
-                                <p th:text="${message}" class="text-center mt-2"></p>
-                            </div>
-                        </div>
                         <p class="text-center text-white-50 mt-4 mb-0" data-i18n="reservationFooterNote">
                             We’ll contact you to confirm your reservation within 24 hours.
                         </p>
                     </div>
                 </div>
             </div>
+        </div>
     </section>
 </main>
 <footer class="footer-bolmesi py-4">
@@ -163,6 +161,7 @@
         <div class="d-flex align-items-center gap-3">
             <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="az">AZ</button>
             <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="en">EN</button>
+            <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="ru">RU</button>
         </div>
         <div class="text-center text-md-start">
             <span class="d-block text-white-50" data-i18n="footerMotto">

@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="az" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title data-i18n="serverErrorTitle">Server Error - FoodieLocal</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+          integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+          crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.11.1/font/bootstrap-icons.min.css"
+          integrity="sha512-jb8zW4N5U9BJ1R0SUD7JbDs0syy6WbMiWcRW+t9DOnAW9I1u8+s9YWD/KSGbFbFhWXGHk0JXrZYpQb9Ee7pPLA=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #0f121a 0%, #1a1f2e 100%);
+            color: #f5f5f7;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .error-container {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+
+        .error-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .error-icon {
+            font-size: 5rem;
+            color: #ef4444;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+            50% {
+                opacity: 0.7;
+                transform: scale(1.1);
+            }
+        }
+
+        .error-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #f5f5f7;
+            margin-bottom: 10px;
+        }
+
+        .error-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+        }
+
+        .error-details {
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .error-detail-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .error-detail-item:last-child {
+            border-bottom: none;
+        }
+
+        .error-detail-label {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            min-width: 150px;
+            font-size: 0.95rem;
+        }
+
+        .error-detail-value {
+            flex: 1;
+            color: #f5f5f7;
+            word-break: break-word;
+            text-align: right;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+
+        .error-message-box {
+            background: rgba(239, 68, 68, 0.1);
+            border-left: 4px solid #ef4444;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .error-message-title {
+            font-weight: 600;
+            color: #ef4444;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .error-message-text {
+            color: #f5f5f7;
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .error-stack {
+            background: rgba(0, 0, 0, 0.4);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .error-stack-title {
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 15px;
+            font-size: 1rem;
+        }
+
+        .error-stack-content {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            white-space: pre-wrap;
+            word-break: break-word;
+            line-height: 1.6;
+        }
+
+        .error-actions {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .error-btn {
+            padding: 12px 30px;
+            border-radius: 10px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .error-btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #2563eb);
+            color: white;
+            border: none;
+        }
+
+        .error-btn-primary:hover {
+            background: linear-gradient(135deg, #2563eb, #1d4ed8);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+            color: white;
+        }
+
+        .error-btn-secondary {
+            background: rgba(255, 255, 255, 0.1);
+            color: #f5f5f7;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .error-btn-secondary:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .error-status-badge {
+            display: inline-block;
+            padding: 6px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .error-status-badge.error {
+            background: #ef4444;
+            color: white;
+        }
+
+        .error-status-badge.warning {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .error-status-badge.info {
+            background: #3b82f6;
+            color: white;
+        }
+
+        /* Scrollbar */
+        .error-stack::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .error-stack::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .error-stack::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 4px;
+        }
+
+        .error-stack::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        /* Language Switcher */
+        .language-switcher-top {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+            z-index: 1000;
+            background: rgba(15, 18, 26, 0.8);
+            backdrop-filter: blur(10px);
+            padding: 10px;
+            border-radius: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .dil-secimi {
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            font-weight: 500;
+            padding: 6px 14px;
+            border-radius: 999px;
+            transition: all 0.25s ease;
+            cursor: pointer;
+        }
+
+        .dil-secimi:hover,
+        .dil-secimi:focus {
+            background: rgba(255, 255, 255, 0.15);
+            color: #ffffff;
+            transform: translateY(-2px);
+        }
+
+        .dil-secimi.active {
+            background: linear-gradient(135deg, #fbbf24, #f97316) !important;
+            color: #0f121a !important;
+            border-color: transparent !important;
+            box-shadow: 0 6px 14px rgba(249, 115, 22, 0.35);
+        }
+
+        .btn-outline-light.dil-secimi {
+            border-color: rgba(255, 255, 255, 0.4);
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .btn-outline-light.dil-secimi:hover,
+        .btn-outline-light.dil-secimi:focus {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            color: #ffffff;
+        }
+
+        .btn-outline-light.dil-secimi.active {
+            background: linear-gradient(135deg, #fbbf24, #f97316) !important;
+            color: #0f121a !important;
+            border-color: transparent !important;
+            box-shadow: 0 6px 14px rgba(249, 115, 22, 0.35);
+        }
+
+        /* Language Transition Animation */
+        .language-switching [data-i18n] {
+            transition: opacity 0.3s ease, transform 0.3s ease;
+        }
+
+        .language-switching {
+            pointer-events: none;
+        }
+
+        @media (max-width: 768px) {
+            .error-container {
+                padding: 25px;
+            }
+
+            .error-title {
+                font-size: 2rem;
+            }
+
+            .error-icon {
+                font-size: 4rem;
+            }
+
+            .error-detail-item {
+                flex-direction: column;
+                gap: 8px
+            }
+
+            .error-detail-label {
+                min-width: auto;
+            }
+
+            .error-detail-value {
+                text-align: left;
+            }
+
+            .error-actions {
+                flex-direction: column;
+            }
+
+            .error-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .language-switcher-top {
+                top: 10px;
+                right: 10px;
+                padding: 8px;
+                gap: 6px;
+            }
+
+            .dil-secimi {
+                padding: 4px 10px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<!-- Language Switcher -->
+<div class="language-switcher-top">
+    <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="az">
+        <i class="bi bi-globe me-1"></i>AZ
+    </button>
+    <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="en">
+        <i class="bi bi-globe me-1"></i>EN
+    </button>
+    <button class="btn btn-sm btn-outline-light rounded-pill dil-secimi" data-dil="ru">
+        <i class="bi bi-globe me-1"></i>RU
+    </button>
+</div>
+
+<div class="error-container">
+    <div class="error-header">
+        <div class="error-icon">
+            <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+        <h1 class="error-title" data-i18n="serverErrorTitle">Server Error</h1>
+        <p class="error-subtitle" data-i18n="serverErrorSubtitle">An error occurred on the server</p>
+    </div>
+
+    <!-- Error Message -->
+    <div class="error-message-box" th:if="${error}">
+        <div class="error-message-title" data-i18n="errorMessageTitle">Error Message</div>
+        <div class="error-message-text" th:text="${error}">Error message will appear here</div>
+    </div>
+
+    <div class="error-message-box" th:if="${message}">
+        <div class="error-message-title" data-i18n="messageTitle">Message</div>
+        <div class="error-message-text" th:text="${message}">Message will appear here</div>
+    </div>
+
+    <!-- Error Details -->
+    <div class="error-details">
+        <div class="error-detail-item" th:if="${status}">
+            <span class="error-detail-label" data-i18n="statusCode">Status Code:</span>
+            <span class="error-detail-value">
+                    <span class="error-status-badge error" th:text="${status}">500</span>
+                </span>
+        </div>
+
+        <div class="error-detail-item" th:if="${path}">
+            <span class="error-detail-label" data-i18n="requestPath">Request Path:</span>
+            <span class="error-detail-value" th:text="${path}">/path</span>
+        </div>
+
+        <div class="error-detail-item" th:if="${timestamp}">
+            <span class="error-detail-label" data-i18n="timestamp">Timestamp:</span>
+            <span class="error-detail-value" th:text="${timestamp}">2025-01-20 12:00:00</span>
+        </div>
+
+        <div class="error-detail-item" th:if="${exception}">
+            <span class="error-detail-label" data-i18n="exceptionType">Exception Type:</span>
+            <span class="error-detail-value" th:text="${exception}">Exception</span>
+        </div>
+
+        <div class="error-detail-item" th:if="${trace}">
+            <span class="error-detail-label" data-i18n="fullStackTrace">Full Stack Trace:</span>
+            <span class="error-detail-value">
+                    <div class="error-stack">
+                        <div class="error-stack-title" data-i18n="stackTrace">Stack Trace:</div>
+                        <div class="error-stack-content" th:text="${trace}">Stack trace will appear here</div>
+                    </div>
+                </span>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="error-actions">
+        <a href="/" class="error-btn error-btn-primary">
+            <i class="bi bi-house-fill"></i>
+            <span data-i18n="goToHome">Go to Home</span>
+        </a>
+        <a href="javascript:history.back()" class="error-btn error-btn-secondary">
+            <i class="bi bi-arrow-left"></i>
+            <span data-i18n="goBack">Go Back</span>
+        </a>
+        <a href="/error" class="error-btn error-btn-secondary">
+            <i class="bi bi-bug-fill"></i>
+            <span data-i18n="errorTracker">Error Tracker</span>
+        </a>
+    </div>
+</div>
+
+<script>
+    // Server Error Page Language Switching with Animations
+    (function() {
+        const translations = {
+            az: {
+                serverErrorTitle: 'Server Xətası',
+                serverErrorSubtitle: 'Serverdə xəta baş verdi',
+                errorMessageTitle: 'Xəta Mesajı',
+                messageTitle: 'Mesaj',
+                statusCode: 'Status Kodu:',
+                requestPath: 'Sorğu Yolu:',
+                timestamp: 'Vaxt:',
+                exceptionType: 'Xəta Növü:',
+                fullStackTrace: 'Tam Stack Trace:',
+                stackTrace: 'Stack Trace:',
+                goToHome: 'Əsas Səhifəyə Get',
+                goBack: 'Geri Qayıt',
+                errorTracker: 'Xəta İzləyici'
+            },
+            en: {
+                serverErrorTitle: 'Server Error',
+                serverErrorSubtitle: 'An error occurred on the server',
+                errorMessageTitle: 'Error Message',
+                messageTitle: 'Message',
+                statusCode: 'Status Code:',
+                requestPath: 'Request Path:',
+                timestamp: 'Timestamp:',
+                exceptionType: 'Exception Type:',
+                fullStackTrace: 'Full Stack Trace:',
+                stackTrace: 'Stack Trace:',
+                goToHome: 'Go to Home',
+                goBack: 'Go Back',
+                errorTracker: 'Error Tracker'
+            },
+            ru: {
+                serverErrorTitle: 'Ошибка сервера',
+                serverErrorSubtitle: 'Произошла ошибка на сервере',
+                errorMessageTitle: 'Сообщение об ошибке',
+                messageTitle: 'Сообщение',
+                statusCode: 'Код статуса:',
+                requestPath: 'Путь запроса:',
+                timestamp: 'Время:',
+                exceptionType: 'Тип исключения:',
+                fullStackTrace: 'Полный стек вызовов:',
+                stackTrace: 'Стек вызовов:',
+                goToHome: 'На главную',
+                goBack: 'Назад',
+                errorTracker: 'Отслеживание ошибок'
+            }
+        };
+
+        let currentLanguage = localStorage.getItem('foodielocalDil') || 'en';
+        const languageButtons = document.querySelectorAll('.dil-secimi');
+        const translatableElements = document.querySelectorAll('[data-i18n]');
+
+        function applyActiveLanguageClass(langCode) {
+            languageButtons.forEach(btn => {
+                btn.classList.remove('active');
+                const code = btn.getAttribute('data-dil');
+                if (code === langCode) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        function animateLanguageTransition(callback) {
+            document.body.classList.add('language-switching');
+
+            translatableElements.forEach(element => {
+                element.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                element.style.opacity = '0.3';
+                element.style.transform = 'translateY(-10px)';
+            });
+
+            setTimeout(() => {
+                callback();
+
+                setTimeout(() => {
+                    translatableElements.forEach(element => {
+                        element.style.opacity = '1';
+                        element.style.transform = 'translateY(0)';
+                    });
+
+                    setTimeout(() => {
+                        document.body.classList.remove('language-switching');
+                    }, 300);
+                }, 50);
+            }, 300);
+        }
+
+        function applyTranslations(langCode) {
+            const translation = translations[langCode];
+            if (!translation) return;
+
+            animateLanguageTransition(() => {
+                translatableElements.forEach(element => {
+                    const key = element.getAttribute('data-i18n');
+                    if (key && translation[key]) {
+                        if (element.tagName === 'INPUT' && element.type === 'submit') {
+                            element.value = translation[key];
+                        } else if (element.hasAttribute('placeholder')) {
+                            element.setAttribute('placeholder', translation[key]);
+                        } else {
+                            element.textContent = translation[key];
+                        }
+                    }
+                });
+
+                document.documentElement.setAttribute('lang', langCode);
+                document.title = translation.serverErrorTitle || document.title;
+                currentLanguage = langCode;
+                localStorage.setItem('foodielocalDil', langCode);
+                applyActiveLanguageClass(langCode);
+            });
+        }
+
+        languageButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                const selectedLang = button.getAttribute('data-dil');
+                if (selectedLang !== currentLanguage) {
+                    applyTranslations(selectedLang);
+                }
+            });
+        });
+
+        // Initialize with saved language
+        applyTranslations(currentLanguage);
+    })();
+</script>
+</body>
+</html>
+

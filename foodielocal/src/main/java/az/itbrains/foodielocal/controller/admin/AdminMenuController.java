@@ -1,8 +1,7 @@
 package az.itbrains.foodielocal.controller.admin;
 
 import az.itbrains.foodielocal.model.Menu;
-import az.itbrains.foodielocal.repository.MenuRepository;
-
+import az.itbrains.foodielocal.service.MenuService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -11,48 +10,55 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/admin/menus")
 public class AdminMenuController {
 
-    private final MenuRepository menuRepository;
+    private final MenuService menuService;
 
-    public AdminMenuController(MenuRepository menuRepository) {
-        this.menuRepository = menuRepository;
+    public AdminMenuController(MenuService menuService) {
+        this.menuService = menuService;
     }
 
+    // ✅ Menyu siyahısı səhifəsi
     @GetMapping
     public String menuPage(Model model) {
-        model.addAttribute("menus", menuRepository.findAll());
-        model.addAttribute("menu", new Menu()); // və ya MenuForm
-        return "admin/admin";
+        model.addAttribute("menus", menuService.findPopularItems()); // məşhur yeməklər
+        model.addAttribute("allMenus", menuService.findByRestaurantId(null)); // bütün menyular
+        model.addAttribute("menu", new Menu());
+        return "admin/admin"; // templates/admin/admin.html
     }
 
+    // ✅ Yeni menyu əlavə et
     @PostMapping("/create")
     public String createMenu(@ModelAttribute("menu") Menu menu) {
-        menuRepository.save(menu);
+        menuService.save(menu);
         return "redirect:/admin/menus";
     }
 
+    // ✅ Menyu redaktə formu
     @GetMapping("/edit/{id}")
     public String editMenu(@PathVariable Long id, Model model) {
-        Menu menu = menuRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Menyu tapılmadı"));
+        Menu menu = menuService.findById(id);
         model.addAttribute("menu", menu);
-        model.addAttribute("menus", menuRepository.findAll());
+        model.addAttribute("menus", menuService.findByRestaurantId(menu.getRestaurant().getId()));
         return "admin/admin";
     }
 
+    // ✅ Menyu yenilə
     @PostMapping("/update/{id}")
     public String updateMenu(@PathVariable Long id, @ModelAttribute("menu") Menu updated) {
-        Menu menu = menuRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Menyu tapılmadı"));
+        Menu menu = menuService.findById(id);
         menu.setName(updated.getName());
+        menu.setDescription(updated.getDescription());
         menu.setPrice(updated.getPrice());
         menu.setCategory(updated.getCategory());
-        menuRepository.save(menu);
+        menu.setPopular(updated.isPopular());
+        menu.setImageUrl(updated.getImageUrl());
+        menuService.save(menu);
         return "redirect:/admin/menus";
     }
 
+    // ✅ Menyu sil
     @GetMapping("/delete/{id}")
     public String deleteMenu(@PathVariable Long id) {
-        menuRepository.deleteById(id);
+        menuService.deleteById(id);
         return "redirect:/admin/menus";
     }
 }

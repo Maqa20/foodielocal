@@ -34,6 +34,7 @@
                         <ul class="dropdown-menu dropdown-menu-end lüks-dropdown">
                             <li><button class="dropdown-item dil-secimi" data-dil="az">AZ</button></li>
                             <li><button class="dropdown-item dil-secimi" data-dil="en">EN</button></li>
+                            <li><button class="dropdown-item dil-secimi" data-dil="ru">RU</button></li>
                         </ul>
                     </li>
                 </ul>
@@ -53,8 +54,9 @@
                     <h1 class="display-5 fw-bold mb-3 text-white"
                         th:text="${restaurant != null and restaurant.name != null ? restaurant.name : ''}"></h1>
 
-                    <p class="mb-0 text-white" data-i18n="detailAboutLongEmpty"
-                       th:text="${restaurant != null and restaurant.longDescription != null ? restaurant.longDescription : ''}">
+                    <p class="mb-0 text-white" data-i18n="detailAboutDescription"
+                       th:data-restaurant-id="${restaurant?.id}"
+                       th:data-restaurant-name="${restaurant?.name}">
                     </p>
 
                     <div class="detail-meta d-flex flex-wrap gap-2 mb-4">
@@ -96,31 +98,27 @@
                 <div class="col-lg-8">
                     <div class="detail-card p-4 mb-4">
                         <h2 class="h4 mb-3 text-white" data-i18n="detailAboutTitle">Restoran haqqında</h2>
-                        <p class="mb-0 text-white" data-i18n="detailAboutLongEmpty"
-                           th:text="${restaurant != null and restaurant.longDescription != null ? restaurant.longDescription : ''}"></p>
+                        <p class="mb-0 text-white" data-i18n="detailAboutDescription"
+                           th:data-restaurant-id="${restaurant?.id}"
+                           th:data-restaurant-name="${restaurant?.name}">
+                        </p>
                     </div>
 
                     <div class="detail-card p-4 mb-4">
                         <h2 class="h4 mb-3 text-white" data-i18n="detailMenuTitle">Menyu</h2>
                         <div th:if="${restaurant == null or restaurant.menuItems == null or #lists.isEmpty(restaurant.menuItems)}"
-                             class="text-white" data-i18n="detailMenuEmpty">
+                             class="text-white mb-3" data-i18n="detailMenuEmpty">
                             Menyu məlumatı hələ əlavə olunmayıb.
                         </div>
-                        <div class="detail-menu" th:if="${restaurant != null and restaurant.menuItems != null and !#lists.isEmpty(restaurant.menuItems)}">
-                            <div th:each="item : ${restaurant.menuItems}"
-                                 class="d-flex align-items-start gap-3 py-3 border-bottom border-secondary">
-                                <img th:if="${item.imageUrl != null}" th:src="${item.imageUrl}" alt=""
-                                     class="rounded" style="width:64px;height:64px;object-fit:cover;">
-                                <div class="flex-grow-1">
-                                    <div class="d-flex justify-content-between">
-                                        <strong class="text-white" th:text="${item.name != null ? item.name : ''}"></strong>
-                                        <span class="text-white" th:text="${item.price != null ? item.price : ''}"></span>
-                                    </div>
-                                    <div class="text-white small"
-                                         th:text="${item.description != null ? item.description : ''}"></div>
-                                </div>
-                            </div>
+                        <div th:if="${restaurant != null and restaurant.menuItems != null and !#lists.isEmpty(restaurant.menuItems)}"
+                             class="mb-3">
+                            <p class="text-white-50 mb-3" data-i18n="detailMenuPreview">Menyunun tam versiyasını görmək üçün düyməyə klikləyin.</p>
                         </div>
+                        <a class="btn btn-primary w-100"
+                           th:href="@{'/restaurants/' + ${restaurant.id} + '/menu'}">
+                            <i class="bi bi-menu-button-wide me-2"></i>
+                            <span data-i18n="detailMenuButton">Menyuya bax</span>
+                        </a>
                     </div>
 
                     <div class="detail-card p-4">
@@ -157,8 +155,8 @@
                             </li>
                             <li th:if="${restaurant != null and restaurant.openingHours != null}">
                                 <i class="bi bi-clock-fill me-2"></i>
-                                <span class="text-white" data-i18n="detailOpeningHours"
-                                      th:text="${restaurant.openingHours}"></span>
+                                <span class="text-white" data-i18n="detailOpeningHours">İş saatları</span>
+                                <span class="text-white ms-2" th:text="${restaurant.openingHours}"></span>
                             </li>
                         </ul>
                     </div>

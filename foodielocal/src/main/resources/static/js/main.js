@@ -8,9 +8,12 @@ document.addEventListener('DOMContentLoaded', function () {
             navReservation: 'Rezervasiya',
             navReviews: 'Rəylər',
             navLanguage: 'Dil',
+            navLogin: 'Daxil ol',
+            navRegister: 'Qeydiyyat',
+            navLogout: 'Çıxış',
             heroBadge: 'Hər məhəllədə dad',
             heroTitle: 'Yerli dadları kəşf et',
-            heroSubtitle: 'Şəhərindəki ən yaxşı restoranları tap və rəyini paylaş',
+            heroSubtitle: 'Şəhərdəki ən yaxşı restoranları kəşf et və ya rəyini paylaş',
             heroCTA: 'Dadlı ünvanları kəşf et',
             heroSecondary: 'Rəy yazmağa başla',
             heroCardBasliq: 'Bu günün məkanları',
@@ -53,9 +56,12 @@ document.addEventListener('DOMContentLoaded', function () {
             navReservation: 'Reservation',
             navReviews: 'Reviews',
             navLanguage: 'Language',
+            navLogin: 'Login',
+            navRegister: 'Register',
+            navLogout: 'Logout',
             heroBadge: 'Flavor in every neighborhood',
             heroTitle: 'Discover Local Flavors',
-            heroSubtitle: 'Find and review the best restaurants in your city',
+            heroSubtitle: 'Discover the best restaurants in the city or share your review',
             heroCTA: 'Explore top spots',
             heroSecondary: 'Start sharing reviews',
             heroCardBasliq: 'Today’s picks',
@@ -91,6 +97,54 @@ document.addEventListener('DOMContentLoaded', function () {
             restaurantsHeaderTitle: 'Explore All Restaurants',
             restaurantsHeaderSubtitle: 'Discover the city’s best dining spots curated just for you.',
             detailsButton: 'View details'
+        },
+        ru: {
+            navHome: 'Главная',
+            navRestaurants: 'Рестораны',
+            navReservation: 'Бронирование',
+            navReviews: 'Отзывы',
+            navLanguage: 'Язык',
+            navLogin: 'Войти',
+            navRegister: 'Регистрация',
+            navLogout: 'Выйти',
+            heroBadge: 'Вкус в каждом районе',
+            heroTitle: 'Откройте местные вкусы',
+            heroSubtitle: 'Откройте лучшие рестораны в городе или поделитесь своим отзывом',
+            heroCTA: 'Исследуйте лучшие места',
+            heroSecondary: 'Начните делиться отзывами',
+            heroCardBasliq: 'Выбор на сегодня',
+            restoranlarBasliq: 'Рекомендуемые рестораны',
+            restoranlarAciqlama: 'Исследуйте любимые места сообщества, предлагающие гастрономию как премиальный опыт.',
+            restoranlarHamisi: 'Посмотреть все заведения',
+            kafe1Basliq: 'Элегантный городской бистро',
+            kafe1Aciqlama: 'Панорамные виды, фирменные коктейли и сезонные меню для особенных вечеров.',
+            kafe2Basliq: 'Морская кухня "Синяя волна"',
+            kafe2Aciqlama: 'Морепродукты, отобранные шеф-поваром, в сочетании с рекомендациями сомелье.',
+            kafe3Basliq: 'Дом гриля "Уголь"',
+            kafe3Aciqlama: 'Выдержанные мясные нарезки, домашние соусы и вечера живой музыки для гурманов.',
+            kafe4Basliq: 'Кондитерская "Сладкие часы"',
+            kafe4Aciqlama: 'Французские десерты, шоколад ручной работы и кофейные смеси на заказ для изысканных вкусов.',
+            kafeDetallar: 'Подробнее',
+            reservationBadge: 'Частный ужин',
+            reservationTitle: 'Забронируйте свой стол',
+            reservationSubtitle: 'Насладитесь кураторским дегустационным меню, созданным для каждого празднования.',
+            reservationFirstName: 'Имя',
+            reservationLastName: 'Фамилия',
+            reservationPhone: 'Номер телефона',
+            reservationPhonePlaceholder: '+7 999 123 45 67',
+            reservationDate: 'Дата',
+            reservationTime: 'Время',
+            reservationGuests: 'Количество гостей',
+            reservationRequests: 'Особые пожелания / Аллергии',
+            reservationRequestsPlaceholder: 'Укажите аллергии или особые пожелания',
+            reservationButton: 'Отправить бронирование',
+            footerMotto: 'FoodieLocal – давайте вместе открывать местные вкусы.',
+            footerCopyright: '© 2025 FoodieLocal. Все права защищены.',
+            // Restaurants page
+            pageTitle: 'Исследуйте все рестораны',
+            restaurantsHeaderTitle: 'Исследуйте все рестораны',
+            restaurantsHeaderSubtitle: 'Откройте лучшие рестораны города, подобранные специально для вас.',
+            detailsButton: 'Подробнее'
         }
     };
 
@@ -100,8 +154,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const applyActiveClass = (dilKodu) => {
         dilDugmeleri.forEach(btn => {
+            btn.classList.remove('active');
             const code = btn.getAttribute('data-dil');
-            btn.classList.toggle('active', code === dilKodu);
+            if (code === dilKodu) {
+                btn.classList.add('active');
+            }
         });
     };
 

@@ -57,8 +57,38 @@ document.addEventListener('DOMContentLoaded', () => {
             reviewSuccess: 'Your review has been submitted successfully!',
             reviewError: 'Please fill in all required fields before submitting.',
             reviewsFooterNote: 'We spotlight standout stories in our weekly newsletter—thanks for contributing!',
-            footerMotto: 'FoodieLocal – let’s discover local flavors together.',
+            footerMotto: 'FoodieLocal – let\'s discover local flavors together.',
             footerCopyright: '© 2025 FoodieLocal. All rights reserved.'
+        },
+        ru: {
+            navHome: 'Главная',
+            navRestaurants: 'Рестораны',
+            navReservation: 'Бронирование',
+            navReviews: 'Отзывы',
+            navLanguage: 'Язык',
+            reviewsPageTitle: 'Отзывы – Поделитесь своим опытом',
+            reviewsBadge: 'Голос сообщества',
+            reviewsHeroTitle: 'Поделитесь своей историей',
+            reviewsHeroSubtitle: 'Рекомендуйте скрытые жемчужины, делитесь незабываемыми моментами и направляйте других любителей еды.',
+            reviewsPerk1: 'Вдохновляйте тысячи местных гурманов',
+            reviewsPerk2: 'Выделяйте выдающийся сервис и вкусы',
+            reviewsPerk3: 'Поддерживайте рестораны, заслуживающие внимания',
+            reviewsFirstNameLabel: 'Имя',
+            reviewsFirstNamePlaceholder: 'Введите ваше имя',
+            reviewsLastNameLabel: 'Фамилия',
+            reviewsLastNamePlaceholder: 'Введите вашу фамилию',
+            reviewRestaurantLabel: 'Название ресторана',
+            reviewRestaurantPlaceholder: 'Выберите ресторан',
+            reviewRatingLabel: 'Рейтинг',
+            reviewRatingPlaceholder: 'Выберите рейтинг',
+            reviewCommentLabel: 'Ваш отзыв',
+            reviewCommentPlaceholder: 'Поделитесь своим опытом, мыслями и рекомендациями...',
+            reviewButton: 'Отправить отзыв',
+            reviewSuccess: 'Ваш отзыв успешно отправлен!',
+            reviewError: 'Пожалуйста, заполните все обязательные поля перед отправкой.',
+            reviewsFooterNote: 'Мы выделяем выдающиеся истории в нашем еженедельном информационном бюллетене — спасибо за вклад!',
+            footerMotto: 'FoodieLocal – давайте вместе открывать местные вкусы.',
+            footerCopyright: '© 2025 FoodieLocal. Все права защищены.'
         }
     };
 
@@ -114,6 +144,15 @@ document.addEventListener('DOMContentLoaded', () => {
         state.language = code;
         document.documentElement.setAttribute('lang', code);
         localStorage.setItem('foodielocalDil', code);
+
+        // Update active button state
+        elements.languageButtons.forEach((btn) => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-dil') === code) {
+                btn.classList.add('active');
+            }
+        });
+
         applyTranslations();
     };
 
