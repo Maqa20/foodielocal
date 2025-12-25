@@ -27,7 +27,7 @@ public class AdminController {
     private ReviewService reviewService;
 
     @Autowired
-    private MenuService menuService; // 🔹 əlavə et
+    private MenuService menuService;
 
     @GetMapping
     public String admin(Model model) {
