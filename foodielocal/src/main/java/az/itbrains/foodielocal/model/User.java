@@ -8,6 +8,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
+
 @Entity
 @Table(name = "users")
 @Getter
@@ -32,6 +33,9 @@ public class User implements UserDetails {
 
     @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
+
+    @Column(name = "reset_token")
+    private String resetToken;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
