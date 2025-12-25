@@ -20,4 +20,5 @@ public class RestaurantForm {
     private Double rating;
     private String openingHours;
     private String phone;
+    private Long ownerId;
 }

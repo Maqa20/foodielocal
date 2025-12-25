@@ -23,9 +23,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final RoleRepository roleRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository,
-                           RoleRepository roleRepository,
-                           PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.passwordEncoder = passwordEncoder;
@@ -33,35 +31,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("İstifadəçi tapılmadı: " + email));
-
+        User user = userRepository.findByEmail(email).orElseThrow(() -> new UsernameNotFoundException("İstifadəçi tapılmadı: " + email));
         Set<Role> roles = user.getRoles();
-        List<SimpleGrantedAuthority> authorities = roles.stream()
-                .map(role -> new SimpleGrantedAuthority(role.getAuthority()))
-                .toList();
-
-        return org.springframework.security.core.userdetails.User
-                .withUsername(user.getEmail())
-                .password(user.getPassword())
-                .authorities(authorities)
-                .accountExpired(false)
-                .accountLocked(false)
-                .credentialsExpired(false)
-                .disabled(!user.isEnabled()) // ✅ aktiv/deaktiv yoxlanır
-                .build();
+        List<SimpleGrantedAuthority> authorities = roles.stream().map(role -> new SimpleGrantedAuthority(role.getAuthority())).toList();
+        return org.springframework.security.core.userdetails.User.withUsername(user.getEmail()).password(user.getPassword()).authorities(authorities).accountExpired(false).accountLocked(false).credentialsExpired(false).disabled(!user.isEnabled()).build();
     }
 
     @Override
     public User registerUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        Role defaultRole = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Rol tapılmadı: ROLE_USER"));
-
+        Role defaultRole = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Rol tapılmadı: ROLE_USER"));
         user.setRoles(new HashSet<>(List.of(defaultRole)));
         return userRepository.save(user);
     }
-
     @Override
     public List<User> findAll() {
         return userRepository.findAll();
@@ -69,7 +51,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User findById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("İstifadəçi tapılmadı: " + id));
+        return userRepository.findById(id).orElseThrow(() -> new RuntimeException("İstifadəçi tapılmadı: " + id));
     }
 }

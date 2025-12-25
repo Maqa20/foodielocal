@@ -28,11 +28,7 @@ public class AdminUserController {
     private final ReservationRepository reservationRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public AdminUserController(UserRepository userRepository,
-                               RoleRepository roleRepository,
-                               RestaurantRepository restaurantRepository,
-                               ReservationRepository reservationRepository,
-                               PasswordEncoder passwordEncoder) {
+    public AdminUserController(UserRepository userRepository, RoleRepository roleRepository, RestaurantRepository restaurantRepository, ReservationRepository reservationRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.restaurantRepository = restaurantRepository;
@@ -43,79 +39,63 @@ public class AdminUserController {
     @GetMapping
     public String listUsers(Model model) {
         model.addAttribute("users", userRepository.findAll());
-        model.addAttribute("roles", roleRepository.findAll()); // ✅ rol siyahısı
+        model.addAttribute("roles", roleRepository.findAll());
         model.addAttribute("restaurants", restaurantRepository.findAll());
         model.addAttribute("reservations", reservationRepository.findAll());
-        model.addAttribute("user", new UserForm()); // form üçün boş obyekt
+        model.addAttribute("user", new UserForm());
         return "admin/admin";
     }
 
-    // Yeni istifadəçi əlavə et
     @PostMapping("/create")
-    public String createUser(@ModelAttribute("user") @Valid UserForm form,
-                             BindingResult result,
-                             Model model) {
+    public String createUser(@ModelAttribute("user") @Valid UserForm form, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return listUsers(model);
         }
-
         Role role = roleRepository.findByName(form.getRole()).orElse(null);
         if (role == null) {
             model.addAttribute("error", "Rol tapılmadı");
             return listUsers(model);
         }
-
         User user = new User();
         user.setFullName(form.getFullName());
         user.setEmail(form.getEmail());
         user.setPassword(passwordEncoder.encode(form.getPassword()));
-        user.setRoles(new HashSet<>(List.of(role))); // ✅ mutable
+        user.setRoles(new HashSet<>(List.of(role)));
         user.setEnabled(form.isEnabled());
-
         userRepository.save(user);
-
         model.addAttribute("success", true);
         model.addAttribute("action", "create");
         return listUsers(model);
     }
 
-    // İstifadəçi yenilə
     @PostMapping("/update/{id}")
-    public String updateUser(@PathVariable Long id,
-                             @ModelAttribute("user") UserForm form,
-                             Model model) {
+    public String updateUser(@PathVariable Long id, @ModelAttribute("user") UserForm form, Model model) {
         User user = userRepository.findById(id).orElse(null);
         if (user == null) {
             model.addAttribute("error", true);
             return listUsers(model);
         }
-
         user.setFullName(form.getFullName());
         user.setEmail(form.getEmail());
-
         if (form.getPassword() != null && !form.getPassword().isBlank()) {
             user.setPassword(passwordEncoder.encode(form.getPassword()));
         }
-
         Role role = roleRepository.findByName(form.getRole()).orElse(null);
         if (role != null) {
-            user.setRoles(new HashSet<>(List.of(role))); // ✅ mutable
+            user.setRoles(new HashSet<>(List.of(role)));
         }
-
         user.setEnabled(form.isEnabled());
         userRepository.save(user);
-
         model.addAttribute("success", true);
         model.addAttribute("action", "update");
         return listUsers(model);
     }
 
-    // İstifadəçi sil
     @PostMapping("/{id}/delete")
     public String deleteUser(@PathVariable Long id, Model model) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
-            user.getRoles().clear(); // ✅ əlaqələri təmizlə
+            user.getRoles().clear();
             userRepository.delete(user); // indi problemsiz silinir
             model.addAttribute("success", true);
             model.addAttribute("action", "delete");

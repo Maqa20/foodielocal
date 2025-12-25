@@ -32,13 +32,16 @@
                 <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-lg-center">
                     <li class="nav-item px-lg-2">
                         <a class="nav-link active" aria-current="page" data-i18n="navHome"
-                           th:href="@{#hero}">Home</a>
+                           th:href="@{#hero}">Əsas</a>
                     </li>
                     <li class="nav-item px-lg-2">
-                        <a class="nav-link" data-i18n="navRestaurants" th:href="@{#restaurants}">Restaurants</a>
+                        <a class="nav-link" data-i18n="navRestaurants" th:href="@{#restaurants}">Restoranlar</a>
                     </li>
                     <li class="nav-item px-lg-2">
-                        <a class="nav-link" data-i18n="navReservation" th:href="@{/reservation}">Reservation</a>
+                        <a class="nav-link" data-i18n="navReservation" th:href="@{/reservation}">Rezervasiya</a>
+                    </li>
+                    <li class="nav-item px-lg-2">
+                        <a class="nav-link" data-i18n="navReviews" th:href="@{/reviews}">Rəylər</a>
                     </li>
                     <li class="nav-item dropdown px-lg-2">
                         <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button"
@@ -98,7 +101,7 @@
                         <a class="btn btn-primary btn-lg hero-cta" th:href="@{#restaurants}" data-i18n="heroCTA">
                             Dadlı ünvanları kəşf et
                         </a>
-                        <a class="btn btn-outline-light btn-lg hero-secondary" th:href="@{/reviews}" data-i18n="heroSecondary"></a>
+                        <a class="btn btn-outline-light btn-lg hero-secondary" th:href="@{/reviews}" data-i18n="heroSecondary">Rəy yazmağa başla</a>
                     </div>
 
                 </div>
@@ -159,6 +162,114 @@
             </div>
         </div>
     </section>
+
+    <!-- FoodieLocal Haqqında Bölməsi -->
+    <section id="about" class="py-5 about-bolmesi">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="text-center mb-5">
+                        <h2 class="fw-bold display-5 mb-3" data-i18n="aboutTitle">FoodieLocal Haqqında</h2>
+                        <p class="lead text-white-50" data-i18n="aboutSubtitle">
+                            Yerli restoranları kəşf edin və dadlı təcrübələr yaşayın
+                        </p>
+                    </div>
+
+                    <div class="row g-4">
+                        <!-- Əlaqə Məlumatları -->
+                        <div class="col-md-6">
+                            <div class="about-card p-4 h-100">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-info-circle-fill me-3" style="font-size: 2rem; color: #c08b5c;"></i>
+                                    <h3 class="h4 mb-0" data-i18n="aboutContactTitle">Əlaqə Məlumatları</h3>
+                                </div>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-3 d-flex align-items-center">
+                                        <i class="bi bi-envelope-fill me-3" style="color: #c08b5c;"></i>
+                                        <div>
+                                            <strong data-i18n="aboutEmailLabel">Email:</strong>
+                                            <a href="mailto:info@foodielocal.az" class="text-white ms-2">info@foodielocal.az</a>
+                                        </div>
+                                    </li>
+                                    <li class="mb-3 d-flex align-items-center">
+                                        <i class="bi bi-telephone-fill me-3" style="color: #c08b5c;"></i>
+                                        <div>
+                                            <strong data-i18n="aboutPhoneLabel">Telefon:</strong>
+                                            <a href="tel:+994501234567" class="text-white ms-2">+994 50 123 45 67</a>
+                                        </div>
+                                    </li>
+                                    <li class="mb-3 d-flex align-items-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="#25D366" class="me-3" viewBox="0 0 24 24" style="min-width: 24px;">
+                                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                                        </svg>
+                                        <div>
+                                            <strong data-i18n="aboutWhatsAppLabel">WhatsApp:</strong>
+                                            <a href="https://wa.me/994501234567" target="_blank" rel="noopener" class="text-white ms-2">+994 50 123 45 67</a>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="mt-4">
+                                    <h5 class="mb-3" data-i18n="aboutSocialMediaTitle">Sosial Media</h5>
+                                    <div class="d-flex gap-3 flex-wrap">
+                                        <a href="https://www.facebook.com/foodielocal" target="_blank" rel="noopener"
+                                           class="btn btn-outline-light d-flex align-items-center gap-2"
+                                           style="border-color: #1877F2; color: #1877F2;">
+                                            <i class="bi bi-facebook" style="font-size: 1.2rem;"></i>
+                                            <span>Facebook</span>
+                                        </a>
+                                        <a href="https://www.instagram.com/foodielocal" target="_blank" rel="noopener"
+                                           class="btn btn-outline-light d-flex align-items-center gap-2"
+                                           style="border-color: #E4405F; color: #E4405F;">
+                                            <i class="bi bi-instagram" style="font-size: 1.2rem;"></i>
+                                            <span>Instagram</span>
+                                        </a>
+                                        <a href="https://www.tiktok.com/@foodielocal" target="_blank" rel="noopener"
+                                           class="btn btn-outline-light d-flex align-items-center gap-2"
+                                           style="border-color: #000000; color: #000000;">
+                                            <i class="bi bi-tiktok" style="font-size: 1.2rem;"></i>
+                                            <span>TikTok</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Restoran Sahibləri Üçün -->
+                        <div class="col-md-6">
+                            <div class="about-card p-4 h-100">
+                                <div class="d-flex align-items-center mb-3">
+                                    <i class="bi bi-shop me-3" style="font-size: 2rem; color: #c08b5c;"></i>
+                                    <h3 class="h4 mb-0" data-i18n="aboutRestaurantOwnerTitle">Restoran Sahibləri Üçün</h3>
+                                </div>
+                                <p class="mb-3" data-i18n="aboutRestaurantOwnerText">
+                                    Restoranınızı FoodieLocal platformasına əlavə etmək istəyirsiniz? Bizimlə əlaqə saxlayın!
+                                </p>
+                                <ul class="list-unstyled mb-0">
+                                    <li class="mb-2">
+                                        <i class="bi bi-check-circle-fill me-2" style="color: #10b981;"></i>
+                                        <span data-i18n="aboutAddRestaurant">Restoran əlavə etmək</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="bi bi-check-circle-fill me-2" style="color: #10b981;"></i>
+                                        <span data-i18n="aboutAddMenu">Menyu əlavə etmək</span>
+                                    </li>
+                                    <li class="mb-2">
+                                        <i class="bi bi-check-circle-fill me-2" style="color: #10b981;"></i>
+                                        <span data-i18n="aboutManageReservations">Rezervasiyaları idarə etmək</span>
+                                    </li>
+                                </ul>
+                                <div class="mt-3">
+                                    <a href="mailto:partners@foodielocal.az" class="btn btn-outline-light" data-i18n="aboutContactButton">
+                                        Bizimlə Əlaqə
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </main>
 <footer class="footer-bolmesi py-4">
     <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
@@ -172,14 +283,14 @@
                 FoodieLocal – yerli dadları birlikdə kəşf edək.
             </span>
         </div>
-        <div class="d-flex align-items-center gap-3 sosyal-baglantilar">
-            <a class="text-white-50 hover-white" href="https://www.facebook.com" target="_blank" rel="noopener" aria-label="Facebook">
+        <div class="d-flex align-items-center gap-2 sosyal-baglantilar">
+            <a class="text-white-50 hover-white" href="https://www.facebook.com/foodielocal" target="_blank" rel="noopener" aria-label="Facebook">
                 <i class="bi bi-facebook"></i>
             </a>
-            <a class="text-white-50 hover-white" href="https://www.instagram.com" target="_blank" rel="noopener" aria-label="Instagram">
+            <a class="text-white-50 hover-white" href="https://www.instagram.com/foodielocal" target="_blank" rel="noopener" aria-label="Instagram">
                 <i class="bi bi-instagram"></i>
             </a>
-            <a class="text-white-50 hover-white" href="https://www.tiktok.com" target="_blank" rel="noopener" aria-label="TikTok">
+            <a class="text-white-50 hover-white" href="https://www.tiktok.com/@foodielocal" target="_blank" rel="noopener" aria-label="TikTok">
                 <i class="bi bi-tiktok"></i>
             </a>
         </div>

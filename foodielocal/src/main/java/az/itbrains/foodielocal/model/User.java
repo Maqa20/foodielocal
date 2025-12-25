@@ -8,7 +8,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
-
 @Entity
 @Table(name = "users")
 @Getter
@@ -31,9 +30,6 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column(name = "reset_token")
-    private String resetToken;
-
     @Column(name = "enabled", nullable = false)
     private boolean enabled = true;
 
@@ -45,7 +41,6 @@ public class User implements UserDetails {
     )
     private Set<Role> roles = new HashSet<>();
 
-    // Spring Security methods
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;
@@ -57,18 +52,8 @@ public class User implements UserDetails {
     }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
+    public String getPassword() {
+        return password;
     }
 
     @Override

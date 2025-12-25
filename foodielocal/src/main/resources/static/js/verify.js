@@ -288,26 +288,51 @@
                 body: formData
             });
 
-            let result;
+            // Check if response is successful
+            const isSuccess = response.ok || (response.status >= 200 && response.status < 300);
+
+            // Get response text
+            let responseText = '';
+            let result = null;
+
             try {
-                const contentType = response.headers.get('content-type');
-                if (contentType && contentType.includes('application/json')) {
-                    result = await response.json();
-                } else {
-                    const text = await response.text();
-                    result = { message: text || response.statusText || getTranslation('verifyErrorGeneral') };
+                responseText = await response.text();
+
+                // Try to parse as JSON if response is not empty
+                if (responseText && responseText.trim()) {
+                    try {
+                        result = JSON.parse(responseText);
+                    } catch (e) {
+                        // Not JSON, treat as plain text
+                        result = { message: responseText.trim() };
+                    }
                 }
             } catch (e) {
-                result = { message: response.statusText || getTranslation('verifyErrorGeneral') };
+                console.error('Error reading response:', e);
             }
 
-            if (response.ok) {
-                showMessage(result.message || getTranslation('verifySuccessSend'), 'success');
+            // Show appropriate message
+            if (isSuccess) {
+                // Success - use message from response or default success message
+                const message = result?.message ||
+                               result?.success ||
+                               (typeof result === 'string' ? result : null) ||
+                               (responseText && responseText.trim() ? responseText.trim() : null) ||
+                               getTranslation('verifySuccessSend');
+                showMessage(message, 'success');
             } else {
-                showMessage(result.message || getTranslation('verifyErrorSend'), 'error');
+                // Error - use error message from response or default error message
+                const message = result?.message ||
+                               result?.error ||
+                               (typeof result === 'string' ? result : null) ||
+                               (responseText && responseText.trim() ? responseText.trim() : null) ||
+                               response.statusText ||
+                               getTranslation('verifyErrorSend');
+                showMessage(message, 'error');
             }
         } catch (error) {
             console.error('Error resending email:', error);
+            // Network error or other exception
             showMessage(getTranslation('verifyErrorGeneral') + ': ' + (error.message || getTranslation('verifyErrorSend')), 'error');
         } finally {
             setLoading(resendEmailBtn, false, originalText);

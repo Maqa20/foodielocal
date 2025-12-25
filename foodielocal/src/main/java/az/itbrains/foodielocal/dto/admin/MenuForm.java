@@ -16,20 +16,15 @@ public class MenuForm {
 
     @NotBlank(message = "Yemək adı boş ola bilməz")
     private String nameAz;
-
     private String nameEn;
     private String nameRu;
-
     private String descriptionAz;
     private String descriptionEn;
     private String descriptionRu;
-
     @NotNull(message = "Qiymət boş ola bilməz")
     private Double price;
-
     private String category;
     private boolean isPopular;
-
     @NotNull(message = "Restoran seçilməlidir")
     private Long restaurantId;
 }

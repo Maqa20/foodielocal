@@ -6,17 +6,11 @@ import java.util.List;
 public interface RestaurantService {
 
     List<Restaurant> findAll();
-
     List<Restaurant> getRandomRestaurants(int count);
-
     List<Restaurant> getSeededRandomRestaurants(int count, long seed);
-
     List<Restaurant> findAllSortedById();
-
     Restaurant findById(Long id);
-
     Restaurant save(Restaurant restaurant);
-
     void deleteById(Long id);
 
 }

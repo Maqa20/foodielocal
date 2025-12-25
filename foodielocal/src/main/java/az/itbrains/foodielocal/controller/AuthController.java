@@ -23,10 +23,7 @@ public class AuthController {
     private final EmailService emailService;
     private final PasswordEncoder passwordEncoder;
 
-    public AuthController(UserRepository userRepository,
-                          RoleRepository roleRepository,
-                          EmailService emailService,
-                          PasswordEncoder passwordEncoder) {
+    public AuthController(UserRepository userRepository, RoleRepository roleRepository, EmailService emailService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
         this.emailService = emailService;
@@ -50,16 +47,11 @@ public class AuthController {
             model.addAttribute("error", "Bu email artıq qeydiyyatdan keçib.");
             return "auth/register";
         }
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-        Role defaultRole = roleRepository.findByName("ROLE_USER")
-                .orElseThrow(() -> new RuntimeException("Rol tapılmadı: ROLE_USER"));
-
+        Role defaultRole = roleRepository.findByName("ROLE_USER").orElseThrow(() -> new RuntimeException("Rol tapılmadı: ROLE_USER"));
         user.setRoles(Set.of(defaultRole));
-        user.setEnabled(true); // 🔑 yeni user aktiv olsun
+        user.setEnabled(true);
         userRepository.save(user);
-
         return "redirect:/auth/login?registerSuccess=true";
     }
 
@@ -75,41 +67,31 @@ public class AuthController {
             model.addAttribute("error", "Bu email ilə istifadəçi tapılmadı.");
             return "auth/forgot-password";
         }
-
         User user = optionalUser.get();
         String token = UUID.randomUUID().toString();
         user.setResetToken(token);
         userRepository.save(user);
-
         String resetLink = "http://localhost:8181/auth/reset-password?token=" + token;
-
         emailService.sendPasswordReset(email, resetLink);
-
         model.addAttribute("message", "Sıfırlama linki email ünvanınıza göndərildi.");
         return "auth/forgot-password";
     }
-
     @GetMapping("/reset-password")
     public String showResetPasswordForm(@RequestParam("token") String token, Model model) {
         model.addAttribute("token", token);
         return "auth/reset-password";
     }
-
     @PostMapping("/reset-password")
-    public String processResetPassword(@RequestParam("token") String token,
-                                       @RequestParam("password") String password,
-                                       Model model) {
+    public String processResetPassword(@RequestParam("token") String token, @RequestParam("password") String password, Model model) {
         Optional<User> optionalUser = userRepository.findByResetToken(token);
         if (optionalUser.isEmpty()) {
             model.addAttribute("error", "Token etibarsızdır.");
             return "auth/reset-password";
         }
-
         User user = optionalUser.get();
         user.setPassword(passwordEncoder.encode(password));
         user.setResetToken(null);
         userRepository.save(user);
-
         return "redirect:/auth/login?resetSuccess=true";
     }
 }

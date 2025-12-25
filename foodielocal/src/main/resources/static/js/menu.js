@@ -1,33 +1,54 @@
-// Menyu səhifəsi üçün JavaScript - main.js və detail.js-dən referans alaraq
-
-document.addEventListener('DOMContentLoaded', function() {
-    const DEFAULT_LANG = localStorage.getItem('foodielocalDil') || 'az';
-
-    // Tərcümə lüğəti - main.js-dən referans
-    const translations = {
+// Dil dəyişdirmə və yumşaq scroll funksionallığını idarə edən skript
+document.addEventListener('DOMContentLoaded', function () {
+    // Tərcümə lüğəti
+    const tercumeSozluk = {
         az: {
             navHome: 'Əsas',
             navRestaurants: 'Restoranlar',
             navReservation: 'Rezervasiya',
             navReviews: 'Rəylər',
             navLanguage: 'Dil',
-            menuBadge: 'Menyu',
-            menuTitle: 'Menyu',
-            menuSubtitle: 'Dadlı yeməklərimizi kəşf edin',
-            menuBackButton: 'Restorana qayıt',
-            menuEmptyTitle: 'Menyu məlumatı yoxdur',
-            menuEmptyDescription: 'Menyu məlumatı hələ əlavə olunmayıb.',
-            menuFooter: '© 2025 FoodieLocal. Bütün hüquqlar qorunur.',
-            menuPopular: 'Məşhur',
-            menuCategoryAll: 'Hamısı',
-            menuCategoryMainDishes: 'İsti Yeməklər',
-            menuCategoryStarters: 'Qəlyanaltılar',
-            menuCategoryDrinks: 'İçkilər',
-            menuCategoryDesserts: 'Şirniyyatlar',
-            menuCategorySnacks: 'Qəlyanaltılar (Snacks)',
-            menuCategoryPopular: 'Məşhur',
-            menuNoItemsTitle: 'Bu kateqoriyada yemək yoxdur',
-            menuNoItemsDescription: 'Başqa kateqoriya seçin.'
+            navLogin: 'Daxil ol',
+            navRegister: 'Qeydiyyat',
+            navLogout: 'Çıxış',
+            heroBadge: 'Hər məhəllədə dad',
+            heroTitle: 'Yerli dadları kəşf et',
+            heroSubtitle: 'Şəhərdəki ən yaxşı restoranları kəşf et və ya rəyini paylaş',
+            heroCTA: 'Dadlı ünvanları kəşf et',
+            heroSecondary: 'Rəy yazmağa başla',
+            heroCardBasliq: 'Bu günün məkanları',
+            restoranlarBasliq: 'Seçilmiş restoranlar',
+            restoranlarAciqlama: 'Qastronomiyanı premium təcrübə kimi təqdim edən, icmamızın sevimli məkanlarını kəşf edin.',
+            restoranlarHamisi: 'Bütün məkanlara bax',
+            kafe1Basliq: 'Zərif Şəhər Bistrosu',
+            kafe1Aciqlama: 'Panorama mənzərə, müəllif kokteylləri və sezona uyğun menyu ilə xüsusi axşamlar.',
+            kafe2Basliq: 'Mavi Dalğa Dəniz Mətbəxi',
+            kafe2Aciqlama: 'Şef tərəfindən seçilən dəniz məhsulları və sommelier uyğunlaşdırması ilə premium dadlar.',
+            kafe3Basliq: 'Odlu Qril Evi',
+            kafe3Aciqlama: 'Quru yetişdirilmiş ət kəsimləri, imza sousları və xüsusi seçilmiş canlı musiqi gecələri.',
+            kafe4Basliq: 'Şirin Saatlar Pastanesi',
+            kafe4Aciqlama: 'Fransız desertləri, artizan şokoladlar və xüsusi qarışıq qəhvələr ilə incə zövqlər.',
+            kafeDetallar: 'Detallara bax',
+            reservationBadge: 'Özəl masalar',
+            reservationTitle: 'Masanızı reserv edin',
+            reservationSubtitle: 'Hər zəfər üçün düşünülmüş dequstasiya menyusunu indi sifariş edin.',
+            reservationFirstName: 'Ad',
+            reservationLastName: 'Soyad',
+            reservationPhone: 'Telefon nömrəsi',
+            reservationPhonePlaceholder: '+994 50 123 45 67',
+            reservationDate: 'Tarix',
+            reservationTime: 'Saat',
+            reservationGuests: 'Qonaq sayı',
+            reservationRequests: 'Xüsusi istəklər / Allergiyalar',
+            reservationRequestsPlaceholder: 'Allergiyalarınızı və istəklərinizi qeyd edin',
+            reservationButton: 'Rezervasiyanı göndər',
+            footerMotto: 'FoodieLocal – yerli dadları birlikdə kəşf edək.',
+            footerCopyright: '© 2025 FoodieLocal. Bütün hüquqlar qorunur.',
+            // Restoranlar səhifəsi
+            pageTitle: 'Bütün Restoranları Kəşf et',
+            restaurantsHeaderTitle: 'Bütün Restoranları Kəşf edin',
+            restaurantsHeaderSubtitle: 'Sizin üçün seçilmiş şəhərin ən yaxşı restoranlarını tapın.',
+            detailsButton: 'Detallar'
         },
         en: {
             navHome: 'Home',
@@ -35,23 +56,47 @@ document.addEventListener('DOMContentLoaded', function() {
             navReservation: 'Reservation',
             navReviews: 'Reviews',
             navLanguage: 'Language',
-            menuBadge: 'Menu',
-            menuTitle: 'Menu',
-            menuSubtitle: 'Discover our delicious dishes',
-            menuBackButton: 'Back to restaurant',
-            menuEmptyTitle: 'Menu not available',
-            menuEmptyDescription: 'Menu information has not been added yet.',
-            menuFooter: '© 2025 FoodieLocal. All rights reserved.',
-            menuPopular: 'Popular',
-            menuCategoryAll: 'All',
-            menuCategoryMainDishes: 'Main Dishes',
-            menuCategoryStarters: 'Starters',
-            menuCategoryDrinks: 'Drinks',
-            menuCategoryDesserts: 'Desserts',
-            menuCategorySnacks: 'Snacks',
-            menuCategoryPopular: 'Popular',
-            menuNoItemsTitle: 'No items in this category',
-            menuNoItemsDescription: 'Please select another category.'
+            navLogin: 'Login',
+            navRegister: 'Register',
+            navLogout: 'Logout',
+            heroBadge: 'Flavor in every neighborhood',
+            heroTitle: 'Discover Local Flavors',
+            heroSubtitle: 'Discover the best restaurants in the city or share your review',
+            heroCTA: 'Explore top spots',
+            heroSecondary: 'Start sharing reviews',
+            heroCardBasliq: 'Today’s picks',
+            restoranlarBasliq: 'Featured restaurants',
+            restoranlarAciqlama: 'Explore community favorites delivering gastronomy as a premium experience.',
+            restoranlarHamisi: 'View all venues',
+            kafe1Basliq: 'Elegant City Bistro',
+            kafe1Aciqlama: 'Panoramic views, signature cocktails, and seasonal menus for special evenings.',
+            kafe2Basliq: 'Blue Wave Seafood',
+            kafe2Aciqlama: 'Chef-curated seafood selections paired with sommelier recommendations.',
+            kafe3Basliq: 'Ember Grill House',
+            kafe3Aciqlama: 'Dry-aged cuts, house sauces, and live music nights tailored for connoisseurs.',
+            kafe4Basliq: 'Sweet Hours Pâtisserie',
+            kafe4Aciqlama: 'French desserts, artisan chocolates, and bespoke coffee blends for refined tastes.',
+            kafeDetallar: 'View Details',
+            reservationBadge: 'Private dining',
+            reservationTitle: 'Reserve your table',
+            reservationSubtitle: 'Indulge in a curated tasting menu tailored to every celebration.',
+            reservationFirstName: 'First Name',
+            reservationLastName: 'Last Name',
+            reservationPhone: 'Phone Number',
+            reservationPhonePlaceholder: '+1 555 123 4567',
+            reservationDate: 'Date',
+            reservationTime: 'Time',
+            reservationGuests: 'Number of Guests',
+            reservationRequests: 'Special Requests / Allergies',
+            reservationRequestsPlaceholder: 'Share allergies or bespoke touches',
+            reservationButton: 'Submit Reservation',
+            footerMotto: 'FoodieLocal – let\'s discover local flavors together.',
+            footerCopyright: '© 2025 FoodieLocal. All rights reserved.',
+            // Restaurants page
+            pageTitle: 'Explore All Restaurants',
+            restaurantsHeaderTitle: 'Explore All Restaurants',
+            restaurantsHeaderSubtitle: 'Discover the city’s best dining spots curated just for you.',
+            detailsButton: 'View details'
         },
         ru: {
             navHome: 'Главная',
@@ -59,319 +104,119 @@ document.addEventListener('DOMContentLoaded', function() {
             navReservation: 'Бронирование',
             navReviews: 'Отзывы',
             navLanguage: 'Язык',
-            menuBadge: 'Меню',
-            menuTitle: 'Меню',
-            menuSubtitle: 'Откройте для себя наши вкусные блюда',
-            menuBackButton: 'Вернуться в ресторан',
-            menuEmptyTitle: 'Меню недоступно',
-            menuEmptyDescription: 'Информация о меню еще не добавлена.',
-            menuFooter: '© 2025 FoodieLocal. Все права защищены.',
-            menuPopular: 'Популярное',
-            menuCategoryAll: 'Все',
-            menuCategoryMainDishes: 'Горячие блюда',
-            menuCategoryStarters: 'Закуски',
-            menuCategoryDrinks: 'Напитки',
-            menuCategoryDesserts: 'Десерты',
-            menuCategorySnacks: 'Закуски (Снеки)',
-            menuCategoryPopular: 'Популярное',
-            menuNoItemsTitle: 'В этой категории нет блюд',
-            menuNoItemsDescription: 'Пожалуйста, выберите другую категорию.'
+            navLogin: 'Войти',
+            navRegister: 'Регистрация',
+            navLogout: 'Выйти',
+            heroBadge: 'Вкус в каждом районе',
+            heroTitle: 'Откройте местные вкусы',
+            heroSubtitle: 'Откройте лучшие рестораны в городе или поделитесь своим отзывом',
+            heroCTA: 'Исследуйте лучшие места',
+            heroSecondary: 'Начните делиться отзывами',
+            heroCardBasliq: 'Выбор на сегодня',
+            restoranlarBasliq: 'Рекомендуемые рестораны',
+            restoranlarAciqlama: 'Исследуйте любимые места сообщества, предлагающие гастрономию как премиальный опыт.',
+            restoranlarHamisi: 'Посмотреть все заведения',
+            kafe1Basliq: 'Элегантный городской бистро',
+            kafe1Aciqlama: 'Панорамные виды, фирменные коктейли и сезонные меню для особенных вечеров.',
+            kafe2Basliq: 'Морская кухня "Синяя волна"',
+            kafe2Aciqlama: 'Морепродукты, отобранные шеф-поваром, в сочетании с рекомендациями сомелье.',
+            kafe3Basliq: 'Дом гриля "Уголь"',
+            kafe3Aciqlama: 'Выдержанные мясные нарезки, домашние соусы и вечера живой музыки для гурманов.',
+            kafe4Basliq: 'Кондитерская "Сладкие часы"',
+            kafe4Aciqlama: 'Французские десерты, шоколад ручной работы и кофейные смеси на заказ для изысканных вкусов.',
+            kafeDetallar: 'Подробнее',
+            reservationBadge: 'Частный ужин',
+            reservationTitle: 'Забронируйте свой стол',
+            reservationSubtitle: 'Насладитесь кураторским дегустационным меню, созданным для каждого празднования.',
+            reservationFirstName: 'Имя',
+            reservationLastName: 'Фамилия',
+            reservationPhone: 'Номер телефона',
+            reservationPhonePlaceholder: '+7 999 123 45 67',
+            reservationDate: 'Дата',
+            reservationTime: 'Время',
+            reservationGuests: 'Количество гостей',
+            reservationRequests: 'Особые пожелания / Аллергии',
+            reservationRequestsPlaceholder: 'Укажите аллергии или особые пожелания',
+            reservationButton: 'Отправить бронирование',
+            footerMotto: 'FoodieLocal – давайте вместе открывать местные вкусы.',
+            footerCopyright: '© 2025 FoodieLocal. Все права защищены.',
+            // Restaurants page
+            pageTitle: 'Исследуйте все рестораны',
+            restaurantsHeaderTitle: 'Исследуйте все рестораны',
+            restaurantsHeaderSubtitle: 'Откройте лучшие рестораны города, подобранные специально для вас.',
+            detailsButton: 'Подробнее'
         }
     };
 
-    // Menu item tərcümələri - DB-dən gələn məlumatlar HTML-də data attribute-lar kimi verilir
-    const menuTranslations = {};
+    const dilDugmeleri = document.querySelectorAll('.dil-secimi');
+    const tercumeliElementler = document.querySelectorAll('[data-i18n]');
+    const placeholderElementler = document.querySelectorAll('[data-i18n-placeholder]');
 
-    // Menu item description tərcümələri - DB-dən gələn məlumatlar HTML-də data attribute-lar kimi verilir
-    const menuDescriptionTranslations = {};
-
-    // Avtomatik tərcümə funksiyası - EN mətni AZ və RU-ya tərcümə edir
-    async function autoTranslate(text, targetLang) {
-        if (!text || targetLang === 'en') return text;
-
-        // Əgər tərcümə cache-də varsa, onu qaytar
-        const cacheKey = `${text}_${targetLang}`;
-        if (window.translationCache && window.translationCache[cacheKey]) {
-            return window.translationCache[cacheKey];
-        }
-
-        try {
-            // Google Translate API istifadə et (pulsuz versiya)
-            const response = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=en&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`);
-            const data = await response.json();
-
-            if (data && data[0] && data[0][0] && data[0][0][0]) {
-                const translated = data[0][0][0];
-
-                // Cache-ə yaz
-                if (!window.translationCache) window.translationCache = {};
-                window.translationCache[cacheKey] = translated;
-
-                return translated;
-            }
-        } catch (error) {
-            console.warn('Translation error:', error);
-        }
-
-        // Əgər tərcümə uğursuz olarsa, orijinal mətni qaytar
-        return text;
-    }
-
-    // Dil dəyişdirmə funksiyası - detail.js-dən referans
-    function applyLanguage(lang) {
-        const dict = translations[lang] || translations['az'];
-
-        document.querySelectorAll('[data-i18n]').forEach(el => {
-            const key = el.getAttribute('data-i18n');
-            if (key && dict[key]) {
-                if (el.tagName === 'INPUT' && el.type === 'submit') {
-                    el.value = dict[key];
-                } else if (el.hasAttribute('placeholder')) {
-                    el.setAttribute('placeholder', dict[key]);
-                } else {
-                    el.textContent = dict[key];
-                }
-            }
-        });
-
-        // Menu item name və description tərcümələri - avtomatik tərcümə
-        document.querySelectorAll('.menu-item-name-text').forEach(async el => {
-            // Əvvəlcə data attribute-lardan tərcümələri yoxla (backend-dən gəlir)
-            const nameAz = el.getAttribute('data-name-az');
-            const nameEn = el.getAttribute('data-name-en');
-            const nameRu = el.getAttribute('data-name-ru');
-
-            if (nameAz || nameEn || nameRu) {
-                // Backend-dən tərcümələr gəlir
-                if (lang === 'az' && nameAz) {
-                    el.textContent = nameAz;
-                } else if (lang === 'en' && nameEn) {
-                    el.textContent = nameEn;
-                } else if (lang === 'ru' && nameRu) {
-                    el.textContent = nameRu;
-                } else {
-                    // Fallback: mövcud dildə tərcümə yoxdursa, EN istifadə et
-                    el.textContent = nameEn || el.getAttribute('data-original-name') || el.textContent.trim();
-                }
-            } else {
-                // Əgər data attribute-lar yoxdursa, avtomatik tərcümə et
-                const originalName = el.getAttribute('data-original-name') || el.textContent.trim();
-                if (originalName) {
-                    if (menuTranslations[originalName]) {
-                        el.textContent = menuTranslations[originalName][lang] || menuTranslations[originalName]['en'] || originalName;
-                    } else if (lang !== 'en') {
-                        // Avtomatik tərcümə et
-                        const translated = await autoTranslate(originalName, lang);
-                        el.textContent = translated;
-                    } else {
-                        el.textContent = originalName;
-                    }
-                }
-            }
-        });
-
-        document.querySelectorAll('.menu-item-description-text').forEach(async el => {
-            // Əvvəlcə data attribute-lardan tərcümələri yoxla (backend-dən gəlir)
-            const descAz = el.getAttribute('data-desc-az');
-            const descEn = el.getAttribute('data-desc-en');
-            const descRu = el.getAttribute('data-desc-ru');
-
-            if (descAz || descEn || descRu) {
-                // Backend-dən tərcümələr gəlir
-                if (lang === 'az' && descAz) {
-                    el.textContent = descAz;
-                } else if (lang === 'en' && descEn) {
-                    el.textContent = descEn;
-                } else if (lang === 'ru' && descRu) {
-                    el.textContent = descRu;
-                } else {
-                    // Fallback: mövcud dildə tərcümə yoxdursa, EN istifadə et
-                    el.textContent = descEn || el.getAttribute('data-original-description') || el.textContent.trim();
-                }
-            } else {
-                // Əgər data attribute-lar yoxdursa, avtomatik tərcümə et
-                const originalDesc = el.getAttribute('data-original-description') || el.textContent.trim();
-                if (originalDesc) {
-                    if (menuDescriptionTranslations[originalDesc]) {
-                        el.textContent = menuDescriptionTranslations[originalDesc][lang] || menuDescriptionTranslations[originalDesc]['en'] || originalDesc;
-                    } else if (lang !== 'en') {
-                        // Avtomatik tərcümə et
-                        const translated = await autoTranslate(originalDesc, lang);
-                        el.textContent = translated;
-                    } else {
-                        el.textContent = originalDesc;
-                    }
-                }
-            }
-        });
-
-        localStorage.setItem('foodielocalDil', lang);
-        document.documentElement.setAttribute('lang', lang);
-
-        // Aktiv düymə vəziyyətini yenilə
-        document.querySelectorAll('.dil-secimi').forEach(function(btn) {
+    const applyActiveClass = (dilKodu) => {
+        dilDugmeleri.forEach(btn => {
             btn.classList.remove('active');
-            if (btn.getAttribute('data-dil') === lang) {
+            const code = btn.getAttribute('data-dil');
+            if (code === dilKodu) {
                 btn.classList.add('active');
             }
         });
-    }
-
-    // Dil seçici düymələri - main.js-dən referans
-    document.querySelectorAll('.dil-secimi').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const lang = btn.getAttribute('data-dil') || 'az';
-            applyLanguage(lang);
-        });
-    });
-
-    // İlkin dil tətbiq et
-    window.addEventListener('load', () => {
-        applyLanguage(DEFAULT_LANG);
-    });
-
-    setTimeout(() => {
-        applyLanguage(DEFAULT_LANG);
-    }, 500);
-
-    // Şəkil fallback - detail.js-dən referans
-    const PLACEHOLDER = 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=400&q=80';
-    document.querySelectorAll('.menu-item-image').forEach(img => {
-        img.addEventListener('error', function() {
-            if (this.src !== PLACEHOLDER) {
-                this.src = PLACEHOLDER;
-            }
-        });
-    });
-
-    // Smooth scroll animasiyası - index.html-dən referans
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            const href = this.getAttribute('href');
-            if (href && href !== '#') {
-                const target = document.querySelector(href);
-                if (target) {
-                    e.preventDefault();
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            }
-        });
-    });
-
-    // Kart animasiyaları - index.css-dən referans
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
     };
 
-    const observer = new IntersectionObserver(function(entries) {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
-            }
-        });
-    }, observerOptions);
-
-    document.querySelectorAll('.menu-item-card').forEach(card => {
-        card.style.opacity = '0';
-        card.style.transform = 'translateY(30px)';
-        card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(card);
-    });
-
-    // Category Filter Functionality
-    function filterByCategory(category) {
-        const menuItems = document.querySelectorAll('.menu-item-wrapper');
-        const categorySections = document.querySelectorAll('.menu-category-section');
-        const noItemsMessage = document.getElementById('noItemsMessage');
-        let visibleCount = 0;
-        let visibleSections = 0;
-
-        // Filter items
-        menuItems.forEach(item => {
-            const itemCategory = item.getAttribute('data-category');
-            const isPopular = item.getAttribute('data-is-popular') === 'true';
-
-            let shouldShow = false;
-
-            if (category === 'all') {
-                shouldShow = true;
-            } else if (category === 'popular') {
-                shouldShow = isPopular;
-            } else {
-                shouldShow = itemCategory === category;
-            }
-
-            if (shouldShow) {
-                item.style.display = 'block';
-                visibleCount++;
-                // Re-animate visible items
-                const card = item.querySelector('.menu-item-card');
-                if (card) {
-                    card.style.opacity = '0';
-                    card.style.transform = 'translateY(30px)';
-                    setTimeout(() => {
-                        card.style.opacity = '1';
-                        card.style.transform = 'translateY(0)';
-                    }, 50);
-                }
-            } else {
-                item.style.display = 'none';
-            }
-        });
-
-        // Show/hide category sections based on visible items
-        categorySections.forEach(section => {
-            const sectionCategory = section.getAttribute('data-category-section');
-            const sectionItems = section.querySelectorAll('.menu-item-wrapper');
-            let hasVisibleItems = false;
-
-            if (category === 'all') {
-                hasVisibleItems = sectionItems.length > 0;
-            } else if (category === 'popular') {
-                sectionItems.forEach(item => {
-                    if (item.getAttribute('data-is-popular') === 'true' && item.style.display !== 'none') {
-                        hasVisibleItems = true;
-                    }
-                });
-            } else {
-                hasVisibleItems = sectionCategory === category;
-            }
-
-            if (hasVisibleItems) {
-                section.style.display = 'block';
-                visibleSections++;
-            } else {
-                section.style.display = 'none';
-            }
-        });
-
-        // Show/hide no items message
-        if (visibleCount === 0) {
-            noItemsMessage.style.display = 'block';
-        } else {
-            noItemsMessage.style.display = 'none';
+    // Dil tətbiqi funksiyası
+    const diliAktivEt = function (dilKodu) {
+        const tercumeler = tercumeSozluk[dilKodu];
+        if (!tercumeler) {
+            return;
         }
 
-        // Update active button
-        document.querySelectorAll('.category-filter-btn').forEach(btn => {
-            btn.classList.remove('active');
-            if (btn.getAttribute('data-category') === category) {
-                btn.classList.add('active');
+        tercumeliElementler.forEach(function (element) {
+            const acar = element.getAttribute('data-i18n');
+            if (acar && tercumeler[acar]) {
+                element.textContent = tercumeler[acar];
             }
         });
-    }
 
-    // Category filter button event listeners
-    document.querySelectorAll('.category-filter-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-            const category = this.getAttribute('data-category');
-            filterByCategory(category);
+        placeholderElementler.forEach(function (element) {
+            const acar = element.getAttribute('data-i18n-placeholder');
+            if (acar && tercumeler[acar]) {
+                element.setAttribute('placeholder', tercumeler[acar]);
+            }
+        });
+
+        document.documentElement.setAttribute('lang', dilKodu);
+        localStorage.setItem('foodielocalDil', dilKodu);
+        applyActiveClass(dilKodu);
+    };
+
+    // Dil düymələri üçün dinləyici
+    dilDugmeleri.forEach(function (button) {
+        button.addEventListener('click', function () {
+            const secilenDil = button.getAttribute('data-dil');
+            diliAktivEt(secilenDil);
         });
     });
+
+    // Saxlanılan və ya ilkin dili təyin et
+    const saxlanilanDil = localStorage.getItem('foodielocalDil') || 'en';
+    diliAktivEt(saxlanilanDil);
+
+    // Daxili bağlantılar üçün yumşaq scroll effekti
+    document.querySelectorAll('a[href^="#"]').forEach(function (link) {
+        link.addEventListener('click', function (event) {
+            const hedefId = link.getAttribute('href');
+            if (!hedefId || hedefId.length === 1) {
+                return;
+            }
+
+            const hedefElement = document.querySelector(hedefId);
+            if (!hedefElement) {
+                return;
+            }
+
+            event.preventDefault();
+            hedefElement.scrollIntoView({behavior: 'smooth', block: 'start'});
+            history.replaceState(null, '', hedefId);
+        });
+    });
+
 });
-

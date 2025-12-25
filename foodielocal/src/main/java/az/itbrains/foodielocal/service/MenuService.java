@@ -5,24 +5,14 @@ import java.util.List;
 
 public interface MenuService {
 
-    // Yeni menyu item əlavə et və ya mövcudunu redaktə et
     Menu save(Menu menuItem);
-
-    // Restorana görə menyu elementlərini gətir
-    List<Menu> findByRestaurantId(Long restaurantId);
-
-    // ID-yə görə menyu item tap
     Menu findById(Long id);
-
-    // ID-yə görə menyu item sil
+    List<Menu> findByRestaurantId(Long restaurantId);
+    List<Menu> findPopularItems();
+    List<Menu> findByCategory(String category);
+    List<Menu> findByPriceRange(Double minPrice, Double maxPrice);
+    List<Menu> findAll();
+    List<Menu> findAllSorted();
     void deleteById(Long id);
 
-    // Məşhur yeməkləri gətir
-    List<Menu> findPopularItems();
-
-    // Kateqoriyaya görə menyu elementlərini gətir (starter, main, dessert, drink)
-    List<Menu> findByCategory(String category);
-
-    // Qiymət aralığına görə menyu elementlərini gətir
-    List<Menu> findByPriceRange(Double minPrice, Double maxPrice);
 }

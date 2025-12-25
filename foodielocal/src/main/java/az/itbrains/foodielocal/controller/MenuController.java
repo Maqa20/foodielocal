@@ -22,7 +22,6 @@ public class MenuController {
         this.restaurantService = restaurantService;
     }
 
-    // ✅ Restoranın menyusunu göstər
     @GetMapping("/{restaurantId}/menu")
     public String viewMenu(@PathVariable Long restaurantId, Model model) {
         Restaurant restaurant = restaurantService.findById(restaurantId);
@@ -32,52 +31,43 @@ public class MenuController {
         return "restaurants/menu"; // templates/restaurants/menu.html
     }
 
-    // ✅ Yeni menyu item formu
     @GetMapping("/{restaurantId}/menu/create")
     public String showCreateForm(@PathVariable Long restaurantId, Model model) {
         Restaurant restaurant = restaurantService.findById(restaurantId);
         Menu menuItem = new Menu();
         menuItem.setRestaurant(restaurant);
         model.addAttribute("menuItem", menuItem);
-        return "restaurants/menu-create"; // templates/restaurants/menu-create.html
+        return "restaurants/menu-create";
     }
 
-    // ✅ Yeni menyu item əlavə et
+
     @PostMapping("/{restaurantId}/menu/create")
-    public String createMenuItem(@PathVariable Long restaurantId,
-                                 @ModelAttribute Menu menuItem) {
+    public String createMenuItem(@PathVariable Long restaurantId, @ModelAttribute Menu menuItem) {
         Restaurant restaurant = restaurantService.findById(restaurantId);
         menuItem.setRestaurant(restaurant);
         menuService.save(menuItem);
         return "redirect:/restaurants/" + restaurantId + "/menu";
     }
 
-    // ✅ Menyu item redaktə formu
     @GetMapping("/{restaurantId}/menu/edit/{id}")
-    public String showEditForm(@PathVariable Long restaurantId,
-                               @PathVariable Long id,
-                               Model model) {
+    public String showEditForm(@PathVariable Long restaurantId, @PathVariable Long id, Model model) {
         Menu menuItem = menuService.findById(id);
         model.addAttribute("menuItem", menuItem);
-        return "restaurants/menu-edit"; // templates/restaurants/menu-edit.html
+        return "restaurants/menu-edit";
     }
 
-    // ✅ Menyu item redaktə et
+
     @PostMapping("/{restaurantId}/menu/edit/{id}")
-    public String updateMenuItem(@PathVariable Long restaurantId,
-                                 @PathVariable Long id,
-                                 @ModelAttribute Menu menuItem) {
+    public String updateMenuItem(@PathVariable Long restaurantId, @PathVariable Long id, @ModelAttribute Menu menuItem) {
         Menu existing = menuService.findById(id);
         menuItem.setId(existing.getId());
-        menuItem.setRestaurant(existing.getRestaurant()); // restoranı dəyişməsin
+        menuItem.setRestaurant(existing.getRestaurant());
         menuService.save(menuItem);
         return "redirect:/restaurants/" + restaurantId + "/menu";
     }
 
-    // ✅ Menyu item sil
     @GetMapping("/{restaurantId}/menu/delete/{id}")
-    public String deleteMenuItem(@PathVariable Long restaurantId,
-                                 @PathVariable Long id) {
+    public String deleteMenuItem(@PathVariable Long restaurantId, @PathVariable Long id) {
         menuService.deleteById(id);
         return "redirect:/restaurants/" + restaurantId + "/menu";
     }

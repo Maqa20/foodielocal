@@ -23,7 +23,6 @@ public class ReviewServiceImpl implements ReviewService {
 
     @Override
     public List<Review> getReviewsByRestaurant(Long restaurantId) {
-        // düzəliş: findByRestaurant_Id istifadə olunur
         return reviewRepository.findByRestaurant_Id(restaurantId);
     }
 

@@ -26,6 +26,9 @@ public class AdminController {
     @Autowired
     private ReviewService reviewService;
 
+    @Autowired
+    private MenuService menuService; // 🔹 əlavə et
+
     @GetMapping
     public String admin(Model model) {
         model.addAttribute("users", userService.findAll());
@@ -33,6 +36,8 @@ public class AdminController {
         model.addAttribute("restaurants", restaurantService.findAll());
         model.addAttribute("reservations", reservationService.findAll());
         model.addAttribute("reviews", reviewService.findAll());
-        return "admin/admin"; // admin səhifə template-i
+        model.addAttribute("menus", menuService.findAll());
+
+        return "admin/admin";
     }
 }

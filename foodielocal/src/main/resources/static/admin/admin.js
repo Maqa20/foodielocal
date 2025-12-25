@@ -20,11 +20,13 @@ document.addEventListener('DOMContentLoaded', function() {
             tabUsers: 'İstifadəçilər',
             tabRoles: 'Rollar',
             tabRestaurants: 'Restoranlar',
+            tabMenus: 'Menyular',
             tabReservations: 'Rezervasiyalar',
             tabReviews: 'Rəylər',
             usersTitle: 'İstifadəçilərin İdarəetməsi',
             rolesTitle: 'Rolların İdarəetməsi',
             restaurantsTitle: 'Restoranların İdarəetməsi',
+            menusTitle: 'Menyu İdarəetməsi',
             reservationsTitle: 'Rezervasiyaların İdarəetməsi',
             reviewsTitle: 'Rəylərin İdarəetməsi',
             btnAdd: 'Əlavə et',
@@ -34,6 +36,28 @@ document.addEventListener('DOMContentLoaded', function() {
             btnReject: 'Rədd et',
             btnSave: 'Yadda saxla',
             btnCancel: 'Ləğv et',
+            // Table headers
+            tableId: 'ID',
+            tableName: 'Ad',
+            tableEmail: 'E-poçt',
+            tableRole: 'Rol',
+            tableStatus: 'Status',
+            tableActions: 'Əməliyyatlar',
+            tableRoleName: 'Rol Adı',
+            tableDescription: 'Təsvir',
+            tableImage: 'Şəkil',
+            tableLocation: 'Ünvan',
+            tableRating: 'Reytinq',
+            tableRestaurant: 'Restoran',
+            tableMenuName: 'Menyu Adı',
+            tablePrice: 'Qiymət',
+            tableCategory: 'Kateqoriya',
+            tableCustomer: 'Müştəri',
+            tableDate: 'Tarix',
+            tableTime: 'Saat',
+            tableGuests: 'Qonaq sayı',
+            tableReviewer: 'Rəy bildirən',
+            tableComment: 'Şərh',
             reservationStatusPending: 'Gözləyir',
             reservationStatusApproved: 'Təsdiqlənib',
             reservationStatusRejected: 'Rədd edilib',
@@ -87,7 +111,19 @@ document.addEventListener('DOMContentLoaded', function() {
             'priceRange200+': '200+ AZN',
             formCuisine: 'Mətbəx',
             formOpeningHours: 'İş Saatları',
-            formPhone: 'Telefon'
+            formPhone: 'Telefon',
+            formMenuName: 'Menyu Adı',
+            formMenuDescription: 'Təsvir',
+            formMenuPrice: 'Qiymət (₼)',
+            formMenuCategory: 'Kateqoriya',
+            formIsPopular: 'Məşhur yemək',
+            selectCategory: 'Kateqoriya seçin',
+            categoryStarter: 'Qəlyanaltılar',
+            categoryMain: 'Əsas yeməklər',
+            categoryDessert: 'Şirniyyatlar',
+            categoryDrink: 'İçkilər',
+            modalAddMenu: 'Yeni Menyu Əlavə et',
+            modalEditMenu: 'Menyunu Redaktə et'
         },
         en: {
             adminTitle: 'Admin Panel - FoodieLocal',
@@ -100,11 +136,13 @@ document.addEventListener('DOMContentLoaded', function() {
             tabUsers: 'Users',
             tabRoles: 'Roles',
             tabRestaurants: 'Restaurants',
+            tabMenus: 'Menus',
             tabReservations: 'Reservations',
             tabReviews: 'Reviews',
             usersTitle: 'Users Management',
             rolesTitle: 'Roles Management',
             restaurantsTitle: 'Restaurants Management',
+            menusTitle: 'Menus Management',
             reservationsTitle: 'Reservations Management',
             reviewsTitle: 'Reviews Management',
             btnAdd: 'Add',
@@ -114,6 +152,28 @@ document.addEventListener('DOMContentLoaded', function() {
             btnReject: 'Reject',
             btnSave: 'Save',
             btnCancel: 'Cancel',
+            // Table headers
+            tableId: 'ID',
+            tableName: 'Name',
+            tableEmail: 'Email',
+            tableRole: 'Role',
+            tableStatus: 'Status',
+            tableActions: 'Actions',
+            tableRoleName: 'Role Name',
+            tableDescription: 'Description',
+            tableImage: 'Image',
+            tableLocation: 'Location',
+            tableRating: 'Rating',
+            tableRestaurant: 'Restaurant',
+            tableMenuName: 'Menu Name',
+            tablePrice: 'Price',
+            tableCategory: 'Category',
+            tableCustomer: 'Customer',
+            tableDate: 'Date',
+            tableTime: 'Time',
+            tableGuests: 'Guests',
+            tableReviewer: 'Reviewer',
+            tableComment: 'Comment',
             reservationStatusPending: 'Pending',
             reservationStatusApproved: 'Approved',
             reservationStatusRejected: 'Rejected',
@@ -145,6 +205,10 @@ document.addEventListener('DOMContentLoaded', function() {
             formReviewerLastName: 'Last Name',
             formRating: 'Rating',
             formComment: 'Comment',
+            formMenuName: 'Menu Name',
+            formMenuDescription: 'Description',
+            formMenuPrice: 'Price (₼)',
+            formMenuCategory: 'Category',
             formActive: 'Status (Active/Inactive)',
             deleteConfirm: 'Are you sure you want to delete?',
             successMessage: 'Operation completed successfully',
@@ -167,7 +231,19 @@ document.addEventListener('DOMContentLoaded', function() {
             'priceRange200+': '200+ AZN',
             formCuisine: 'Cuisine',
             formOpeningHours: 'Opening Hours',
-            formPhone: 'Phone'
+            formPhone: 'Phone',
+            formMenuName: 'Menu Name',
+            formMenuDescription: 'Description',
+            formMenuPrice: 'Price (₼)',
+            formMenuCategory: 'Category',
+            formIsPopular: 'Popular dish',
+            selectCategory: 'Select Category',
+            categoryStarter: 'Starter',
+            categoryMain: 'Main Dish',
+            categoryDessert: 'Dessert',
+            categoryDrink: 'Drink',
+            modalAddMenu: 'Add New Menu',
+            modalEditMenu: 'Edit Menu'
         },
         ru: {
             adminTitle: 'Панель администратора - FoodieLocal',
@@ -180,11 +256,13 @@ document.addEventListener('DOMContentLoaded', function() {
             tabUsers: 'Пользователи',
             tabRoles: 'Роли',
             tabRestaurants: 'Рестораны',
+            tabMenus: 'Меню',
             tabReservations: 'Бронирования',
             tabReviews: 'Отзывы',
             usersTitle: 'Управление пользователями',
             rolesTitle: 'Управление ролями',
             restaurantsTitle: 'Управление ресторанами',
+            menusTitle: 'Управление меню',
             reservationsTitle: 'Управление бронированиями',
             reviewsTitle: 'Управление отзывами',
             btnAdd: 'Добавить',
@@ -194,6 +272,28 @@ document.addEventListener('DOMContentLoaded', function() {
             btnReject: 'Отклонить',
             btnSave: 'Сохранить',
             btnCancel: 'Отмена',
+            // Table headers
+            tableId: 'ID',
+            tableName: 'Имя',
+            tableEmail: 'Email',
+            tableRole: 'Роль',
+            tableStatus: 'Статус',
+            tableActions: 'Действия',
+            tableRoleName: 'Название роли',
+            tableDescription: 'Описание',
+            tableImage: 'Изображение',
+            tableLocation: 'Адрес',
+            tableRating: 'Рейтинг',
+            tableRestaurant: 'Ресторан',
+            tableMenuName: 'Название меню',
+            tablePrice: 'Цена',
+            tableCategory: 'Категория',
+            tableCustomer: 'Клиент',
+            tableDate: 'Дата',
+            tableTime: 'Время',
+            tableGuests: 'Гостей',
+            tableReviewer: 'Автор отзыва',
+            tableComment: 'Комментарий',
             reservationStatusPending: 'Ожидает',
             reservationStatusApproved: 'Одобрено',
             reservationStatusRejected: 'Отклонено',
@@ -225,6 +325,10 @@ document.addEventListener('DOMContentLoaded', function() {
             formReviewerLastName: 'Фамилия',
             formRating: 'Рейтинг',
             formComment: 'Отзыв',
+            formMenuName: 'Название меню',
+            formMenuDescription: 'Описание',
+            formMenuPrice: 'Цена (₼)',
+            formMenuCategory: 'Категория',
             formActive: 'Статус (Активен/Неактивен)',
             deleteConfirm: 'Вы уверены, что хотите удалить?',
             successMessage: 'Операция успешно завершена',
@@ -247,9 +351,26 @@ document.addEventListener('DOMContentLoaded', function() {
             'priceRange200+': '200+ AZN',
             formCuisine: 'Кухня',
             formOpeningHours: 'Часы работы',
-            formPhone: 'Телефон'
+            formPhone: 'Телефон',
+            formMenuName: 'Название меню',
+            formMenuDescription: 'Описание',
+            formMenuPrice: 'Цена (₼)',
+            formMenuCategory: 'Категория',
+            formIsPopular: 'Популярное блюдо',
+            selectCategory: 'Выберите категорию',
+            categoryStarter: 'Закуски',
+            categoryMain: 'Основные блюда',
+            categoryDessert: 'Десерты',
+            categoryDrink: 'Напитки',
+            modalAddMenu: 'Добавить меню',
+            modalEditMenu: 'Редактировать меню'
         }
     };
+
+    // Cache for dynamic content translations (menus etc.)
+    if (!window.translationCache) {
+        window.translationCache = {};
+    }
 
     let currentLanguage = localStorage.getItem('foodielocalDil') || 'en';
     const languageButtons = document.querySelectorAll('.dil-secimi');
@@ -350,6 +471,9 @@ document.addEventListener('DOMContentLoaded', function() {
             currentLanguage = langCode;
             localStorage.setItem('foodielocalDil', langCode);
             applyActiveLanguageClass(langCode);
+
+            // Also update dynamic admin content (e.g., menus names/descriptions)
+            updateAdminMenuTranslations(langCode);
         });
     }
 
@@ -358,6 +482,97 @@ document.addEventListener('DOMContentLoaded', function() {
      */
     function t(key) {
         return translations[currentLanguage]?.[key] || key;
+    }
+
+    /**
+     * Auto translate helper for dynamic content (uses Google Translate free endpoint)
+     */
+    async function autoTranslateDynamic(text, targetLang) {
+        if (!text || !targetLang) return text;
+
+        // Əgər hədəf dil EN-dirsə, mənbənin artıq ingiliscə olduğunu qəbul edirik
+        // və əlavə tərcümə etmirik
+        if (targetLang === 'en') {
+            return text;
+        }
+
+        // Əgər hədəf dil AZ-dirsə və mətn artıq azərbaycan hərfləri ehtiva edirsə,
+        // orijinal mətni saxlayırıq (tərcümə etmirik)
+        if (targetLang === 'az') {
+            // Azərbaycan hərfləri: ə, ı, ö, ü, ş, ç, ğ
+            const azRegex = /[əıöüşçğƏIÖÜŞÇĞ]/;
+            if (azRegex.test(text)) {
+                return text; // Artıq AZ-dədir, tərcümə etmə
+            }
+            // Əgər azərbaycan hərfləri yoxdursa, EN-dən AZ-yə tərcümə et
+        }
+
+        const cacheKey = `${text}__${targetLang}`;
+        if (window.translationCache && window.translationCache[cacheKey]) {
+            return window.translationCache[cacheKey];
+        }
+
+        try {
+            // Mənbə dili avtomatik tanınsın, hədəf dilə tərcümə et
+            const response = await fetch(
+                `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`
+            );
+            const data = await response.json();
+            const translated = data?.[0]?.[0]?.[0];
+            if (translated) {
+                if (!window.translationCache) {
+                    window.translationCache = {};
+                }
+                window.translationCache[cacheKey] = translated;
+                return translated;
+            }
+        } catch (e) {
+            console.warn('Dynamic translation error:', e);
+        }
+
+        return text;
+    }
+
+    /**
+     * Update admin menus table texts (name + description) according to current language
+     */
+    async function updateAdminMenuTranslations(langCode) {
+        try {
+            const nameCells = Array.from(document.querySelectorAll('.admin-menu-name'));
+            const descCells = Array.from(document.querySelectorAll('.admin-menu-description'));
+
+            // Parallel translate all names
+            const namePromises = nameCells.map(async (cell) => {
+                const original = cell.getAttribute('data-original-name') || cell.textContent.trim();
+                if (!original) return null;
+                const translated = await autoTranslateDynamic(original, langCode);
+                return { cell, translated };
+            });
+
+            // Parallel translate all descriptions
+            const descPromises = descCells.map(async (cell) => {
+                const original = cell.getAttribute('data-original-description') || cell.textContent.trim();
+                if (!original) return null;
+                const translated = await autoTranslateDynamic(original, langCode);
+                return { cell, translated };
+            });
+
+            const nameResults = await Promise.all(namePromises);
+            nameResults.forEach(result => {
+                if (result && result.translated != null) {
+                    result.cell.textContent = result.translated;
+                }
+            });
+
+            const descResults = await Promise.all(descPromises);
+            descResults.forEach(result => {
+                if (result && result.translated != null) {
+                    result.cell.textContent = result.translated;
+                }
+            });
+        } catch (e) {
+            console.warn('Failed to update admin menus translations:', e);
+        }
     }
 
     // ==================== Notification System ====================
@@ -833,6 +1048,8 @@ document.addEventListener('DOMContentLoaded', function() {
                         modalLabel.textContent = t('modalAddReservation');
                     } else if (modalId.includes('Review')) {
                         modalLabel.textContent = t('modalAddReview');
+                    } else if (modalId.includes('Menu')) {
+                        modalLabel.textContent = t('modalAddMenu');
                     } else if (modalId.includes('deleteConfirm')) {
                         modalLabel.textContent = t('modalDeleteConfirm');
                     }
@@ -1495,4 +1712,107 @@ document.addEventListener('DOMContentLoaded', function() {
     window.submitReviewForm = function() {
         document.getElementById('reviewForm').submit();
     };
+
+    // Menu Modal
+    window.openMenuModal = function(menuId) {
+        const form = document.getElementById('menuForm');
+        const menuIdInput = document.getElementById('menuId');
+        const modalLabel = document.getElementById('menuModalLabel');
+
+        if (menuId) {
+            // Edit mode
+            const row = document.querySelector(`tr[data-menu-id="${menuId}"]`);
+            if (row) {
+                menuIdInput.value = menuId;
+                document.getElementById('menuName').value = row.getAttribute('data-menu-name') || '';
+                document.getElementById('menuDescription').value = row.getAttribute('data-menu-description') || '';
+                document.getElementById('menuPrice').value = row.getAttribute('data-menu-price') || '';
+                document.getElementById('menuCategory').value = row.getAttribute('data-menu-category') || '';
+                document.getElementById('menuImageUrl').value = row.getAttribute('data-menu-image-url') || '';
+                const isPopular = row.getAttribute('data-menu-is-popular') === 'true';
+                document.getElementById('menuIsPopular').checked = isPopular;
+                document.getElementById('menuRestaurant').value = row.getAttribute('data-menu-restaurant-id') || '';
+                form.action = `/admin/menus/update/${menuId}`;
+                if (modalLabel) {
+                    modalLabel.setAttribute('data-i18n', 'modalEditMenu');
+                    updateElementTranslation(modalLabel);
+                }
+            }
+        } else {
+            // Create mode
+            menuIdInput.value = '';
+            form.reset();
+            document.getElementById('menuIsPopular').checked = false;
+            document.getElementById('menuRestaurant').selectedIndex = 0;
+            form.action = '/admin/menus/create';
+            if (modalLabel) {
+                modalLabel.setAttribute('data-i18n', 'modalAddMenu');
+                updateElementTranslation(modalLabel);
+            }
+        }
+    };
+
+    window.submitMenuForm = function() {
+        const form = document.getElementById('menuForm');
+        const menuIdInput = document.getElementById('menuId');
+
+        // Validate form before submit
+        if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+        }
+
+        // Ensure form action is set correctly based on ID
+        const menuId = menuIdInput ? menuIdInput.value : '';
+        if (menuId && menuId.trim() !== '') {
+            // Edit mode - update existing menu
+            form.action = `/admin/menus/update/${menuId}`;
+        } else {
+            // Create mode - add new menu
+            form.action = '/admin/menus/create';
+        }
+
+        form.submit();
+    };
+
+    // Sort menus table by ID on page load
+    function sortMenusTableById() {
+        const tbody = document.getElementById('menusTableBody');
+        if (!tbody) return;
+
+        const rows = Array.from(tbody.querySelectorAll('tr[data-menu-id]'));
+        if (rows.length === 0) return;
+
+        // Sort rows by data-menu-id attribute (ascending)
+        rows.sort((a, b) => {
+            const idA = parseInt(a.getAttribute('data-menu-id')) || 0;
+            const idB = parseInt(b.getAttribute('data-menu-id')) || 0;
+            return idA - idB;
+        });
+
+        // Remove all rows from tbody
+        rows.forEach(row => row.remove());
+
+        // Re-append sorted rows
+        rows.forEach(row => tbody.appendChild(row));
+    }
+
+    // Sort menus table when page loads and when menus tab is shown
+    document.addEventListener('DOMContentLoaded', function() {
+        // Wait a bit for Thymeleaf to render the table
+        setTimeout(() => {
+            sortMenusTableById();
+        }, 100);
+
+        // Also sort when menus tab is clicked
+        const menusTab = document.getElementById('menus-tab');
+        if (menusTab) {
+            menusTab.addEventListener('shown.bs.tab', function() {
+                setTimeout(() => {
+                    sortMenusTableById();
+                }, 50);
+            });
+        }
+    });
+
 });

@@ -16,7 +16,6 @@ public class AdminReviewController {
         this.reviewService = reviewService;
     }
 
-    // ✅ Rəy sil
     @PostMapping("/{id}/delete")
     public String deleteReview(@PathVariable Long id,
                                RedirectAttributes redirectAttributes) {

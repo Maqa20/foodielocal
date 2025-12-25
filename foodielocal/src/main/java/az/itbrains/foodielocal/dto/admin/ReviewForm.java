@@ -16,15 +16,11 @@ public class ReviewForm {
 
     @NotBlank(message = "Ad boş ola bilməz")
     private String authorName;
-
     @NotBlank(message = "Şərh boş ola bilməz")
     private String comment;
-
     @NotNull(message = "Reytinq boş ola bilməz")
     private Integer rating;
-
     @NotNull(message = "Restoran seçilməlidir")
     private Long restaurantId;
-
     private boolean approved;
 }

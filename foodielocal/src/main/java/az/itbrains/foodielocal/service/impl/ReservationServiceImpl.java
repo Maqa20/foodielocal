@@ -12,7 +12,7 @@ import java.util.List;
 public class ReservationServiceImpl implements ReservationService {
 
     private final ReservationRepository repo;
-    private final EmailService emailService; // ✅ EmailService injection
+    private final EmailService emailService;
 
     public ReservationServiceImpl(ReservationRepository repo, EmailService emailService) {
         this.repo = repo;
@@ -41,8 +41,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public Reservation findById(Long id) {
-        return repo.findById(id)
-                .orElseThrow(() -> new RuntimeException("Rezervasiya tapılmadı: " + id));
+        return repo.findById(id).orElseThrow(() -> new RuntimeException("Rezervasiya tapılmadı: " + id));
     }
 
     @Override
@@ -50,29 +49,21 @@ public class ReservationServiceImpl implements ReservationService {
         repo.deleteById(id);
     }
 
-    // ✅ Rezervasiyanı təsdiqlə
     @Override
     public void approveReservation(Long id) {
         Reservation reservation = findById(id);
         reservation.setStatus("APPROVED");
         repo.save(reservation);
-
-        String details = "Tarix: " + reservation.getReservationDate() +
-                "\nSaat: " + reservation.getReservationTime() +
-                "\nRestoran: " + reservation.getRestaurant().getName();
+        String details = "Tarix: " + reservation.getReservationDate() + "\nSaat: " + reservation.getReservationTime() + "\nRestoran: " + reservation.getRestaurant().getName();
         emailService.sendReservationConfirmation(reservation.getEmailAddress(), details);
     }
 
-    // ✅ Rezervasiyanı rədd et
     @Override
     public void rejectReservation(Long id) {
         Reservation reservation = findById(id);
         reservation.setStatus("REJECTED");
         repo.save(reservation);
-
-        String details = "Tarix: " + reservation.getReservationDate() +
-                "\nSaat: " + reservation.getReservationTime() +
-                "\nRestoran: " + reservation.getRestaurant().getName();
+        String details = "Tarix: " + reservation.getReservationDate() + "\nSaat: " + reservation.getReservationTime() + "\nRestoran: " + reservation.getRestaurant().getName();
         emailService.sendReservationCancellation(reservation.getEmailAddress(), details);
     }
 }

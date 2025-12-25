@@ -20,21 +20,17 @@ public class RestaurantServiceImpl implements RestaurantService {
         this.restaurantRepository = restaurantRepository;
     }
 
-    // ✅ Restoranları id ilə sıralanmış qaytar
     @Override
     public List<Restaurant> findAll() {
         return restaurantRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
-    // ✅ Random restoranlar
     @Override
     public List<Restaurant> getRandomRestaurants(int count) {
         List<Restaurant> all = restaurantRepository.findAll();
         Collections.shuffle(all);
         return all.stream().limit(count).toList();
     }
-
-    // ✅ Seed ilə random restoranlar
     @Override
     public List<Restaurant> getSeededRandomRestaurants(int count, long seed) {
         List<Restaurant> all = restaurantRepository.findAll();
@@ -42,26 +38,21 @@ public class RestaurantServiceImpl implements RestaurantService {
         return all.stream().limit(count).toList();
     }
 
-    // ✅ Restoranları id ilə sıralanmış qaytar (əlavə metod)
     @Override
     public List<Restaurant> findAllSortedById() {
         return restaurantRepository.findAll(Sort.by(Sort.Direction.ASC, "id"));
     }
 
-    // ✅ Restoranı id ilə tap
     @Override
     public Restaurant findById(Long id) {
         Optional<Restaurant> restaurant = restaurantRepository.findById(id);
         return restaurant.orElse(null);
     }
-
-    // ✅ Restoranı yadda saxla
     @Override
     public Restaurant save(Restaurant restaurant) {
         return restaurantRepository.save(restaurant);
     }
 
-    // ✅ Restoranı sil
     @Override
     public void deleteById(Long id) {
         restaurantRepository.deleteById(id);

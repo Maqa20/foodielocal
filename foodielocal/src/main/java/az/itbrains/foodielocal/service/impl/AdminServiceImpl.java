@@ -31,11 +31,7 @@ public class AdminServiceImpl implements AdminService {
 
     @Override
     public Admin updateAdmin(Long id, Admin admin) {
-        return repository.findById(id)
-                .map(existing -> {
-                    existing.setUsername(admin.getUsername());
-                    existing.setEmail(admin.getEmail());
-                    existing.setPassword(admin.getPassword());
+        return repository.findById(id).map(existing -> {existing.setUsername(admin.getUsername());existing.setEmail(admin.getEmail());existing.setPassword(admin.getPassword());
                     return repository.save(existing);
                 })
                 .orElse(null);

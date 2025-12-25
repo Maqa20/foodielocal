@@ -8,9 +8,5 @@ import java.util.List;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
-
-    // Ən son 5 rezervasiyanı gətir
     List<Reservation> findTop5ByOrderByCreatedAtDesc();
-
-
 }

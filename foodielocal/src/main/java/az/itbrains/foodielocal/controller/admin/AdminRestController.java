@@ -18,13 +18,11 @@ public class AdminRestController {
         this.service = service;
     }
 
-    // ✅ Bütün adminləri gətir
     @GetMapping
     public ResponseEntity<List<Admin>> all() {
         return ResponseEntity.ok(service.getAllAdmins());
     }
 
-    // ✅ Tək admin gətir
     @GetMapping("/{id}")
     public ResponseEntity<Admin> one(@PathVariable Long id) {
         Admin admin = service.getAdminById(id);
@@ -34,14 +32,12 @@ public class AdminRestController {
         return ResponseEntity.ok(admin);
     }
 
-    // ✅ Yeni admin yarat
     @PostMapping
     public ResponseEntity<Admin> create(@Valid @RequestBody Admin admin) {
         Admin created = service.createAdmin(admin);
         return ResponseEntity.status(201).body(created);
     }
 
-    // ✅ Admin yenilə
     @PutMapping("/{id}")
     public ResponseEntity<Admin> update(@PathVariable Long id, @Valid @RequestBody Admin admin) {
         Admin updated = service.updateAdmin(id, admin);
@@ -51,7 +47,6 @@ public class AdminRestController {
         return ResponseEntity.ok(updated);
     }
 
-    // ✅ Admin sil
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         boolean deleted = service.deleteAdmin(id);

@@ -8,5 +8,5 @@ public interface AdminService {
     Admin getAdminById(Long id);
     Admin createAdmin(Admin admin);
     Admin updateAdmin(Long id, Admin admin);
-    boolean deleteAdmin(Long id); // ✅ boolean qaytarır
+    boolean deleteAdmin(Long id);
 }

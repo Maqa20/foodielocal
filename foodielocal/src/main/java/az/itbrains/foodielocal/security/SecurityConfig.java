@@ -26,18 +26,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        // açıq səhifələr
-                        .requestMatchers("/", "/restaurants/**", "/auth/**", "/css/**", "/js/**", "/images/**", "/terms").permitAll()
-                        // rezervasiya və rəy yalnız login
+                        .requestMatchers("/", "/restaurants/**", "/auth/**", "/css/**", "/js/**", "/images/**", "/terms", "/reservation/resend-email").permitAll()
                         .requestMatchers("/reservation/**", "/reviews/**").authenticated()
-                        // admin panel yalnız ADMIN
                         .requestMatchers("/admin/**").hasRole("ADMIN")
-                        // qalan bütün sorğular login tələb edir
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
                         .loginPage("/auth/login")
-                        .loginProcessingUrl("/auth/login") // bunu əlavə et
+                        .loginProcessingUrl("/auth/login")
                         .successHandler(customSuccessHandler)
                         .permitAll()
                 )
@@ -53,7 +49,7 @@ public class SecurityConfig {
                         .tokenValiditySeconds(1209600)
                 )
                 .csrf(csrf -> csrf
-                        .ignoringRequestMatchers("/auth/logout")
+                        .ignoringRequestMatchers("/auth/logout", "/reservation/resend-email")
                 );
         return http.build();
     }

@@ -22,43 +22,30 @@ public class AdminRestaurantController {
     private final RoleService roleService;
     private final ReviewService reviewService;
 
-    public AdminRestaurantController(RestaurantService restaurantService,
-                                     ReservationService reservationService,
-                                     UserService userService,
-                                     RoleService roleService,
-                                     ReviewService reviewService) {
+    public AdminRestaurantController(RestaurantService restaurantService, ReservationService reservationService, UserService userService, RoleService roleService, ReviewService reviewService) {
         this.restaurantService = restaurantService;
         this.reservationService = reservationService;
         this.userService = userService;
         this.roleService = roleService;
         this.reviewService = reviewService;
     }
-
-    // ✅ Restoran siyahısı + digər panel məlumatları
     @GetMapping
-    public String listRestaurants(Model model,
-                                  @ModelAttribute("message") String message) {
+    public String listRestaurants(Model model, @ModelAttribute("message") String message) {
         model.addAttribute("restaurants", restaurantService.findAllSortedById());
-        model.addAttribute("restaurantForm", new RestaurantForm()); // 🔑 form binding üçün lazımdır
-
-        // digər panellərin məlumatlarını da əlavə et
+        model.addAttribute("restaurantForm", new RestaurantForm());
         model.addAttribute("reservations", reservationService.findAll());
         model.addAttribute("users", userService.findAll());
         model.addAttribute("roles", roleService.findAll());
         model.addAttribute("reviews", reviewService.findAll());
 
-        // mesaj varsa modelə əlavə et
         if (message != null && !message.isEmpty()) {
             model.addAttribute("alertMessage", message);
         }
-
-        return "admin/admin"; // ümumi admin panel template
+        return "admin/admin";
     }
 
-    // ✅ Yeni restoran əlavə et
     @PostMapping("/create")
-    public String createRestaurant(@ModelAttribute("restaurantForm") RestaurantForm form,
-                                   RedirectAttributes redirectAttributes) {
+    public String createRestaurant(@ModelAttribute("restaurantForm") RestaurantForm form, RedirectAttributes redirectAttributes) {
         Restaurant restaurant = new Restaurant();
         fillRestaurantFromForm(restaurant, form);
         restaurantService.save(restaurant);
@@ -66,11 +53,8 @@ public class AdminRestaurantController {
         return "redirect:/admin/restaurants";
     }
 
-    // ✅ Restoran yenilə
     @PostMapping("/update/{id}")
-    public String updateRestaurant(@PathVariable Long id,
-                                   @ModelAttribute("restaurantForm") RestaurantForm form,
-                                   RedirectAttributes redirectAttributes) {
+    public String updateRestaurant(@PathVariable Long id, @ModelAttribute("restaurantForm") RestaurantForm form, RedirectAttributes redirectAttributes) {
         Restaurant restaurant = restaurantService.findById(id);
         if (restaurant == null) {
             redirectAttributes.addFlashAttribute("message", "Xəta: restoran tapılmadı!");
@@ -82,10 +66,8 @@ public class AdminRestaurantController {
         return "redirect:/admin/restaurants";
     }
 
-    // ✅ Restoran sil
     @PostMapping("/{id}/delete")
-    public String deleteRestaurant(@PathVariable Long id,
-                                   RedirectAttributes redirectAttributes) {
+    public String deleteRestaurant(@PathVariable Long id, RedirectAttributes redirectAttributes) {
         Restaurant restaurant = restaurantService.findById(id);
         if (restaurant != null) {
             restaurantService.deleteById(id);
@@ -96,7 +78,6 @@ public class AdminRestaurantController {
         return "redirect:/admin/restaurants";
     }
 
-    // 🔧 Helper metod
     private void fillRestaurantFromForm(Restaurant restaurant, RestaurantForm form) {
         restaurant.setName(form.getName());
         restaurant.setAddress(form.getAddress());

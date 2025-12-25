@@ -116,29 +116,10 @@
                         </div>
                         <a class="btn btn-primary w-100"
                            th:href="@{'/restaurants/' + ${restaurant.id} + '/menu'}">
-                            <i class="bi bi-menu-button-wide me-2"></i>
-                            <span data-i18n="detailMenuButton">Menyuya bax</span>
+                            <i class="bi bi-menu-button-wide me-2"></i><span data-i18n="detailMenuButton">Menyuya bax</span>
                         </a>
                     </div>
 
-                    <div class="detail-card p-4">
-                        <h2 class="h4 mb-3 text-white" data-i18n="detailSignatureTitle">Məşhur yeməklər</h2>
-                        <div th:if="${restaurant == null or restaurant.signatureDishes == null or #lists.isEmpty(restaurant.signatureDishes)}"
-                             class="text-white" data-i18n="detailSignatureEmpty">
-                            Məşhur yeməklər tezliklə əlavə olunacaq.
-                        </div>
-                        <ul class="list-unstyled mb-0" th:if="${restaurant != null and restaurant.signatureDishes != null and !#lists.isEmpty(restaurant.signatureDishes)}">
-                            <li th:each="dish : ${restaurant.signatureDishes}" class="d-flex gap-3 mb-3">
-                                <img th:if="${dish.imageUrl != null}" th:src="${dish.imageUrl}" alt=""
-                                     style="width:56px;height:56px;object-fit:cover;" class="rounded">
-                                <div>
-                                    <strong class="text-white" th:text="${dish.name != null ? dish.name : ''}"></strong>
-                                    <div class="text-white small"
-                                         th:text="${dish.description != null ? dish.description : ''}"></div>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
                 </div>
 
                 <div class="col-lg-4">

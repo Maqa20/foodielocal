@@ -48,7 +48,21 @@ document.addEventListener('DOMContentLoaded', function () {
             pageTitle: 'Bütün Restoranları Kəşf et',
             restaurantsHeaderTitle: 'Bütün Restoranları Kəşf edin',
             restaurantsHeaderSubtitle: 'Sizin üçün seçilmiş şəhərin ən yaxşı restoranlarını tapın.',
-            detailsButton: 'Detallar'
+            detailsButton: 'Detallar',
+            // FoodieLocal Haqqında
+            aboutTitle: 'FoodieLocal Haqqında',
+            aboutSubtitle: 'Yerli restoranları kəşf edin və dadlı təcrübələr yaşayın',
+            aboutContactTitle: 'Əlaqə Məlumatları',
+            aboutEmailLabel: 'Email:',
+            aboutPhoneLabel: 'Telefon:',
+            aboutRestaurantOwnerTitle: 'Restoran Sahibləri Üçün',
+            aboutRestaurantOwnerText: 'Restoranınızı FoodieLocal platformasına əlavə etmək istəyirsiniz? Bizimlə əlaqə saxlayın!',
+            aboutAddRestaurant: 'Restoran əlavə etmək',
+            aboutAddMenu: 'Menyu əlavə etmək',
+            aboutManageReservations: 'Rezervasiyaları idarə etmək',
+            aboutContactButton: 'Bizimlə Əlaqə',
+            aboutWhatsAppLabel: 'WhatsApp:',
+            aboutSocialMediaTitle: 'Sosial Media'
         },
         en: {
             navHome: 'Home',
@@ -95,8 +109,22 @@ document.addEventListener('DOMContentLoaded', function () {
             // Restaurants page
             pageTitle: 'Explore All Restaurants',
             restaurantsHeaderTitle: 'Explore All Restaurants',
-            restaurantsHeaderSubtitle: 'Discover the city’s best dining spots curated just for you.',
-            detailsButton: 'View details'
+            restaurantsHeaderSubtitle: 'Discover the city\'s best dining spots curated just for you.',
+            detailsButton: 'View details',
+            // About FoodieLocal
+            aboutTitle: 'About FoodieLocal',
+            aboutSubtitle: 'Discover local restaurants and enjoy delicious experiences',
+            aboutContactTitle: 'Contact Information',
+            aboutEmailLabel: 'Email:',
+            aboutPhoneLabel: 'Phone:',
+            aboutRestaurantOwnerTitle: 'For Restaurant Owners',
+            aboutRestaurantOwnerText: 'Want to add your restaurant to FoodieLocal platform? Contact us!',
+            aboutAddRestaurant: 'Add restaurant',
+            aboutAddMenu: 'Add menu',
+            aboutManageReservations: 'Manage reservations',
+            aboutContactButton: 'Contact Us',
+            aboutWhatsAppLabel: 'WhatsApp:',
+            aboutSocialMediaTitle: 'Social Media'
         },
         ru: {
             navHome: 'Главная',
@@ -144,7 +172,21 @@ document.addEventListener('DOMContentLoaded', function () {
             pageTitle: 'Исследуйте все рестораны',
             restaurantsHeaderTitle: 'Исследуйте все рестораны',
             restaurantsHeaderSubtitle: 'Откройте лучшие рестораны города, подобранные специально для вас.',
-            detailsButton: 'Подробнее'
+            detailsButton: 'Подробнее',
+            // О FoodieLocal
+            aboutTitle: 'О FoodieLocal',
+            aboutSubtitle: 'Откройте местные рестораны и насладитесь вкусными впечатлениями',
+            aboutContactTitle: 'Контактная информация',
+            aboutEmailLabel: 'Email:',
+            aboutPhoneLabel: 'Телефон:',
+            aboutRestaurantOwnerTitle: 'Для владельцев ресторанов',
+            aboutRestaurantOwnerText: 'Хотите добавить свой ресторан на платформу FoodieLocal? Свяжитесь с нами!',
+            aboutAddRestaurant: 'Добавить ресторан',
+            aboutAddMenu: 'Добавить меню',
+            aboutManageReservations: 'Управлять бронированиями',
+            aboutContactButton: 'Связаться с нами',
+            aboutWhatsAppLabel: 'WhatsApp:',
+            aboutSocialMediaTitle: 'Социальные сети'
         }
     };
 
@@ -172,7 +214,28 @@ document.addEventListener('DOMContentLoaded', function () {
         tercumeliElementler.forEach(function (element) {
             const acar = element.getAttribute('data-i18n');
             if (acar && tercumeler[acar]) {
-                element.textContent = tercumeler[acar];
+                // Əgər elementin span uşağı varsa (məsələn, navbar-də), span-i tərcümə et
+                const span = element.querySelector('span');
+                if (span) {
+                    span.textContent = tercumeler[acar];
+                } else if (element.children.length > 0) {
+                    // Icon və ya digər uşaqlar varsa, yalnız mətn node-larını tərcümə et
+                    let hasTextNode = false;
+                    Array.from(element.childNodes).forEach(function(node) {
+                        if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
+                            node.textContent = tercumeler[acar];
+                            hasTextNode = true;
+                        }
+                    });
+                    // Əgər mətn node yoxdursa, uşaqlardan sonra əlavə et
+                    if (!hasTextNode && element.lastChild) {
+                        const textNode = document.createTextNode(' ' + tercumeler[acar]);
+                        element.appendChild(textNode);
+                    }
+                } else {
+                    // Əks halda, elementin özünü tərcümə et
+                    element.textContent = tercumeler[acar];
+                }
             }
         });
 
@@ -197,7 +260,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     // Saxlanılan və ya ilkin dili təyin et
-    const saxlanilanDil = localStorage.getItem('foodielocalDil') || 'en';
+    const saxlanilanDil = localStorage.getItem('foodielocalDil') || 'az';
     diliAktivEt(saxlanilanDil);
 
     // Daxili bağlantılar üçün yumşaq scroll effekti

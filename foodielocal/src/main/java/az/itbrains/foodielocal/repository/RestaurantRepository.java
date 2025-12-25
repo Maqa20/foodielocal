@@ -11,14 +11,8 @@ import java.util.List;
 
 @Repository
 public interface RestaurantRepository extends JpaRepository<Restaurant, Long> {
-
-    // ✅ Random restoranlar
     @Query("SELECT r FROM Restaurant r ORDER BY RANDOM()")
     Page<Restaurant> findRandomRestaurants(Pageable pageable);
-
-    // ✅ Restoranları id ilə sıralanmış qaytar
     List<Restaurant> findAllByOrderByIdAsc();
-
-    // ✅ Əlavə: adı ilə sıralama
     List<Restaurant> findAllByOrderByNameAsc();
 }

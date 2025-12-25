@@ -22,15 +22,13 @@ public class ReviewController {
         this.restaurantService = restaurantService;
     }
 
-    // ✅ Review formunu açmaq (GET /reviews)
     @GetMapping
     public String showReviewForm(Model model) {
         model.addAttribute("restaurants", restaurantService.findAll());
         model.addAttribute("review", new Review());
-        return "reviews/reviews"; // Thymeleaf template
+        return "reviews/reviews";
     }
 
-    // ✅ Review göndərmək (POST /reviews)
     @PostMapping
     public String submitReview(@ModelAttribute Review review, Model model) {
 
@@ -39,22 +37,14 @@ public class ReviewController {
             model.addAttribute("restaurants", restaurantService.findAll());
             return "reviews/reviews";
         }
-
         Long restaurantId = review.getRestaurant().getId();
         Restaurant restaurant = restaurantService.findById(restaurantId);
         review.setRestaurant(restaurant);
-
-        // ✅ Tarixi avtomatik əlavə et
         review.setReviewDate(LocalDateTime.now());
-
-        // Review-u DB-yə yazırıq
         reviewService.save(review);
-
-        // uğur mesajı əlavə et və formu təmizlə
         model.addAttribute("success", "Review submitted successfully!");
         model.addAttribute("restaurants", restaurantService.findAll());
         model.addAttribute("review", new Review());
-
-        return "reviews/reviews"; // redirect yoxdur, eyni səhifədə qalır
+        return "reviews/reviews";
     }
 }

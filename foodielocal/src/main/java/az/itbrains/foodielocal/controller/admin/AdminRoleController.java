@@ -18,37 +18,31 @@ public class AdminRoleController {
     private final RestaurantRepository restaurantRepository;
     private final ReservationRepository reservationRepository;
 
-    public AdminRoleController(RoleRepository roleRepository,
-                               UserRepository userRepository,
-                               RestaurantRepository restaurantRepository,
-                               ReservationRepository reservationRepository) {
+    public AdminRoleController(RoleRepository roleRepository, UserRepository userRepository, RestaurantRepository restaurantRepository, ReservationRepository reservationRepository) {
         this.roleRepository = roleRepository;
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;
         this.reservationRepository = reservationRepository;
     }
 
-    // ✅ Rolların siyahısı + digər modellər
     @GetMapping
     public String listRoles(Model model) {
         model.addAttribute("roles", roleRepository.findAll());
         model.addAttribute("role", new Role());
-
         model.addAttribute("users", userRepository.findAll());
         model.addAttribute("restaurants", restaurantRepository.findAll());
         model.addAttribute("reservations", reservationRepository.findAll());
-
-        return "admin/admin"; // bütün tab-lar eyni səhifədə
+        return "admin/admin";
     }
 
     @PostMapping("/create")
     public String createRole(@ModelAttribute("role") Role role, Model model) {
         roleRepository.save(role);
         model.addAttribute("success", true);
-        return listRoles(model); // eyni admin səhifəsini render et
+        return listRoles(model);
     }
 
-    // ✅ Rol redaktə formu (modal üçün)
+
     @GetMapping("/edit/{id}")
     public String editRoleForm(@PathVariable Long id, Model model) {
         Role role = roleRepository.findById(id).orElse(null);
@@ -58,19 +52,14 @@ public class AdminRoleController {
         }
         model.addAttribute("role", role);
         model.addAttribute("roles", roleRepository.findAll());
-
         model.addAttribute("users", userRepository.findAll());
         model.addAttribute("restaurants", restaurantRepository.findAll());
         model.addAttribute("reservations", reservationRepository.findAll());
-
         return "admin/admin";
     }
 
-    // ✅ Rol yenilə (redirect yox)
     @PostMapping("/edit/{id}")
-    public String updateRole(@PathVariable Long id,
-                             @ModelAttribute("role") Role form,
-                             Model model) {
+    public String updateRole(@PathVariable Long id, @ModelAttribute("role") Role form, Model model) {
         Role role = roleRepository.findById(id).orElse(null);
         if (role == null) {
             model.addAttribute("error", true);
@@ -79,13 +68,11 @@ public class AdminRoleController {
         role.setName(form.getName());
         role.setDescription(form.getDescription());
         roleRepository.save(role);
-
         model.addAttribute("success", true);
         model.addAttribute("action", "update");
         return listRoles(model);
     }
 
-    // ✅ Rol sil (redirect yox)
     @PostMapping("/{id}/delete")
     public String deleteRole(@PathVariable Long id, Model model) {
         if (roleRepository.existsById(id)) {

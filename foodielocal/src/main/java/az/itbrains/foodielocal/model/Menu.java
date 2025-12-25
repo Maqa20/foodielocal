@@ -18,7 +18,6 @@ public class Menu {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Sadə ad və təsvir
     @Column(name = "name", nullable = false)
     private String name;
 
@@ -27,15 +26,15 @@ public class Menu {
 
     private Double price;
 
-    private String category; // starter, main, dessert, drink
+    private String category;
 
     @Column(name = "is_popular")
-    private boolean isPopular; // məşhur yeməklər üçün flag
+    private boolean isPopular;
 
     @Column(name = "image_url")
     private String imageUrl;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 }

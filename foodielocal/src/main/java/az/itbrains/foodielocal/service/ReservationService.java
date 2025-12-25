@@ -5,10 +5,10 @@ import java.util.List;
 
 public interface ReservationService {
     Reservation save(Reservation reservation);
+    Reservation findById(Long id);
     List<Reservation> findAll();
     List<Reservation> findLatest5();
     long countAllReservations();
-    Reservation findById(Long id);
     void deleteById(Long id);
     void approveReservation(Long id);
     void rejectReservation(Long id);

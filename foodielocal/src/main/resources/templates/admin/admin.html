@@ -92,6 +92,10 @@
                             type="button" role="tab" data-i18n="tabRestaurants">Restaurants</button>
                 </li>
                 <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="menus-tab" data-bs-toggle="tab" data-bs-target="#menus"
+                            type="button" role="tab" data-i18n="tabMenus">Menus</button>
+                </li>
+                <li class="nav-item" role="presentation">
                     <button class="nav-link" id="reservations-tab" data-bs-toggle="tab" data-bs-target="#reservations"
                             type="button" role="tab" data-i18n="tabReservations">Reservations</button>
                 </li>
@@ -106,13 +110,13 @@
                 <!-- Users Section -->
                 <div class="tab-pane fade show active" id="users" role="tabpanel" aria-labelledby="users-tab">
                     <!-- Alert Messages -->
-                    <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div th:if="${param.success != null}" class="alert alert-success alert-dismissible fade show" role="alert">
                         <strong th:if="${param.action != null and param.action[0] == 'create'}">Uğurla əlavə olundu!</strong>
                         <strong th:if="${param.action != null and param.action[0] == 'update'}">Uğurla redaktə olundu!</strong>
                         <strong th:if="${param.action == null or param.action[0] == 'delete'}">Uğurla silindi!</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <div th:if="${param.error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>Uğursuz oldu!</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -192,14 +196,14 @@
                 <!-- Roles Section -->
                 <div class="tab-pane fade" id="roles" role="tabpanel" aria-labelledby="roles-tab">
                     <!-- Alert Messages -->
-                    <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div th:if="${param.success != null}" class="alert alert-success alert-dismissible fade show" role="alert">
                         <strong th:if="${param.action != null and param.action[0] == 'create'}">Uğurla əlavə olundu!</strong>
                         <strong th:if="${param.action != null and param.action[0] == 'update'}">Uğurla redaktə olundu!</strong>
                         <strong th:if="${param.action == null or param.action[0] == 'delete'}">Uğurla silindi!</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
 
-                    <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <div th:if="${param.error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>Uğursuz oldu!</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -266,13 +270,13 @@
                 <!-- Restaurants Section -->
                 <div class="tab-pane fade" id="restaurants" role="tabpanel" aria-labelledby="restaurants-tab">
                     <!-- Alert Messages -->
-                    <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div th:if="${param.success != null}" class="alert alert-success alert-dismissible fade show" role="alert">
                         <strong th:if="${param.action != null and param.action[0] == 'create'}">Uğurla əlavə olundu!</strong>
                         <strong th:if="${param.action != null and param.action[0] == 'update'}">Uğurla redaktə olundu!</strong>
                         <strong th:if="${param.action == null or param.action[0] == 'delete'}">Uğurla silindi!</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <div th:if="${param.error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>Uğursuz oldu!</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -350,16 +354,128 @@
                     </div>
                 </div>
 
+                <!-- Menus Section -->
+                <div class="tab-pane fade" id="menus" role="tabpanel" aria-labelledby="menus-tab">
+                    <!-- Alert Messages -->
+                    <div th:if="${param.success != null}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong th:if="${param.action != null and param.action[0] == 'menu-create'}">Menyu uğurla əlavə olundu!</strong>
+                        <strong th:if="${param.action != null and param.action[0] == 'menu-update'}">Menyu uğurla redaktə olundu!</strong>
+                        <strong th:if="${param.action != null and param.action[0] == 'menu-delete'}">Menyu uğurla silindi!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <div th:if="${param.error != null and param.section != null and param.section[0] == 'menus'}"
+                         class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Əməliyyat uğursuz oldu!</strong>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+
+                    <div class="admin-card">
+                        <div class="admin-card-header">
+                            <h3 class="mb-0" data-i18n="menusTitle">Menyu İdarəetməsi</h3>
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#menuModal"
+                                    onclick="openMenuModal(null)">
+                                <i class="bi bi-plus-circle me-2"></i>
+                                <span data-i18n="btnAdd">Əlavə et</span>
+                            </button>
+                        </div>
+
+                        <div class="admin-card-body">
+                            <div class="table-responsive">
+                                <table class="table table-dark table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th data-i18n="tableId">ID</th>
+                                        <th data-i18n="tableRestaurant">Restaurant</th>
+                                        <th data-i18n="tableMenuName">Menu Name</th>
+                                        <th data-i18n="tableDescription">Description</th>
+                                        <th data-i18n="tableImage">Image</th>
+                                        <th data-i18n="tablePrice">Price</th>
+                                        <th data-i18n="tableCategory">Category</th>
+                                        <th data-i18n="tableActions">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="menusTableBody">
+                                    <tr th:if="${menus == null or menus.isEmpty()}">
+                                        <td colspan="8" class="text-center text-white py-4">
+                                            <i class="bi bi-inbox fs-1 d-block mb-2"></i>
+                                            <span data-i18n="noData">Məlumat yoxdur</span>
+                                        </td>
+                                    </tr>
+                                    <tr th:each="menu, iterStat : ${menus}"
+                                        th:if="${menus != null and !menus.isEmpty()}"
+                                        th:attr="data-menu-id=${menu.id},
+                                                 data-menu-name=${menu.name != null ? menu.name : ''},
+                                                 data-menu-description=${menu.description != null ? menu.description : ''},
+                                                 data-menu-price=${menu.price != null ? menu.price : ''},
+                                                 data-menu-category=${menu.category != null ? menu.category : ''},
+                                                 data-menu-is-popular=${menu.isPopular},
+                                                 data-menu-image-url=${menu.imageUrl != null ? menu.imageUrl : ''},
+                                                 data-menu-restaurant-id=${menu.restaurant != null ? menu.restaurant.id : ''}">
+                                        <td th:text="${iterStat.index + 1}">ID</td>
+                                        <td th:text="${menu.restaurant != null ? menu.restaurant.name : ''}">Restaurant</td>
+                                        <td class="admin-menu-name"
+                                            th:text="${menu.name}"
+                                            th:attr="data-original-name=${menu.name}">
+                                            Menu Name
+                                        </td>
+                                        <td class="admin-menu-description"
+                                            th:text="${menu.description}"
+                                            th:attr="data-original-description=${menu.description}">
+                                            Description
+                                        </td>
+                                        <td>
+                                            <img th:if="${menu.imageUrl != null and !#strings.isEmpty(menu.imageUrl)}"
+                                                 th:src="${menu.imageUrl}"
+                                                 alt="Food image"
+                                                 style="height:40px; border-radius:4px; object-fit:cover;">
+                                            <img th:if="${menu.imageUrl == null or #strings.isEmpty(menu.imageUrl)}"
+                                                 src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=200&q=80"
+                                                 alt="Food image placeholder"
+                                                 style="height:40px; border-radius:4px; object-fit:cover;">
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-warning text-white"
+                                                  th:text="${menu.price != null ? #numbers.formatDecimal(menu.price,1,2) + ' ₼' : 'N/A'}">Price</span>
+                                        </td>
+                                        <td>
+                                            <span class="badge bg-info"
+                                                  th:text="${menu.category != null ? menu.category : '-'}">Category</span>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-sm btn-warning me-2"
+                                                    data-bs-toggle="modal" data-bs-target="#menuModal"
+                                                    th:onclick="'openMenuModal(' + ${menu.id} + ')'" data-i18n="btnEdit">
+                                                <i class="bi bi-pencil me-1"></i>
+                                                <span data-i18n="btnEdit">Redaktə et</span>
+                                            </button>
+                                            <form th:action="@{'/admin/menus/' + ${menu.id} + '/delete'}"
+                                                  method="POST" style="display:inline;"
+                                                  onsubmit="return confirm('Menyunu silmək istədiyinizə əminsiniz?')">
+                                                <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                                                <button type="submit" class="btn btn-sm btn-danger" data-i18n="btnDelete">
+                                                    <i class="bi bi-trash me-1"></i>
+                                                    <span data-i18n="btnDelete">Sil</span>
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Reservations Section -->
                 <div class="tab-pane fade" id="reservations" role="tabpanel" aria-labelledby="reservations-tab">
                     <!-- Alert Messages -->
-                    <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div th:if="${param.success != null}" class="alert alert-success alert-dismissible fade show" role="alert">
                         <strong th:if="${param.action != null and param.action[0] == 'create'}">Uğurla əlavə olundu!</strong>
                         <strong th:if="${param.action != null and param.action[0] == 'update'}">Uğurla redaktə olundu!</strong>
                         <strong th:if="${param.action == null or param.action[0] == 'delete'}">Uğurla silindi!</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <div th:if="${param.error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>Uğursuz oldu!</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -481,13 +597,13 @@
                 <!-- Reviews Section -->
                 <div class="tab-pane fade" id="reviews" role="tabpanel" aria-labelledby="reviews-tab">
                     <!-- Alert Messages -->
-                    <div th:if="${param.success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div th:if="${param.success != null}" class="alert alert-success alert-dismissible fade show" role="alert">
                         <strong th:if="${param.action != null and param.action[0] == 'create'}">Uğurla əlavə olundu!</strong>
                         <strong th:if="${param.action != null and param.action[0] == 'update'}">Uğurla redaktə olundu!</strong>
                         <strong th:if="${param.action == null or param.action[0] == 'delete'}">Uğurla silindi!</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
-                    <div th:if="${param.error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <div th:if="${param.error != null}" class="alert alert-danger alert-dismissible fade show" role="alert">
                         <strong>Uğursuz oldu!</strong>
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
@@ -690,6 +806,69 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="btnCancel">Ləğv et</button>
                 <button type="button" class="btn btn-primary" onclick="submitRestaurantForm()" data-i18n="btnSave">Yadda Saxla</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Menu Modal -->
+<div class="modal fade" id="menuModal" tabindex="-1" aria-labelledby="menuModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content admin-modal">
+            <div class="modal-header">
+                <h5 class="modal-title" id="menuModalLabel" data-i18n="modalAddMenu">Menyu Əlavə Et / Redaktə Et</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="menuForm" method="POST" th:action="@{/admin/menus/create}">
+                    <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+                    <input type="hidden" name="id" id="menuId" />
+                    <div class="mb-3">
+                        <label class="form-label" for="menuRestaurant" data-i18n="formRestaurant">Restaurant</label>
+                        <select class="form-select" id="menuRestaurant" name="restaurantId" required>
+                            <option value="" data-i18n="selectRestaurant">Select Restaurant</option>
+                            <option th:each="restaurant : ${restaurants}"
+                                    th:value="${restaurant.id}"
+                                    th:text="${restaurant.name}">Restaurant</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="menuName" data-i18n="formMenuName">Menu Name</label>
+                        <input type="text" class="form-control" id="menuName" name="name" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="menuDescription" data-i18n="formMenuDescription">Description</label>
+                        <textarea class="form-control" id="menuDescription" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="menuPrice" data-i18n="formMenuPrice">Price (₼)</label>
+                        <input type="number" class="form-control" id="menuPrice" name="price" min="0" step="0.01" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="menuCategory" data-i18n="formMenuCategory">Category</label>
+                        <select class="form-select" id="menuCategory" name="category" required>
+                            <option value="" data-i18n="selectCategory">Kateqoriya seçin</option>
+                            <option value="starter" data-i18n="categoryStarter">Qəlyanaltılar</option>
+                            <option value="main" data-i18n="categoryMain">Əsas yeməklər</option>
+                            <option value="dessert" data-i18n="categoryDessert">Şirniyyatlar</option>
+                            <option value="drink" data-i18n="categoryDrink">İçkilər</option>
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="menuImageUrl" data-i18n="formImageUrl">Şəkil URL</label>
+                        <input type="text" class="form-control" id="menuImageUrl" name="imageUrl" placeholder="Image URL">
+                    </div>
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="menuIsPopular" name="isPopular">
+                            <label class="form-check-label" for="menuIsPopular" data-i18n="formIsPopular">Məşhur yemək</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" data-i18n="btnCancel">Ləğv et</button>
+                <button type="button" class="btn btn-primary" onclick="submitMenuForm()" data-i18n="btnSave">Yadda Saxla</button>
             </div>
         </div>
     </div>
